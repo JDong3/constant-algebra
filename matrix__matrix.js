@@ -1,4 +1,5 @@
-var lf = require('./list_functions.js');
+const lf = require('./list_functions.js');
+const R = require('./dependencies/ramda');
 /**
  * gets the column vectors of m as a new matrix object
  * @param  {[type]} l             [description]
@@ -15,3 +16,5 @@ let columns = (m, n=0, ret=Array()) => {
     return columns(m, n+1, ret);
   }
 }
+
+

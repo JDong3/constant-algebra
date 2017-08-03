@@ -7,7 +7,7 @@ let max = (l) => {
   let mMath = (a, b) => (
     Math.max(a, b));
     return l.reduce(mMath);
-};
+}
 /**
  * nth column generator of a 2d list of numbers
  * @param  {Array} l is an array of arrays of numbers
@@ -17,3 +17,5 @@ let max = (l) => {
 let getColumn = (l, n) => {
   return l.map((l) => (l[n]));
 }
+
+module.exports = {getColumn, max};
