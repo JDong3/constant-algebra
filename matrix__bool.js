@@ -1,3 +1,5 @@
+const R = ("./dependencies/ramda/index.js")
+
 /**
  * verifys that matrix is valid, ie. matrix represents a rectangular array of
  * ofjects
@@ -5,8 +7,9 @@
  * @return {bool}   whether the Matrix represents a rectangular array of object
  */
 let verify = (m) => {
-  let sameLength = (arr) => (arr.length == m[0].length)
-  return m.every(sameLength)
+  let rowLength = m[0].length
+  let sameLength = (l) => (l.length === rowLength)
+  return R.all(sameLength)(m)
 };
 /**
  * assuming that the matrix is verified, return the sqarity of the matrix
