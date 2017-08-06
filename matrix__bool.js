@@ -1,4 +1,6 @@
-const R = ("./dependencies/ramda/index.js")
+module.exports{verify, inSquare, isIdentity, isRowOfIdentity}
+
+const R = require("ramda")
 
 /**
  * verifys that matrix is valid, ie. matrix represents a rectangular array of
@@ -10,7 +12,7 @@ let verify = (m) => {
   let rowLength = m[0].length
   let sameLength = (l) => (l.length === rowLength)
   return R.all(sameLength)(m)
-};
+}
 /**
  * assuming that the matrix is verified, return the sqarity of the matrix
  * @param {Matrix} m as a Matrix object
@@ -18,4 +20,23 @@ let verify = (m) => {
  */
 let isSquare = (m) => (m.length == m[0].length)
 
-console.log(verify([[1, 1, 1], [1, 1, 1], [1, 1, 1]]))
+let isIdentity = (m) => {
+  let identity = (m, index=0) => {
+    if(index >= m.length) {
+      return true
+    } else {
+      return isRowOfIdentity(m[index], index) && identity(m, index+1)
+    }
+  }
+  return isSquare(m) && identity(m)
+}
+
+let isRowOfIdentity = (l, rowNumber=0, index=0) => {
+  if (index >= l.length) {
+    return true;
+  } else if (index == rowNumber) => {
+    return l[index] == 1 && isRowOfIdentity(l, rowNumber, index+1)
+  } else {
+    return l[index] == 0 && isRowOfIdentity(l, rowNumber, index+1)
+  }
+}
