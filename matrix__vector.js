@@ -1,3 +1,5 @@
+module.exports = {column, diagonal, row};
+
 const math = require("mathjs")
 const R = require("ramda")
 
@@ -11,6 +13,10 @@ let column = (l, n) => {
   let nthElement = (l) => (l[n])
   result = R.map(nthElement, l)
   return result
+}
+
+let row = (l, n) = > {
+  return l[n]
 }
 
 /**
@@ -31,5 +37,3 @@ let diagonal = (l) => {
   let result = diagonalBuilds([])
   return result;
 }
-
-module.exports = {column, diagonal};

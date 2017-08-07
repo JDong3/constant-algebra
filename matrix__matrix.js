@@ -1,3 +1,5 @@
+module.exports = {}
+
 const lf = require('./list_functions.js');
 const R = require('./dependencies/ramda');
 /**
@@ -7,14 +9,20 @@ const R = require('./dependencies/ramda');
  * @param  {[type]} [ret=Array()] [description]
  * @return {[type]}               [description]
  */
-let columns = (m, n=0, ret=Array()) => {
+let transpose = (m, n=0, ret=Array()) => {
   if (n === m.length - 1) {
     ret.push(getColumn(m, n));
     return ret;
   } else {
     ret.push(getColumn(m, n));
-    return columns(m, n+1, ret);
+    return transpose(m, n+1, ret);
   }
 }
+
+let add = (m, n=0, ret=Array()) => {}
+
+let sub = (m) => {}
+
+let mul = (m) = {}
 
 

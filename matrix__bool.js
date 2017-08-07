@@ -40,3 +40,14 @@ let isRowOfIdentity = (l, rowNumber=0, index=0) => {
     return l[index] == 0 && isRowOfIdentity(l, rowNumber, index+1)
   }
 }
+
+let addDefined = (m, n) => {
+  let valid = verify(m) && verify(n)
+  let sameSize = m.length == n.length && m[0].length == m[0].length
+  return valid && sameSize
+}
+
+let subDefined = (m, n) => (addDefined(m, n)
+
+
+
