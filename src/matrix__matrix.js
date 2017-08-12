@@ -72,5 +72,3 @@ let subMul = (v, m, i=0, res=[]) {
     return subMul(v, m, i+1, res)
   }
 }
-
-
