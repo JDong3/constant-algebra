@@ -1,24 +1,44 @@
-module.exports{verify, inSquare, isIdentity, isRowOfIdentity, rowValid,
-               columnValid}
-
 const R = require("ramda")
 
 /**
- * verifys that matrix is valid, ie. matrix represents a rectangular array of
- * ofjects
- * @param  {Matrix} m is a Matrix object
- * @return {bool}   whether the Matrix represents a rectangular array of object
+ * verifys that matrix is valid, that the matrix represents a rectangular array
+ * of ofjects.
+ *
+ * @param  {Matrix}
+ * @return {bool}   whether the Matrix represents a rectangular array of objects
  */
 let verify = (m) => {
-  let rowLength = m[0].length
-  let sameLength = (l) => (l.length === rowLength)
-  return R.all(sameLength)(m)
+  return isArrayOfArrays(m) && isRectangular(m) && widthGeZero(m)
 }
+
+
 /**
- * assuming that the matrix is verified, return the sqarity of the matrix
- * @param {Matrix} m as a Matrix object
- * @return {bool} whether the matrix is a square matrix or not
+ * a verify helper
+ *
  */
+let isArrayOfArrays = (m) => {
+  let isArray = (m) => (m instanceof Array) 
+  return isArray(m) && R.all(isArray)(m) 
+}
+
+/**
+ * a verify helper
+ *
+ */
+let isRectangular = (m) => {
+  let sameLengthAsFirst = (l) => (l.length === m[0].length)
+  return R.all(sameLengthAsFirst)(m)
+}
+
+/**
+ * a verify helper
+ *
+ */
+let widthGeZero = (m) => {
+  let elementWidthGeZero = (l) => (l.length > 0)
+  return R.all(elementWidthGeZero)(m)
+}
+
 let isSquare = (m) => (m.length == m[0].length)
 
 let isIdentity = (m) => {
@@ -35,7 +55,7 @@ let isIdentity = (m) => {
 let isRowOfIdentity = (l, rowNumber=0, index=0) => {
   if (index >= l.length) {
     return true;
-  } else if (index == rowNumber) => {
+  } else if (index == rowNumber) {
     return l[index] == 1 && isRowOfIdentity(l, rowNumber, index+1)
   } else {
     return l[index] == 0 && isRowOfIdentity(l, rowNumber, index+1)
@@ -48,8 +68,15 @@ let addDefined = (m, n) => {
   return valid && sameSize
 }
 
-let subDefined = (m, n) => (addDefined(m, n)
+let subDefined = (m, n) => (addDefined(m, n))
 
 let rowValid = (m, n) => (n >= 0 && n <= m.length-1)
 
 let columnValid = (m, n) => (n >= 0 && n <= m[0].length-1)
+
+module.exports = {verify,
+                  isSquare, 
+                  isIdentity, 
+                  isRowOfIdentity, 
+                  rowValid,
+                  columnValid}
