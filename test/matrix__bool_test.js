@@ -31,6 +31,9 @@ let matrices = {
   z32: [[0, 0],
         [0, 0],
         [0, 0]],
+  z31: [[0],
+        [0],
+        [0]],
   z33: [[0, 0, 0],
         [0, 0, 0],
         [0, 0, 0]],
@@ -204,7 +207,7 @@ describe('rowValid accepts rows int r in {0..n-1}, for a nxa matrix', function()
       assert.isTrue(mb.rowValid(matrices.z11, 0))
     })
   }),
-  describe('rejects rows in I\\{0} for a 1x1 matrix', function() {
+  describe('rejects rows in Z\\{0} for a 1x1 matrix', function() {
     it('rejects -1', function() {
       assert.isFalse(mb.rowValid(matrices.z11, -1))
     }),
@@ -212,23 +215,58 @@ describe('rowValid accepts rows int r in {0..n-1}, for a nxa matrix', function()
       assert.isFalse(mb.rowValid(matrices.z11, 1))
     })
   })
-  describe('accepts rows in {0, 1, 2} for a 3x3 matrix', function() {
+  describe('accepts rows in {0, 1, 2} for a 3x1 matrix', function() {
     it('accepts 0', function() {
-      assert.isTrue(mb.rowValid(matrices.z33, 0))
+      assert.isTrue(mb.rowValid(matrices.z31, 0))
     }),
     it('accepts 1', function() {
-      assert.isTrue(mb.rowValid(matrices.z33, 1))
+      assert.isTrue(mb.rowValid(matrices.z31, 1))
     }),
     it('accepts 2', function() {
-      assert.isTrue(mb.rowValid(matrices.z33, 2))
+      assert.isTrue(mb.rowValid(matrices.z31, 2))
     })
   }),
-  describe('rejects rows I\\{0, 1, 2} for a 3x3 matrix', function() {
+  describe('rejects rows Z\\{0, 1, 2} for a 3x1 matrix', function() {
     it('rejects -1', function() {
-      assert.isFalse(mb.rowValid(matrices.z33, -1))
+      assert.isFalse(mb.rowValid(matrices.z31, -1))
     }),
     it('rejects 3', function() {
-      assert.isFalse(mb.rowValid(matrices.z33, 3))
+      assert.isFalse(mb.rowValid(matrices.z31, 3))
+    })
+  })
+})
+
+describe('columnValid accepts rows int r in {0..n-1}, for a nxa matrix', function() {
+  describe('accepts columns in {0} for a 1x1 matrix', function() {
+    it('accepts 0', function() {
+      assert.isTrue(mb.columnValid(matrices.z11, 0))
+    })
+  }),
+  describe('rejects columns Z\\{0} for a 1x1 matrix', function() {
+    it('rejects -1', function() {
+      assert.isFalse(mb.columnValid(matrices.z11, -1))
+    }),
+    it('rejects 1', function() {
+      assert.isFalse(mb.columnValid(matrices.z11, -1))
+    })
+  }),
+  describe('accepts columns in {0, 1, 2} for a 1x3 matrix', function () {
+    it('accepts 0', function () {
+      assert.isTrue(mb.columnValid(matrices.z13, 0))
+    }),
+    it('accepts 1', function () {
+      assert.isTrue(mb.columnValid(matrices.z13, 1))
+    }),
+    it('accepts 2', function () {
+      assert.isTrue(mb.columnValid(matrices.z13, 2))
+    })
+  }),
+  describe('rejects columns Z\\{0, 1, 2} for a 1x3 matrix', function () {
+    it('rejects -1', function () {
+      assert.isFalse(mb.columnValid(matrices.z13, -1))
+    }),
+    it('rejects 3', function () {
+      assert.isFalse(mb.columnValid(matrices.z13, 3))
     })
   })
 })
