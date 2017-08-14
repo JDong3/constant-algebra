@@ -63,9 +63,8 @@ let isRowOfIdentity = (l, rowNumber=0, index=0) => {
 }
 
 let addDefined = (m, n) => {
-  let valid = verify(m) && verify(n)
-  let sameSize = m.length == n.length && m[0].length == m[0].length
-  return valid && sameSize
+  let sameSize = m.length == n.length && m[0].length == n[0].length
+  return sameSize
 }
 
 let subDefined = (m, n) => (addDefined(m, n))
@@ -75,8 +74,10 @@ let rowValid = (m, n) => (n >= 0 && n <= m.length-1)
 let columnValid = (m, n) => (n >= 0 && n <= m[0].length-1)
 
 module.exports = {verify,
-                  isSquare, 
-                  isIdentity, 
-                  isRowOfIdentity, 
+                  isSquare,
+                  isIdentity,
+                  isRowOfIdentity,
+                  addDefined,
+                  subDefined,
                   rowValid,
                   columnValid}
