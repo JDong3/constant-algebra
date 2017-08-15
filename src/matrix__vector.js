@@ -1,39 +1,55 @@
-module.exports = {column, diagonal, row};
-
 const math = require("mathjs")
 const R = require("ramda")
 
 /**
- * nth column generator of a 2d list of numbers
- * @param  {Array} l is a 'verified' array of arrays of numbers
- * @param  {Number} n is index of the column you want to get, n < l.length
- * @return {Array}   nth column of l
+ * generates a row vector.
+ *
+ * @param {matrix} m: is a matrix representation
+ * @param {number} n: is thie index of the column you want to get,
+ *   0<=n<m.length
+ * @return {vector} a vector representation of the nth row of m
  */
-let column = (l, n) => {
-  let nthElement = (l) => (l[n])
-  let result = R.map(nthElement, l)
+const row = (m, n) => (m[n])
+
+/**
+ * generates a colum vector.
+ *
+ * @param  {matrix} m: is a matrix representation
+ * @param  {number} n: is index of the column you want to get,
+ *   0<=n< l[0].length
+ * @return {vector} a vector representation of the nth column of n
+ */
+const column = (m, n) => {
+  const nthElement = (m) => (m[n])
+  const result = R.map(nthElement, m)
   return result
 }
 
-let row = (l, n) = > {
-  return l[n]
-}
+/**
+ */
+const diagonal = () => (false)
 
 /**
- * diagonal vector generator
- * @param  {Array} l is a 'verified' array of arrays of numbers
- * @return {Array}   is the an array of numbers on the diagonal of l
+ * generates a loose diagonal vector
+ * @param  {matrix} m: is a 'verified' array of arrays of numbers
+ * @return {matrix} is the an array of numbers on the diagonal of l
  */
-let diagonal = (l) => {
-  let minDimension = math.min(l.length, l[0].length)
-  let diagonalBuilder = (diagonalList, i=0) => {
+const looseDiagonal = (m) => {
+  const minDimension = math.min(m.length, m[0].length)
+  const diagonalBuilder = (diagonalList, i=0) => {
     if (diagonalList.legnth < minDimension) {
-      diagonalList.push(l[i][i])
+      diagonalList.push(m[i][i])
       return diagonalBuilder(diagonalList, i+1)
     } else {
       return diagonalList
     }
   }
-  let result = diagonalBuilds([])
+  const result = diagonalBuilds([])
   return result;
 }
+
+module.exports = {column,
+                  row,
+                  diagonal,
+                  looseDiagonal
+                  }

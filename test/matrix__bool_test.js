@@ -1,57 +1,25 @@
 const mb = require('../src/matrix__bool.js')
-const chai = require('chai')
+const matrices = require('./resources/matrices.js').matrices
+
+const assert = require('chai').assert
+
 const describe = require('mocha').describe
 const it = require('mocha').it
-let assert = chai.assert
 
-let matrices = {
+let spec = {
   // special input
-  specVerifyNonRectangularity: [[0, 0, 0],
-                                [0, 0]],
-  specZvector3: [0, 0, 0],
-  specVerifyAlmostArrayOfArray: [[0, 0, 0],
-                                 0,
-                                 [0, 0, 0]],
-  specEmpty11: [[]],
-  specEmpty30: [[],
-                [],
-                []],
-  specPartialIdentity23: [[1, 0, 0],
-                          [0, 1, 0]],
-  // zero matrices
-  z11: [[0]],
-  z12: [[0, 0]],
-  z13: [[0, 0, 0]],
-  z21: [[0],
-        [0]],
-  z22: [[0, 0],
-        [0, 0]],
-  z23: [[0, 0, 0],
-        [0, 0, 0]],
-  z32: [[0, 0],
-        [0, 0],
-        [0, 0]],
-  z31: [[0],
-        [0],
-        [0]],
-  z33: [[0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]],
-  z34: [[0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0]],
-  z43: [[0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]],
-  // identity matrices
-  i11: [[1]],
-  i22: [[1, 0],
-        [0, 1]],
-  i33: [[1, 0, 0],
-        [0, 1, 0],
-        [0, 0, 1]]
-  
+  verifyNonRectangularity: [[0, 0, 0],
+                            [0, 0]],
+  zeroVector3: [0, 0, 0],
+  verifyAlmostArrayOfArray: [[0, 0, 0],
+                             0,
+                             [0, 0, 0]],
+  empty11: [[]],
+  empty30: [[],
+            [],
+            []],
+  partialIdentity23: [[1, 0, 0],
+                      [0, 1, 0]]
 }
 
 describe('Verify', function() {
@@ -74,7 +42,7 @@ describe('Verify', function() {
   }),
   describe('rejects non-rectangularity', function() {
     it('rejects different size rows', function() {
-      assert.isFalse(mb.verify(matrices.specVerifyNonRectangularity))
+      assert.isFalse(mb.verify(spec.verifyNonRectangularity))
     })
   })
   describe('accepts array of array', function() {
@@ -84,18 +52,18 @@ describe('Verify', function() {
   })
   describe('rejects array of not array', function() {
     it('rejects array of int', function() {
-      assert.isFalse(mb.verify(matrices.specZvector3))
+      assert.isFalse(mb.verify(spec.zeroVector3))
     }),
     it('rejects array of mostly arrays but one int', function() {
-      assert.isFalse(mb.verify(matrices.verifyAlmostArrayOfArray))
+      assert.isFalse(mb.verify(spec.verifyAlmostArrayOfArray))
     })
   })
   describe("rejects size 0", function() {
     it('rejects empty case', function() {
-      assert.isFalse(mb.verify(matrices.specEmpty11))
+      assert.isFalse(mb.verify(spec.empty11))
     }),
     it('rejects width of 0', function() {
-      assert.isFalse(mb.verify(matrices.specEmpty30))
+      assert.isFalse(mb.verify(spec.empty30))
     })
   })
 })
@@ -145,7 +113,7 @@ describe('isIdentity', function() {
       assert.isFalse(mb.isIdentity(matrices.z33))
     }),
     it('rejects non square matrix', function() {
-      assert.isFalse(mb.isIdentity(matrices.specPartialIdentity23))
+      assert.isFalse(mb.isIdentity(spec.partialIdentity23))
     })
   })
 })
