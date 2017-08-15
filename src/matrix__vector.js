@@ -26,26 +26,37 @@ const column = (m, n) => {
 }
 
 /**
+ * gemnerates a diageonal vector.
+ *
+ * @param {matrix} m: is a matrix representation
+ * @param {number} i:
+ * @param {vector} res:
+ * @return {vector} the vector representation of the diagonal of m
  */
-const diagonal = () => (false)
+const diagonal = (m, i = 0, res=[]) => {
+  if (i >= m.length) {
+    return res
+  } else {
+    res.push(m[i][i])
+    return diagonal(m, i+1, res)
+  }
+}
 
 /**
- * generates a loose diagonal vector
- * @param  {matrix} m: is a 'verified' array of arrays of numbers
- * @return {matrix} is the an array of numbers on the diagonal of l
+ * generates a loose diagonal vector.
+ *
+ * @param {matrix} m: is a 'verified' array of arrays of numbers
+ * @param {number} i:
+ * @param {vector} res:
+ * @return {matrix} the vector representation of the loose diagonal of m
  */
-const looseDiagonal = (m) => {
-  const minDimension = math.min(m.length, m[0].length)
-  const diagonalBuilder = (diagonalList, i=0) => {
-    if (diagonalList.legnth < minDimension) {
-      diagonalList.push(m[i][i])
-      return diagonalBuilder(diagonalList, i+1)
-    } else {
-      return diagonalList
-    }
+const looseDiagonal = (m, i=0, res=[]) => {
+  if (i >= math.min(m.length, m[0].length)) {
+    return res
+  } else {
+    res.push(m[i][i])
+    return looseDiagonal(m, i+1, res)
   }
-  const result = diagonalBuilds([])
-  return result;
 }
 
 module.exports = {column,
