@@ -1,6 +1,6 @@
-let ls = require('./list_functions.js')
+let ls = require('./matrix__vector.js')
 let mm = require('./matrix__matrix.js')
-let lp = require('./dependencies/index.js')
+let leftPad = require('left-pad')
 
 /**
  * blah.
@@ -20,9 +20,9 @@ let str = (m) => {
     for (i = 0; i < m.length; i++) {
       str += "["
       for (j = 0; j < m[0].length - 1; j++) {
-        str += lp.leftPad(m[i][j].toString(), lengthList[j]) + " "
+        str += leftPad(m[i][j].toString(), lengthList[j]) + " "
       }
-      str += lp.leftPad(m[i][m[0].length - 1], lengthList[m[0].length - 1]) + "]\n"
+      str += leftPad(m[i][m[0].length - 1], lengthList[m[0].length - 1]) + "]\n"
     }
   return str
 }

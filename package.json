@@ -1,0 +1,34 @@
+{
+  "name": "constant-algebra",
+  "version": "0.0.3",
+  "description": "would not recommend using, structure not finalized",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^4.1.1",
+    "left-pad": "^1.1.3",
+    "mathjs": "^3.15.0",
+    "mocha": "^3.5.0",
+    "ramda": "^0.24.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test.bat"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxcandiez/constant-algebra.git"
+  },
+  "keywords": [
+    "math",
+    "algebra"
+  ],
+  "author": "Joseph Dong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xxcandiez/constant-algebra/issues"
+  },
+  "homepage": "https://github.com/xxcandiez/constant-algebra#readme"
+}
