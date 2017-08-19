@@ -3,71 +3,77 @@ const R = require("ramda")
 /**
  * verifys that matrix is valid, that the matrix represents a rectangular array
  * of ofjects.
- *
- * @param  {Matrix}
+ * @param  {matrix} m: a matrix representation
  * @return {bool} whether the Matrix represents a rectangular array of objects
  */
-const verify = (m) => {
-  return isArrayOfArrays(m) && isRectangular(m) && widthGeZero(m)
-}
-
-
-/**
- * a verify helper
- *
- */
-const isArrayOfArrays = (m) => {
-  const isArray = (m) => (m instanceof Array)
-  return isArray(m) && R.all(isArray)(m)
-}
-
-/**
- * a verify helper
- *
- */
+const verify = (m) => (isArrayOfArrays(m) && isRectangular(m) && widthGeZero(m))
+const isArrayOfArrays = (m) => (isArray(m) && R.all(isArray)(m))
+const isArray = (m) => (m instanceof Array)
 const isRectangular = (m) => {
   const sameLengthAsFirst = (l) => (l.length === m[0].length)
   return R.all(sameLengthAsFirst)(m)
 }
+const widthGeZero = (m) => (R.all(elementWidthGeZero)(m))
+const elementWidthGeZero = (l) => (l.length > 0)
+
 
 /**
- * a verify helper
- *
+ * checks if a matrix is a square matrix.
+ * @param {matrix} m: is a matrix representation
+ * @return {bool} whether m is a square matrix
  */
-const widthGeZero = (m) => {
-  const elementWidthGeZero = (l) => (l.length > 0)
-  return R.all(elementWidthGeZero)(m)
-}
-
 const isSquare = (m) => (m.length == m[0].length)
 
-const isIdentity = (m) => {
-  const identity = (m, index=0) => {
-    if(index >= m.length) {
-      return true
-    } else {
-      return isRowOfIdentity(m[index], index) && identity(m, index+1)
-    }
-  }
-  return isSquare(m) && identity(m)
-}
 
-const isRowOfIdentity = (l, rowNumber=0, index=0) => {
-  if (index >= l.length) {
-    return true;
-  } else if (index == rowNumber) {
-    return l[index] == 1 && isRowOfIdentity(l, rowNumber, index+1)
+/**
+ * chekc if a matrix is an identity matrix
+ * @param {matrix} m: is a matrix representation
+ * @return {bool} whether m is a
+ */
+const isIdentity = (m) => (isSquare(m) && allRowOfIdentity(m))
+const allRowOfIdentity = (m, i=0) => {
+  if(i >= m.length) {
+    return true
   } else {
-    return l[index] == 0 && isRowOfIdentity(l, rowNumber, index+1)
+    return isRowOfIdentity(m[i], i) && allRowOfIdentity(m, i+1)
+  }
+}
+const isRowOfIdentity = (l, rowNumber=0, i=0) => {
+  if (i >= l.length) {
+    return true;
+  } else if (i == rowNumber) {
+    return l[i] == 1 && isRowOfIdentity(l, rowNumber, i+1)
+  } else {
+    return l[i] == 0 && isRowOfIdentity(l, rowNumber, i+1)
   }
 }
 
-const addDefined = (m1, m2) => {
-  const sameSize = m1.length == m2.length && m1[0].length == m2[0].length
-  return sameSize
-}
 
-const subDefined = (m1, m2) => (addDefined(m1, m2))
+/**
+ * checks if two matrices are the same size
+ * @param {matrix} m1: is a matrix representation
+ * @param {matrix} m2: is a matrix representation
+ * @return {bool} whether m1 and m2 are the same size
+ */
+const sameSize = (m1, m2) => (m1.length == m2.length && m1[0].length == m2[0].length)
+
+
+/**
+ * checks if addition is defined for two matrices
+ * @param {matrix} m1: is a matrix representation
+ * @param {matrix} m2: is a matrix representation
+ * @return {bool} whether addition is defined for m1 and m2
+ */
+const addDefined = (m1, m2) => (sameSize(m1, m2))
+
+
+/**
+ * checks if subtraction is defined for two matrices
+ * @param {matrix} m1: is a matrix representation
+ * @param {matrix} m2: is a matrix representation
+ * @return {bool} whether subtraction is defined for m1 and m2
+ */
+const subDefined = (m1, m2) => (sameSize(m1, m2))
 
 const mulDefined = (m1, m2) => {}
 
