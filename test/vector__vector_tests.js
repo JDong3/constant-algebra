@@ -7,7 +7,7 @@ const it = require('mocha').it
 
 const assert = require('chai').assert
 
-describe('add', function() {
+describe('vv.add', function() {
   describe('it performs mathematical vector addition on two vectors (v1, v2)', function() {
     it('z1:[0] + z1:[0] = [0]', function() {
       assert.isTrue(vecEq(vv.add(vectors.z1, vectors.z1), [0]))
@@ -21,7 +21,7 @@ describe('add', function() {
   })
 })
 
-describe('sub', function() {
+describe('vv.sub', function() {
   describe('it perfoms mathematical vector subtraction on two vectors v1 - v2', function() {
     it('z1:[0] - z1:[0] = [0]', function(){
       assert.isTrue(vecEq(vv.sub(vectors.z1, vectors.z1), [0]))
@@ -38,7 +38,7 @@ describe('sub', function() {
   })
 })
 
-describe('scale', function() {
+describe('vv.scale', function() {
   describe('it performs scalar multiplication on a vector', function() {
     it('3*z1:[0] = [0]', function() {
       assert.isTrue(vecEq(vv.scale(vectors.z1, 3), [0]))

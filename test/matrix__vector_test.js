@@ -7,7 +7,7 @@ const assert = require('chai').assert
 const describe = require('mocha').describe
 const it = require('mocha').it
 
-describe('column', function() {
+describe('mv.column', function() {
   describe('returns a vector representation of the 0th column of m', function() {
     it('resolves to [1, 0, 0], given m = i33, n = 0', function() {
       assert(vecEq(mv.column(matrices.i33, 0), [1, 0, 0]))
@@ -25,7 +25,7 @@ describe('column', function() {
   })
 })
 
-describe('row', function() {
+describe('mv.row', function() {
   describe('returns a vector representation of the 0th row of m', function() {
     it('resolves to [1, 0, 0], given m = i33, n = 0', function() {
       assert(vecEq(mv.row(matrices.i33, 0), [1, 0, 0]))
@@ -43,7 +43,7 @@ describe('row', function() {
   })
 })
 
-describe('diagonal', function() {
+describe('mv.diagonal', function() {
   describe('returns a vector representation of the diagonal of m', function() {
     it('resolves to [0, 4, 8], given m = s33', function() {
       assert(vecEq(mv.diagonal(matrices.s33), [0, 4, 8]))
@@ -51,7 +51,7 @@ describe('diagonal', function() {
   })
 })
 
-describe('looseDiagonal', function () {
+describe('mv.looseDiagonal', function () {
   describe('returns a vector representation of the loose diagonal of m', function() {
     it('resolves to [0, 4, 8], given s = s33', function() {
       assert(vecEq(mv.looseDiagonal(matrices.s33), [0, 4, 8]))

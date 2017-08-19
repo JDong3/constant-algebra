@@ -22,7 +22,7 @@ let spec = {
                       [0, 1, 0]]
 }
 
-describe('Verify', function() {
+describe('mb.verify', function() {
   describe('accepts rectangularity', function() {
     it('accepts 1x1 small square', function() {
       assert.isTrue(mb.verify(matrices.z11), 'a 1x1 square is a rectangle')
@@ -68,7 +68,7 @@ describe('Verify', function() {
   })
 })
 
-describe('isSquare', function() {
+describe('mb.isSquare', function() {
   describe('accepts square(nxn) matrices', function() {
     it('accepts 1x1 square matrix', function() {
       assert.isTrue(mb.isSquare(matrices.z11))
@@ -90,7 +90,7 @@ describe('isSquare', function() {
   })
 })
 
-describe('isIdentity', function() {
+describe('mb.isIdentity', function() {
   describe('accepts identity matrices', function() {
     it('accepts size 1 identity', function() {
       assert.isTrue(mb.isIdentity(matrices.i11))
@@ -119,7 +119,7 @@ describe('isIdentity', function() {
 })
 
 
-describe('addDefined', function() {
+describe('mb.addDefined', function() {
   describe('accepts matrices of the same size', function(){
     it('accepts 1x1 and 1x1 matrices', function() {
       assert.isTrue(mb.addDefined(matrices.z11, matrices.z11))
@@ -144,7 +144,7 @@ describe('addDefined', function() {
   })
 })
 
-describe('subDefined', function() {
+describe('mb.subDefined', function() {
   describe('accepts matrices of the same size', function(){
     it('accepts 1x1 and 1x1 matrices', function() {
       assert.isTrue(mb.subDefined(matrices.z11, matrices.z11))
@@ -169,7 +169,7 @@ describe('subDefined', function() {
   })
 })
 
-describe('rowValid accepts rows int r in {0..n-1}, for a nxa matrix', function() {
+describe('mb.rowValid accepts rows int r in {0..n-1}, for a nxa matrix', function() {
   describe('accepts rows in {0} for a 1x1 matrix', function() {
     it('accepts 0', function() {
       assert.isTrue(mb.rowValid(matrices.z11, 0))
@@ -204,7 +204,7 @@ describe('rowValid accepts rows int r in {0..n-1}, for a nxa matrix', function()
   })
 })
 
-describe('columnValid accepts rows int r in {0..n-1}, for a nxa matrix', function() {
+describe('mb.columnValid accepts rows int r in {0..n-1}, for a nxa matrix', function() {
   describe('accepts columns in {0} for a 1x1 matrix', function() {
     it('accepts 0', function() {
       assert.isTrue(mb.columnValid(matrices.z11, 0))

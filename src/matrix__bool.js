@@ -62,12 +62,12 @@ const isRowOfIdentity = (l, rowNumber=0, index=0) => {
   }
 }
 
-const addDefined = (m, n) => {
-  const sameSize = m.length == n.length && m[0].length == n[0].length
+const addDefined = (m1, m2) => {
+  const sameSize = m1.length == m2.length && m1[0].length == m2[0].length
   return sameSize
 }
 
-const subDefined = (m, n) => (addDefined(m, n))
+const subDefined = (m1, m2) => (addDefined(m1, m2))
 
 const mulDefined = (m1, m2) => {}
 
