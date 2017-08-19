@@ -69,6 +69,8 @@ const addDefined = (m, n) => {
 
 const subDefined = (m, n) => (addDefined(m, n))
 
+const mulDefined = (m1, m2) => {}
+
 const rowValid = (m, n) => (n >= 0 && n <= m.length-1)
 
 const columnValid = (m, n) => (n >= 0 && n <= m[0].length-1)

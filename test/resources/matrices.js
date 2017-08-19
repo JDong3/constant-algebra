@@ -44,16 +44,4 @@ const matrices = {
         [9, 10, 11]]
 }
 
-module.exports = {matrices}
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = matrices

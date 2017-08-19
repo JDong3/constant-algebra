@@ -1,5 +1,5 @@
 const mb = require('../src/matrix__bool.js')
-const matrices = require('./resources/matrices.js').matrices
+const matrices = require('./resources/matrices.js')
 
 const assert = require('chai').assert
 
@@ -238,30 +238,3 @@ describe('columnValid accepts rows int r in {0..n-1}, for a nxa matrix', functio
     })
   })
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

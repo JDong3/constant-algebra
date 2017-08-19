@@ -1,6 +1,6 @@
 const mv = require('../src/matrix__vector.js')
-const matrices = require('./resources/matrices.js').matrices
-const vecEq = require('./resources/vectorEquals.js').vectorEquals
+const matrices = require('./resources/matrices.js')
+const vecEq = require('./resources/vectorEquals.js')
 
 const assert = require('chai').assert
 

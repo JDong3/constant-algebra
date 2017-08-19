@@ -1,0 +1,7 @@
+const pivot = () => ()
+const trace = () => ()
+const antiTrace = () => ()
+const mul_trace = () => ()
+const nulAntiTrace = () => ()
+const det = () => ()
+const cofactor = () => ()
