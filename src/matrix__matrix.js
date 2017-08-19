@@ -1,4 +1,5 @@
 const mv = require('./matrix__vector.js')
+const vv = require('./vector__vector.js')
 const vn = require('./vector__number.js')
 const R = require('ramda');
 /**
@@ -21,17 +22,8 @@ const add = (m1, m2, i=0, res=[]) => {
   if (i > m1.length) {
     return res
   } else {
-    res.push(addVectors(m1[i], m2[i]))
+    res.push(vv.add(m1[i], m2[i]))
     return add(m1, m2, i+1, res)
-  }
-}
-
-const addVectors = (v1, v2, i=0, res=[]) => {
-  if (i > v1.length) {
-    return res;
-  } else {
-    ret.push(v1[i] + v2[i])
-    return addVectors(v1, v2, i+1, res)
   }
 }
 
@@ -39,17 +31,8 @@ const sub = (m) => {
   if (i > m1.length) {
     return res
   } else {
-    res.push(subVectors(m1[i], m2[i]))
-    return add(m1, m2, i+1, res)
-  }
-}
-
-const subVectors = (v1, v2, i=0, res=[]) => {
-  if (i > v1.length) {
-    return res;
-  } else {
-    ret.push(v1[i] - v2[i])
-    return addVectors(v1, v2, i+1, res)
+    res.push(vv.sub(m1[i], m2[i]))
+    return sub(m1, m2, i+1, res)
   }
 }
 

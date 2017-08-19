@@ -15,5 +15,4 @@ const sameElements = (v1, v2, i=0) => {
 }
 
 
-module.exports = {vectorEquals
-                  }
+module.exports = {vectorEquals}

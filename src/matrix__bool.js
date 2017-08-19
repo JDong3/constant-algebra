@@ -5,7 +5,7 @@ const R = require("ramda")
  * of ofjects.
  *
  * @param  {Matrix}
- * @return {bool}   whether the Matrix represents a rectangular array of objects
+ * @return {bool} whether the Matrix represents a rectangular array of objects
  */
 const verify = (m) => {
   return isArrayOfArrays(m) && isRectangular(m) && widthGeZero(m)

@@ -64,17 +64,3 @@ describe('looseDiagonal', function () {
     })
   })
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
