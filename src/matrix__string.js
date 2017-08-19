@@ -1,4 +1,4 @@
-let ls = require('./matrix__vector.js')
+let mv = require('./matrix__vector.js')
 let mm = require('./matrix__matrix.js')
 let leftPad = require('left-pad')
 
@@ -13,7 +13,7 @@ let str = (m) => {
     let mathMax = (a, b) => (Math.max(a, b))
     let str = "";
     for (i = 0; i < m.length; i++) {
-      let max = ls.getColumn(m, i).map(toStringLength)
+      let max = mv.column(m, i).map(toStringLength)
                                   .reduce(mathMax)
       lengthList.push(max)
     }

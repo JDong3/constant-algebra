@@ -1,5 +1,5 @@
-const R = require("ramda")
-
+const R = require('ramda')
+const mn = require('./matrix__number.js')
 /**
  * verifys that matrix is valid, that the matrix represents a rectangular array
  * of ofjects.
@@ -71,14 +71,35 @@ const addDefined = (m1, m2) => (sameSize(m1, m2))
  * checks if subtraction is defined for two matrices
  * @param {matrix} m1: is a matrix representation
  * @param {matrix} m2: is a matrix representation
- * @return {bool} whether subtraction is defined for m1 and m2
+ * @return {bool} whether subtraction is defined for m1 by m2
  */
 const subDefined = (m1, m2) => (sameSize(m1, m2))
 
-const mulDefined = (m1, m2) => {}
 
+/**
+ * checks if multiplication is defined for two matrices
+ * @param {matrix} m1: is a matrix representation
+ * @param {matrix} m2: is a matrix representation
+ * @return {bool} whether matrix multiplication is defined for m1 my m2
+ */
+const mulDefined = (m1, m2) => (mn.rows(m1) === mn.columns(m2))
+
+
+/**
+ * checks if a row is a valid row index of a matrix
+ * @param {matirx} m: is a matrix representation
+ * @param {number} n: is the row index
+ * @return {bool} whether n is a valid row index of m
+ */
 const rowValid = (m, n) => (n >= 0 && n <= m.length-1)
 
+
+/**
+ * checks if a row is a valid column index of a matrix
+ * @param {matirx} m: is a matrix representation
+ * @param {number} n: is the column index
+ * @return {bool} whether n is a valid column index of m
+ */
 const columnValid = (m, n) => (n >= 0 && n <= m[0].length-1)
 
 module.exports = {verify,
@@ -87,5 +108,6 @@ module.exports = {verify,
                   isRowOfIdentity,
                   addDefined,
                   subDefined,
+                  mulDefined,
                   rowValid,
                   columnValid}
