@@ -1,25 +1,27 @@
-const mb = require('../src/matrix__bool.js')
-const matrices = require('./resources/matrices.js')
-
 const assert = require('chai').assert
-
 const describe = require('mocha').describe
 const it = require('mocha').it
+const List = require('immutable').List
+const mb = require('../src/matrix__bool.js')
+const matrices = require('./matrices.js')
+
+
+
 
 let spec = {
   // special input
-  verifyNonRectangularity: [[0, 0, 0],
-                            [0, 0]],
-  zeroVector3: [0, 0, 0],
-  verifyAlmostArrayOfArray: [[0, 0, 0],
-                             0,
-                             [0, 0, 0]],
-  empty11: [[]],
-  empty30: [[],
-            [],
-            []],
-  partialIdentity23: [[1, 0, 0],
-                      [0, 1, 0]]
+  verifyNonRectangularity: List([ List([0, 0, 0]),
+                                  List([0, 0]) ]),
+  zeroVector3: List([0, 0, 0]),
+  verifyAlmostArrayOfArray: List([ List([0, 0, 0]),
+                                   0,
+                                   List([0, 0, 0]) ]),
+  empty11: List([ List([]) ]),
+  empty30: List([ List([]),
+                  List([]),
+                  List([]) ]),
+  partialIdentity23: List([[1, 0, 0],
+                          [0, 1, 0]])
 }
 
 describe('mb.verify', function() {

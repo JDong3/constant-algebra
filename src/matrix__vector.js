@@ -1,5 +1,5 @@
+const List = require('immutable').List
 const math = require("mathjs")
-const R = require("ramda")
 
 /**
  * generates a row vector.
@@ -7,7 +7,7 @@ const R = require("ramda")
  * @param {number} n: is thie index of the column you want to get, 0<=n<m.length
  * @return {vector} a vector representation of the nth row of m
  */
-const row = (m, n) => (m[n])
+const row = (m, n) => (m.get(n))
 
 /**
  * generates a colum vector.
@@ -15,10 +15,7 @@ const row = (m, n) => (m[n])
  * @param  {number} n: is index of the column you want to get, 0<=n< l[0].length
  * @return {vector} a vector representation of the nth column of n
  */
-const column = (m, n) => {
-  const nthElement = (m) => (m[n])
-  return R.map(nthElement, m)
-}
+const column = (m, n) => (m.map(v => v.get(n)))
 
 /**
  * gemnerates a diageonal vector.
@@ -27,12 +24,12 @@ const column = (m, n) => {
  * @param {vector} res:
  * @return {vector} the vector representation of the diagonal of m
  */
-const diagonal = (m, i = 0, res=[]) => {
-  if (i >= m.length) {
+const diagonal = (m, i = 0, res=List()) => {
+  if (i >= m.size) {
     return res
   } else {
-    res.push(m[i][i])
-    return diagonal(m, i+1, res)
+    const updated = res.push(m.get(i).get(i))
+    return diagonal(m, i+1, updated)
   }
 }
 
@@ -43,12 +40,12 @@ const diagonal = (m, i = 0, res=[]) => {
  * @param {vector} res:
  * @return {matrix} the vector representation of the loose diagonal of m
  */
-const looseDiagonal = (m, i=0, res=[]) => {
-  if (i >= math.min(m.length, m[0].length)) {
+const looseDiagonal = (m, i=0, res=List()) => {
+  if (i >= math.min(m.size, m.get(0).size)) {
     return res
   } else {
-    res.push(m[i][i])
-    return looseDiagonal(m, i+1, res)
+    const updated = res.push(m.get(i).get(i))
+    return looseDiagonal(m, i+1, updated)
   }
 }
 
@@ -59,12 +56,12 @@ const looseDiagonal = (m, i=0, res=[]) => {
  * @param {vector} res: is the result vector
  * @return {vector} the andi-diagonal of m
  */
-const antiDiagonal = (m, i=0, res=[]) => {
+const antiDiagonal = (m, i=0, res=List()) => {
   if (i >= m.length) {
     return res
   } else {
-    res.push(m[i][m.length-i-1])
-    return
+    const update = res.push(m[i][m.length-i-1])
+    return andiDiagonal(m, i+1, res)
   }
 }
 
@@ -75,11 +72,12 @@ const antiDiagonal = (m, i=0, res=[]) => {
  * @param {vector} res: is the result vector
  * @return {vector} the loose andi-diagonal of m
  */
-const looseAntiDiagonal = (m, i=0, res=[]) => {
+const looseAntiDiagonal = (m, i=0, res=List()) => {
   if (i >= math.min(m.length, m[0].length)) {
     return res
   } else {
-    res.push(m[i][m.length-i-1])
+    const update = res.push(m[i][m.length-i-1])
+    return looseAntiDiagonal(m, i+1, res)
   }
 }
 
