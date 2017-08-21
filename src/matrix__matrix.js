@@ -102,7 +102,7 @@ const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2)
 const rowScale = (m, r, n=1, i=0) => (m.set(r, vv.scale(m.get(r), n))
 
 
-const    rref = (m, c=0, r=0) => {
+const rref = (m, c=0, r=0) => {
   if (i >= m.size) {
     return res
   } else {
@@ -118,7 +118,7 @@ const    rref = (m, c=0, r=0) => {
       // step4: attempty to rrefify the next column and row
       return rref(toApplyPivot, c+1, r+1)
     } else {
-      return rref(m, C+1, r)
+      return rref(m, c+1, r)
     }
   }
 }
