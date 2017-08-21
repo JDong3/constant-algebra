@@ -12,7 +12,7 @@ const vv = require('./vector__vector.js')
  * @return a matrix that is the transpose of m
  */
 const transpose = (m, i=0, res=List()) => {
-  if (i >= m.size) {
+  if (i >= m.get(0).size) {
     return res
   } else {
     const update = res.push(mv.column(m, i))
@@ -51,7 +51,7 @@ const sub = (m1, m2, i=0, res=List()) => {
   if (i >= m1.length) {
     return res
   } else {
-    const = update = res.push(vv.sub(m1[i], m2[i]))
+    const update = res.push(vv.sub(m1[i], m2[i]))
     return sub(m1, m2, i+1, update)
   }
 }
@@ -69,7 +69,7 @@ const mul = (m1, m2, i=0, res=List()) => {
   if (i >= m1.length) {
     return res;
   } else {
-    const = update = res.push(subMul(m1[i], m2))
+    const update = res.push(subMul(m1[i], m2))
     return mul(m1, m2, i+1, update)
   }
 }
@@ -99,7 +99,7 @@ const rowSwap = (m, r1, r2) => {
 const rowAdd = (m, r1, r2, n=1) => (m.set(r1, rowAfterAdding(m, r1, r2, n)))
 const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2), n)))
 
-const rowScale = (m, r, n=1, i=0) => (m.set(r, vv.scale(m.get(r), n))
+const rowScale = (m, r, n=1, i=0) => (m.set(r, vv.scale(m.get(r), n)))
 
 
 const rref = (m, c=0, r=0) => {
