@@ -30,7 +30,7 @@ const transpose = (m, i=0, res=List()) => {
  * @return the result of m1 + m2
  */
 const add = (m1, m2, i=0, res=List()) => {
-  if (i >= m1.length) {
+  if (i >= m1.size) {
     return res
   } else {
     const update = res.push(vv.add(m1.get(i), m2.get(i)))
@@ -48,10 +48,10 @@ const add = (m1, m2, i=0, res=List()) => {
  * @return the result of m1 - m2
  */
 const sub = (m1, m2, i=0, res=List()) => {
-  if (i >= m1.length) {
+  if (i >= m1.size) {
     return res
   } else {
-    const update = res.push(vv.sub(m1[i], m2[i]))
+    const update = res.push(vv.sub(m1.get(i), m2.get(i)))
     return sub(m1, m2, i+1, update)
   }
 }

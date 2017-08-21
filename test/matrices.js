@@ -43,7 +43,8 @@ const matrices = {
   s43: List([ List([0, 1, 2]),
               List([3, 4, 5]),
               List([6, 7, 8]),
-              List([9, 10, 11]) ])
+              List([9, 10, 11]) ]),
+  o11: List([ List([1]) ])
 }
 
 module.exports = matrices
