@@ -59,3 +59,40 @@ describe('mm.sub', function() {
     })
   })
 })
+
+describe('mm.mul', function() {
+  describe('can multiply 1x1 and 1x1 matrices', function() {
+    it('[[1]]*[[5]] = [[5]]', function() {
+      const m5 = List([List([5])])
+      const l = List([List([5])])
+      assert(mm.mul(matrices.o11, m5).equals(l))
+    })
+  }),
+  describe('can multiply 3x1 and 1x3 matrices', function() {
+    it('1x3 * 3x1', function() {
+      const l = List([List([5])])
+      assert(mm.mul(matrices.s13, matrices.s31).equals(l))
+    }),
+    it('1x3 * 3x1', function() {
+      const l = List([List([0, 0, 0]),
+                      List([0, 1, 2]),
+                      List([0, 2, 4])])
+      assert(mm.mul(matrices.s31, matrices.s13).equals(l))
+    })
+  }),
+  describe('can multiply 3x4 and 4x3 matrices', function() {
+    it('3x4 * 4x3', function() {
+      const l = List([List([42, 48, 54]),
+                      List([114, 136, 158]),
+                      List([186, 224, 262])])
+      assert(mm.mul(matrices.s34, matrices.s43).equals(l))
+    }),
+    it('4x3 * 3x4', function() {
+      const l = List([List([20, 23, 26, 29]),
+                      List([56, 68, 80, 92]),
+                      List([92, 113, 134, 155]),
+                      List([128, 158, 188, 218])])
+      assert(mm.mul(matrices.s43, matrices.s34).equals(l))
+    })
+  })
+})

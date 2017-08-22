@@ -66,19 +66,19 @@ const sub = (m1, m2, i=0, res=List()) => {
  * @return the result of m1 * m2
  */
 const mul = (m1, m2, i=0, res=List()) => {
-  if (i >= m1.length) {
-    return res;
+  if (i >= m1.size) {
+    return res
   } else {
-    const update = res.push(subMul(m1[i], m2))
+    const update = res.push(subMul(m1.get(i), m2))
     return mul(m1, m2, i+1, update)
   }
 }
 const subMul = (v, m, i=0, res=List()) => {
-  if (i >= v.length) {
+  if (i >= m.get(0).size) {
     return res
   } else {
-    const update = res.push(vn.dot(v, m[i]))
-    return subMul(v, m, i+1, res)
+    const update = res.push(vn.dot(v, mv.column(m, i)))
+    return subMul(v, m, i+1, update)
   }
 }
 
@@ -100,7 +100,6 @@ const rowAdd = (m, r1, r2, n=1) => (m.set(r1, rowAfterAdding(m, r1, r2, n)))
 const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2), n)))
 
 const rowScale = (m, r, n=1, i=0) => (m.set(r, vv.scale(m.get(r), n)))
-
 
 const rref = (m, c=0, r=0) => {
   if (i >= m.size) {
