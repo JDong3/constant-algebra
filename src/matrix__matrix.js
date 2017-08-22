@@ -99,7 +99,7 @@ const rowSwap = (m, r1, r2) => {
 const rowAdd = (m, r1, r2, n=1) => (m.set(r1, rowAfterAdding(m, r1, r2, n)))
 const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2), n)))
 
-const rowScale = (m, r, n=1, i=0) => (m.set(r, vv.scale(m.get(r), n)))
+const rowScale = (m, r, n=1, i=1) => (m.set(r, vv.scale(m.get(r), n)))
 
 const rref = (m, c=0, r=0) => {
   if (i >= m.size) {
@@ -154,4 +154,4 @@ const minor = () => {}
 const cofactors = () => {}
 const adjugate = () => {}
 const inverse = () => {}
-module.exports = {transpose, add, sub, mul}
+module.exports = {transpose, add, sub, mul, rowSwap, rowAdd, rowScale, rref}

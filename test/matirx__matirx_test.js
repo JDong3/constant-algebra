@@ -96,3 +96,45 @@ describe('mm.mul', function() {
     })
   })
 })
+
+describe('mm.rowSwap', function() {
+  describe('it performs elementary row swap on a matrix', function() {
+    it('swap row with itself does nothing', function() {
+      assert(mm.rowSwap(matrices.i33, 1, 1).equals(matrices.i33))
+    }),
+    it('swap row with another', function() {
+      const l = List([List([0, 0, 1]),
+                      List([0, 1, 0]),
+                      List([1, 0, 0])])
+      assert(mm.rowSwap(matrices.i33, 0, 2).equals(l))
+    })
+  })
+})
+
+describe('mm.rowAdd', function() {
+  describe('performs elementary row addition', function() {
+    it('', function() {
+      const l = List([List([1, 1, 0]),
+                      List([0, 1, 0]),
+                      List([0, 0, 1])])
+      assert(mm.rowAdd(matrices.i33, 0, 1, 1).equals(l))
+    }),
+    it('', function() {
+      const l = List([List([1, 0, 0]),
+                      List([0, 1, 0]),
+                      List([0, 2, 1])])
+      assert(mm.rowAdd(matrices.i33, 2, 1, 2).equals(l))
+    })
+  })
+})
+
+describe('mm.rowScale', function() {
+  describe('performs elementary row scale', function() {
+    it('', function() {
+      const l = List([List([1, 0, 0]),
+                      List([0, 3, 0]),
+                      List([0, 0, 1])])
+      assert(mm.rowScale(matrices.i33, 1, 3).equals(l))
+    })
+  })
+})
