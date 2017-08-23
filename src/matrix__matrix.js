@@ -103,22 +103,18 @@ const rowScale = (m, r, n=1, i=1) => (m.set(r, vv.scale(m.get(r), n)))
 
 const rref = (m, c=0, r=0) => {
   if (c >= m.get(0).size) {
-    console.log('res: ', m);
+    //console.log('res: ', m);
     return m
   } else {
     const pivotRow = pivot(m, c, r)
-    console.log('pivot: ', pivotRow);
-    if (pivotRow) {
+    if (pivotRow !== undefined) {
       // step1: scale the the pivot to have a value of 1
       const step1 = rowScale(m, pivotRow, m.get(pivotRow).get(c).inverse())
-      console.log('after scale: ', step1);
       // step2: swap the row with the pivot and the row you are trying to rrefify
       const step2 = rowSwap(step1, pivotRow, r)
-      console.log('after swap:', step2);
       // step3: use row addition to make the column that you are trying to rrefify
       //   be the only cell that has a non-zero value
       const toApplyPivot = applyPivot(step2, c, r)
-      console.log('one pass: ', toApplyPivot, '\n');
       // step4: attempty to rrefify the next column and row
       return rref(toApplyPivot, c+1, r+1)
     } else {
@@ -138,7 +134,7 @@ const rref = (m, c=0, r=0) => {
 const pivot = (m, c, r) => {
   if (r >= m.size) {
     return undefined
-  } else if (!m.get(r).get(c).equals(0)) {
+    } else if (!m.get(r).get(c).equals(0)) {
     return r
   } else {
     return pivot(m, c, r+1)
@@ -148,13 +144,12 @@ const applyPivot = (m, c, r, i=0) => {
   if (i >= m.size) {
     return m
   } else if (r !== i) {
-    console.log(r, i)
-    console.log(m.get(i).get(c).neg());
+    //console.log(r, i)
+    //console.log(m.get(i).get(c).neg());
     const update = rowAdd(m, i, r, m.get(i).get(c).neg())
-    console.log('apply pivot: ', i, update, '\n');
+    //console.log('apply pivot: ', i, update, '\n');
     return applyPivot(update, c, r, i+1)
   } else {
-    console.log(r, i)
     return applyPivot(m, c, r, i+1)
   }
 }
@@ -163,4 +158,4 @@ const minor = () => {}
 const cofactors = () => {}
 const adjugate = () => {}
 const inverse = () => {}
-module.exports = {transpose, add, sub, mul, rowSwap, rowAdd, rowScale, rref, pivot, applyPivot}
+module.exports = {transpose, add, sub, mul, rowSwap, rowAdd, rowScale, rref}

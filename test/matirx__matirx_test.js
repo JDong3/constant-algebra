@@ -152,10 +152,29 @@ describe('mm.rref', function() {
       assert(mm.rref(matrices.i33).equals(matrices.i33))
     }),
     it('s33', function() {
-      const l = List([List([F(1), F(0), F(0)]),
-                      List([F(0), F(1), F(0)]),
-                      List([F(0), F(0), F(1)])])
+      const l = List([List([F(1), F(0), F(-1)]),
+                      List([F(0), F(1), F(2)]),
+                      List([F(0), F(0), F(0)])])
       assert(mm.rref(matrices.s33).equals(l))
+    }),
+    it('s34', function() {
+      const l = List([List([F(1), F(0), F(-1), F(-2)]),
+                      List([F(0), F(1), F(2), F(3)]),
+                      List([F(0), F(0), F(0), F(0)])])
+      assert(mm.rref(matrices.s34).equals(l))
+    }),
+    it('s43', function() {
+      const l = List([List([F(1), F(0), F(-1)]),
+                      List([F(0), F(1), F(2)]),
+                      List([F(0), F(0), F(0)]),
+                      List([F(0), F(0), F(0)])])
+      assert(mm.rref(matrices.s43).equals(l))
+    }),
+    it('o33:', function() {
+      const l = List([List([F(1), F(1), F(1)]),
+                     List([F(0), F(0), F(0)]),
+                     List([F(0), F(0), F(0)])])
+      assert(mm.rref(matrices.o33).equals(l))
     })
   })
 })

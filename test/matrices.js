@@ -49,7 +49,10 @@ const matrices = {
              List([F(3), F(4), F(5)]),
              List([F(6), F(7), F(8)]),
              List([F(9), F(10), F(11)])]),
-  o11: List([List([F(1)])])
+  o11: List([List([F(1)])]),
+  o33: List([List([F(1), F(1), F(1)]),
+             List([F(1), F(1), F(1)]),
+             List([F(1), F(1), F(1)])])
 }
 
 module.exports = matrices
