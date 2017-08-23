@@ -147,6 +147,15 @@ describe('mm.rref', function() {
     }),
     it('2x2 identity', function() {
       assert(mm.rref(matrices.i22).equals(matrices.i22))
+    }),
+    it('3x3 identity', function() {
+      assert(mm.rref(matrices.i33).equals(matrices.i33))
+    }),
+    it('s33', function() {
+      const l = List([List([F(1), F(0), F(0)]),
+                      List([F(0), F(1), F(0)]),
+                      List([F(0), F(0), F(1)])])
+      assert(mm.rref(matrices.s33).equals(l))
     })
   })
 })

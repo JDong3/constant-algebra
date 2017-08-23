@@ -3,11 +3,9 @@ const List = require('immutable').List
 const matrices = require('./test/matrices.js')
 const mm = require('./index.js').mm
 
-/*
-const frac = F(1, 2)
-console.log(frac.mul(5))
-console.log(frac);
-console.log(List([F(1, 2)]).equals(List([F(1, 1)])))
-*/
-
-console.log(mm.mul(matrices.s31, matrices.s13))
+//console.log(mm.mul(matrices.s31, matrices.s13))
+mm.rref(matrices.s33)
+//console.log(F(0).equals(0))
+//console.log(mm.pivot(matrices.s33, 0, 0))
+//const step1
+//console.log(mm.applyPivot(matrices.s33, 0, 1))

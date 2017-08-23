@@ -103,17 +103,22 @@ const rowScale = (m, r, n=1, i=1) => (m.set(r, vv.scale(m.get(r), n)))
 
 const rref = (m, c=0, r=0) => {
   if (c >= m.size) {
+    console.log('res: ', m);
     return m
   } else {
     const pivotRow = pivot(m, c, r)
+    console.log('pivot: ', pivotRow);
     if (pivotRow) {
       // step1: scale the the pivot to have a value of 1
-      const step1 = rowScale(m, pivotRow, F(1, m.get(pivotRow).get(c)))
+      const step1 = rowScale(m, pivotRow, m.get(pivotRow).get(c).inverse())
+      console.log('after scale: ', step1);
       // step2: swap the row with the pivot and the row you are trying to rrefify
       const step2 = rowSwap(step1, pivotRow, r)
+      console.log('after swap:', step2);
       // step3: use row addition to make the column that you are trying to rrefify
       //   be the only cell that has a non-zero value
-      const toApplyPivot = applyPivot(swapToCthRow, c, pivotRow)
+      const toApplyPivot = applyPivot(step2, c, r)
+      console.log('one pass: ', toApplyPivot, '\n');
       // step4: attempty to rrefify the next column and row
       return rref(toApplyPivot, c+1, r+1)
     } else {
@@ -133,20 +138,24 @@ const rref = (m, c=0, r=0) => {
 const pivot = (m, c, r) => {
   if (r > m.size) {
     return undefined
-  } else if (m.get(r).get(c) !== 0) {
+  } else if (!m.get(r).get(c).equals(0)) {
     return r
   } else {
     return pivot(m, c, r+1)
   }
 }// find a pivot for the nth column, starting from row r
-const applyPivot = (m, c, r, i=0, res=List()) => {
+const applyPivot = (m, c, r, i=0) => {
   if (i >= m.size) {
-    return res
-  } else if (i === r) {
-    const update = rowAdd(m, i, r, -m.get(r).get(c))
-    return applyPivot(m, n, r, i+1, update)
+    return m
+  } else if (r !== i) {
+    console.log(r, i)
+    console.log(m.get(i).get(c).neg());
+    const update = rowAdd(m, i, r, m.get(i).get(c).neg())
+    console.log('apply pivot: ', i, update, '\n');
+    return applyPivot(update, c, r, i+1)
   } else {
-    return applyPvot(m, n, r, i+1, res)
+    console.log(r, i)
+    return applyPivot(m, c, r, i+1)
   }
 }
 
@@ -154,4 +163,4 @@ const minor = () => {}
 const cofactors = () => {}
 const adjugate = () => {}
 const inverse = () => {}
-module.exports = {transpose, add, sub, mul, rowSwap, rowAdd, rowScale, rref}
+module.exports = {transpose, add, sub, mul, rowSwap, rowAdd, rowScale, rref, pivot, applyPivot}
