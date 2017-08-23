@@ -1,10 +1,11 @@
+const F = require('mathjs').fraction
 const List = require('immutable').List
 
-const dot = (v1, v2, i=0, res=0) => {
+const dot = (v1, v2, i=0, res=F(0)) => {
   if(i >= v1.size) {
     return res
   } else {
-    return dot(v1, v2, i+1, res+(v1.get(i)*v2.get(i)))
+    return dot(v1, v2, i+1, res.add((v1.get(i).mul(v2.get(i)))))
   }
 }
 
@@ -13,13 +14,13 @@ const dot = (v1, v2, i=0, res=0) => {
  * @param  {vector} v: is a vector representation
  * @return {number} the sum of all elements in v
  */
-const sumEach = (v) => (v.reduce((a, b) => (a+b), 0))
+const sumEach = (v) => (v.reduce((a, b) => (a.add(b)), F(0)))
 
 /**
  * find the product of all elements in a vector.
  * @param {vector} v: a vector representation
  * @return {number} the sum of all elements in v
  */
-const mulEach = (v) => (v.reduce((a, b) => (a*b), 1))
+const mulEach = (v) => (v.reduce((a, b) => (a.mul(b)), F(1)))
 
 module.exports = {dot, sumEach, mulEach}
