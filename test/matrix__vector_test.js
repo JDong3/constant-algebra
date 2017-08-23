@@ -1,5 +1,6 @@
 const assert = require('chai').assert
 const describe = require('mocha').describe
+const F = require('mathjs').fraction
 const it = require('mocha').it
 const List = require('immutable').List
 const matrices = require('./matrices.js')
@@ -44,13 +45,13 @@ describe('mv.column', function() {
 describe('mv.diagonal', function() {
   describe('returns a vector representation of the diagonal of m', function() {
     it('resolves to [0, 4, 8], given m = s33', function() {
+      assert(mv.diagonal(matrices.s33).equals(List([0, 4, 8])))
     })
-    assert(mv.diagonal(matrices.s33).equals(List([0, 4, 8])))
   })
 })
 
 describe('mv.looseDiagonal', function () {
-  describe('returns a vector representation of the loose diagonal of m', function() {
+  describe('returns a vector representation of the loose diagonal of m', function()
     it('resolves to [0, 4, 8], given s = s33', function() {
       assert(mv.looseDiagonal(matrices.s33).equals(List([0, 4, 8])))
     }),

@@ -1,4 +1,4 @@
-const Fraction = require('mathjs').Fraction
+const F = require('mathjs').fraction
 const List = require('immutable').List
 const mv = require('./matrix__vector.js')
 const vn = require('./vector__number.js')
@@ -102,13 +102,13 @@ const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2)
 const rowScale = (m, r, n=1, i=1) => (m.set(r, vv.scale(m.get(r), n)))
 
 const rref = (m, c=0, r=0) => {
-  if (i >= m.size) {
-    return res
+  if (c >= m.size) {
+    return m
   } else {
     const pivotRow = pivot(m, c, r)
     if (pivotRow) {
       // step1: scale the the pivot to have a value of 1
-      const step1 = rowScale(m, pivotRow, Fraction(1, m.get(pivotRow).get(c)))
+      const step1 = rowScale(m, pivotRow, F(1, m.get(pivotRow).get(c)))
       // step2: swap the row with the pivot and the row you are trying to rrefify
       const step2 = rowSwap(step1, pivotRow, r)
       // step3: use row addition to make the column that you are trying to rrefify
@@ -133,7 +133,7 @@ const rref = (m, c=0, r=0) => {
 const pivot = (m, c, r) => {
   if (r > m.size) {
     return undefined
-  } else if (m.get(i).get(c) !== 0) {
+  } else if (m.get(r).get(c) !== 0) {
     return r
   } else {
     return pivot(m, c, r+1)

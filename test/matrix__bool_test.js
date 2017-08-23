@@ -1,5 +1,6 @@
 const assert = require('chai').assert
 const describe = require('mocha').describe
+const F = require('mathjs').fraction
 const it = require('mocha').it
 const List = require('immutable').List
 const mb = require('../src/matrix__bool.js')

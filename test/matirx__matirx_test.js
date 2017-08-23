@@ -138,3 +138,14 @@ describe('mm.rowScale', function() {
     })
   })
 })
+
+describe('mm.rref', function() {
+  describe('rrefifies a matrix', function() {
+    it('1x1 identity', function() {
+      assert(mm.rref(matrices.i11).equals(matrices.i11))
+    }),
+    it('2x2 identity', function() {
+      assert(mm.rref(matrices.i22).equals(matrices.i22))
+    })
+  })
+})
