@@ -102,7 +102,7 @@ const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2)
 const rowScale = (m, r, n=1, i=1) => (m.set(r, vv.scale(m.get(r), n)))
 
 const rref = (m, c=0, r=0) => {
-  if (c >= m.size) {
+  if (c >= m.get(0).size) {
     console.log('res: ', m);
     return m
   } else {
@@ -136,7 +136,7 @@ const rref = (m, c=0, r=0) => {
  *   c exists
  */
 const pivot = (m, c, r) => {
-  if (r > m.size) {
+  if (r >= m.size) {
     return undefined
   } else if (!m.get(r).get(c).equals(0)) {
     return r
