@@ -19,10 +19,7 @@ const transpose = (m, i=0, res=List()) => {
     const update = (
       res.push(
         mv.column(
-          m, i
-        )
-      )
-    )
+          m, i)))
     return transpose(m, i+1, update)
   }
 }
@@ -43,10 +40,7 @@ const add = (m1, m2, i=0, res=List()) => {
     const update = (
       res.push(
         vv.add(
-          m1.get(i), m2.get(i)
-        )
-      )
-    )
+          m1.get(i), m2.get(i))))
     return add(m1, m2, i+1, update)
   }
 }
@@ -64,7 +58,10 @@ const sub = (m1, m2, i=0, res=List()) => {
   if (i >= m1.size) {
     return res
   } else {
-    const update = res.push(vv.sub(m1.get(i), m2.get(i)))
+    const update = (
+      res.push(
+        vv.sub(
+          m1.get(i), m2.get(i))))
     return sub(m1, m2, i+1, update)
   }
 }
@@ -114,8 +111,8 @@ const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2)
 
 const rowScale = (m, r, n=1, i=1) => (m.set(r, vv.scale(m.get(r), n)))
 
-const rref = (m, c=0, r=0) => {
-  const pivotRow = pivot(m, c, r)
+const rref = (m, r=0, c=0) => {
+  const pivotRow = pivot(m, r, c)
   if (c >= m.get(0).size) {
     return m
   } else if (pivotRow !== undefined) {
@@ -125,11 +122,11 @@ const rref = (m, c=0, r=0) => {
     const step2 = rowSwap(step1, pivotRow, r)
     // step3: use row addition to make the column that you are trying to rrefify
     //   be the only cell that has a non-zero value
-    const toApplyPivot = applyPivot(step2, c, r)
+    const toApplyPivot = applyPivot(step2, r, c)
     // step4: attempty to rrefify the next column and row
-    return rref(toApplyPivot, c+1, r+1)
+    return rref(toApplyPivot, r+1, c+1)
   } else {
-    return rref(m, c+1, r)
+    return rref(m, r, c+1)
   }
 }
 
@@ -141,27 +138,27 @@ const rref = (m, c=0, r=0) => {
  * @return the first row that is on or after index r, on which a pivot for column
  *   c exists
  */
-const pivot = (m, c, r) => {
+const pivot = (m, r, c) => {
   if (!mb.columnDefined(m, c) || !mb.rowDefined(m, r)) {
     return undefined
   } else if (!m.get(r).get(c).equals(0)) {
     return r
   } else {
-    return pivot(m, c, r+1)
+    return pivot(m, r+1, c)
   }
 }// find a pivot for the nth column, starting from row r
-const applyPivot = (m, c, r, i=0) => {
+const applyPivot = (m, r, c, i=0) => {
   if (i >= m.size) {
     return m
   } else if (r !== i) {
     const update = rowAdd(m, i, r, m.get(i).get(c).neg())
-    return applyPivot(update, c, r, i+1)
+    return applyPivot(update, r, c, i+1)
   } else {
-    return applyPivot(m, c, r, i+1)
+    return applyPivot(m, r, c, i+1)
   }
 }
 
-const minor = (m, c, r) => (
+const minor = (m, r, c) => (
   m.delete(r)
    .map(v => v.delete(c))
 )

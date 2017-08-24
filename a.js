@@ -7,6 +7,7 @@ const mm = require('./index.js').mm
 console.log(mm.rref(matrices.s33))
 console.log(mm.rref(matrices.s34))
 console.log(mm.rref(matrices.s43))
+console.log(List)
 //console.log(mm.rref(matrices.o33))
 //console.log(matrices.i33)
 //console.log(F(1))
