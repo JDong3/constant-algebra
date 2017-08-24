@@ -154,7 +154,8 @@ const applyPivot = (m, c, r, i=0) => {
   }
 }
 
-const minor = () => {}
+const minor = (m, c, r) => (m.delete(r)
+                             .map(v => v.delete(c)))
 const cofactors = () => {}
 const adjugate = () => {}
 const inverse = () => {}
