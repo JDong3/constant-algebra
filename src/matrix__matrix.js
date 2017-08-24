@@ -1,5 +1,6 @@
 const F = require('mathjs').fraction
 const List = require('immutable').List
+const mb = require('./matrix__bool.js')
 const mv = require('./matrix__vector.js')
 const vn = require('./vector__number.js')
 const vv = require('./vector__vector.js')
@@ -15,7 +16,13 @@ const transpose = (m, i=0, res=List()) => {
   if (i >= m.get(0).size) {
     return res
   } else {
-    const update = res.push(mv.column(m, i))
+    const update = (
+      res.push(
+        mv.column(
+          m, i
+        )
+      )
+    )
     return transpose(m, i+1, update)
   }
 }
@@ -33,7 +40,13 @@ const add = (m1, m2, i=0, res=List()) => {
   if (i >= m1.size) {
     return res
   } else {
-    const update = res.push(vv.add(m1.get(i), m2.get(i)))
+    const update = (
+      res.push(
+        vv.add(
+          m1.get(i), m2.get(i)
+        )
+      )
+    )
     return add(m1, m2, i+1, update)
   }
 }
@@ -102,24 +115,21 @@ const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2)
 const rowScale = (m, r, n=1, i=1) => (m.set(r, vv.scale(m.get(r), n)))
 
 const rref = (m, c=0, r=0) => {
+  const pivotRow = pivot(m, c, r)
   if (c >= m.get(0).size) {
-    //console.log('res: ', m);
     return m
+  } else if (pivotRow !== undefined) {
+    // step1: scale the the pivot to have a value of 1
+    const step1 = rowScale(m, pivotRow, m.get(pivotRow).get(c).inverse())
+    // step2: swap the row with the pivot and the row you are trying to rrefify
+    const step2 = rowSwap(step1, pivotRow, r)
+    // step3: use row addition to make the column that you are trying to rrefify
+    //   be the only cell that has a non-zero value
+    const toApplyPivot = applyPivot(step2, c, r)
+    // step4: attempty to rrefify the next column and row
+    return rref(toApplyPivot, c+1, r+1)
   } else {
-    const pivotRow = pivot(m, c, r)
-    if (pivotRow !== undefined) {
-      // step1: scale the the pivot to have a value of 1
-      const step1 = rowScale(m, pivotRow, m.get(pivotRow).get(c).inverse())
-      // step2: swap the row with the pivot and the row you are trying to rrefify
-      const step2 = rowSwap(step1, pivotRow, r)
-      // step3: use row addition to make the column that you are trying to rrefify
-      //   be the only cell that has a non-zero value
-      const toApplyPivot = applyPivot(step2, c, r)
-      // step4: attempty to rrefify the next column and row
-      return rref(toApplyPivot, c+1, r+1)
-    } else {
-      return rref(m, c+1, r)
-    }
+    return rref(m, c+1, r)
   }
 }
 
@@ -132,9 +142,9 @@ const rref = (m, c=0, r=0) => {
  *   c exists
  */
 const pivot = (m, c, r) => {
-  if (r >= m.size) {
+  if (!mb.columnDefined(m, c) || !mb.rowDefined(m, r)) {
     return undefined
-    } else if (!m.get(r).get(c).equals(0)) {
+  } else if (!m.get(r).get(c).equals(0)) {
     return r
   } else {
     return pivot(m, c, r+1)
@@ -144,19 +154,38 @@ const applyPivot = (m, c, r, i=0) => {
   if (i >= m.size) {
     return m
   } else if (r !== i) {
-    //console.log(r, i)
-    //console.log(m.get(i).get(c).neg());
     const update = rowAdd(m, i, r, m.get(i).get(c).neg())
-    //console.log('apply pivot: ', i, update, '\n');
     return applyPivot(update, c, r, i+1)
   } else {
     return applyPivot(m, c, r, i+1)
   }
 }
 
-const minor = (m, c, r) => (m.delete(r)
-                             .map(v => v.delete(c)))
-const cofactors = () => {}
-const adjugate = () => {}
-const inverse = () => {}
+const minor = (m, c, r) => (
+  m.delete(r)
+   .map(v => v.delete(c))
+)
+
+const cofactors = (m) => (
+  m.map((v, r) => (
+    v.map((n, c) => (
+      mn.cofactor(m, c, r))
+    ))
+  )
+)
+
+const adjugate = (m) => (
+  transpose(
+    cofactors(m)
+  )
+)
+
+const inverse = (m) => (
+  mm.scale(
+    adjugate(
+      m, F(1, det(m))
+    )
+  )
+)
+
 module.exports = {transpose, add, sub, mul, rowSwap, rowAdd, rowScale, rref}
