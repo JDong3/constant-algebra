@@ -5,6 +5,8 @@ const mv = require('./matrix__vector.js')
 const vn = require('./vector__number.js')
 const vv = require('./vector__vector.js')
 
+const mvv = require('./verification/matrix__vector_verif.js')
+
 /**
  * finds the transpose of a matrix.
  * @param {matirx} m: is a matrix representation
@@ -139,7 +141,7 @@ const rref = (m, r=0, c=0) => {
  *   c exists
  */
 const pivot = (m, r, c) => {
-  if (!mb.columnDefined(m, c) || !mb.rowDefined(m, r)) {
+  if (!mvv.columnDefined(m, c) || !mvv.rowDefined(m, r)) {
     return undefined
   } else if (!m.get(r).get(c).equals(0)) {
     return r
@@ -160,29 +162,20 @@ const applyPivot = (m, r, c, i=0) => {
 
 const minor = (m, r, c) => (
   m.delete(r)
-   .map(v => v.delete(c))
-)
+   .map(v => v.delete(c)))
 
 const cofactors = (m) => (
   m.map((v, r) => (
     v.map((n, c) => (
-      mn.cofactor(m, c, r))
-    ))
-  )
-)
+      mn.cofactor(m, r, c))))))
 
 const adjugate = (m) => (
   transpose(
-    cofactors(m)
-  )
-)
+    cofactors(m)))
 
 const inverse = (m) => (
   mm.scale(
     adjugate(
-      m, F(1, det(m))
-    )
-  )
-)
+      m, F(1, det(m)))))
 
 module.exports = {transpose, add, sub, mul, rowSwap, rowAdd, rowScale, rref}
