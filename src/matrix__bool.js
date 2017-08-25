@@ -12,8 +12,7 @@ const isMatrix = require('./verification/isMatrix.js')
  * @return {Boolean} whether m is a square matrix
  */
 const isSquare = (m) => (
-  isMatrix(m) &&
-    m.size == m.get(0).size)
+  m.size == m.get(0).size)
 
 /**
  * chekc if a matrix is an identity matrix
@@ -21,9 +20,8 @@ const isSquare = (m) => (
  * @return {Boolean} whether m is a
  */
 const isIdentity = (m) => (
-  isMatrix(m) &&
-    isSquare(m) &&
-      allRowOfIdentity(m))
+  isSquare(m) &&
+    allRowOfIdentity(m))
 
 const allRowOfIdentity = (m, i=0) => {
   if(i >= m.size) {
@@ -53,10 +51,8 @@ const isRowOfIdentity = (v, rowNumber=0, i=0) => {
  * @return {Boolean} whether m1 and m2 are the same size
  */
 const sameSize = (m1, m2) => (
-  isMatrix(m1) &&
-    isMatrix(m2) &&
-      m1.size == m2.size &&
-        m1.get(0).size == m2.get(0).size)
+  m1.size == m2.size &&
+    m1.get(0).size == m2.get(0).size)
 
 
 

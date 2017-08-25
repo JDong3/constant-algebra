@@ -8,7 +8,8 @@ const isMatrix = require('./isMatrix.js')
  */
 const rowDefined = (m, n) => (
   isMatrix(m) &&
-    n >= 0 && n <= m.size-1)
+    n >= 0 &&
+      n <= m.size-1)
 
 
 /**
@@ -19,6 +20,20 @@ const rowDefined = (m, n) => (
  */
 const columnDefined = (m, n) => (
   isMatrix(m) &&
-    n >= 0 && n <= m.get(0).size-1)
+    n >= 0 &&
+      n <= m.get(0).size-1)
+
+const diagonalDefined = (m) => (
+  isMatrix(m) &&
+    isSquare(m))
+
+const looseDiagonalDefined = (m) => (
+  isMatrix(m))
+
+const antiDiagonalDefined = (m) => (
+  isMatrix(m) &&
+    isSquare(m))
+const looseAntiDiagonalDefined = (m) => (
+  isMatrix(m))
 
 module.exports = {rowDefined, columnDefined}

@@ -33,4 +33,4 @@ const altSumEach = (v, i=0, res=F(0)) => {
  */
 const mulEach = (v) => (v.reduce((a, b) => (a.mul(b)), F(1)))
 
-module.exports = {dot, sumEach, altSumEach, mulEach}
+module.exports = {dot, sumEach, mulEach}
