@@ -111,7 +111,7 @@ const rowSwap = (m, r1, r2) => {
 const rowAdd = (m, r1, r2, n=1) => (m.set(r1, rowAfterAdding(m, r1, r2, n)))
 const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2), n)))
 
-const rowScale = (m, r, n=1, i=1) => (m.set(r, vv.scale(m.get(r), n)))
+const rowScale = (m, r, n=1) => (m.set(r, vv.scale(m.get(r), n)))
 
 const rref = (m, r=0, c=0) => {
   const pivotRow = pivot(m, r, c)

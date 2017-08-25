@@ -1,3 +1,4 @@
+const F = require('mathjs').fraction
 const isMatrix = require('./isMatrix.js')
 const mb = require('../matrix__bool.js')
 const mn = require('../matrix__number.js')
@@ -37,4 +38,42 @@ const mulDefined = (m1, m2) => (
     isMatrix(m2) &&
        mn.rows(m1) === mn.columns(m2))
 
-module.exports = {transposeDefined, addDefined, subDefined, mulDefined}
+const rowSwapDefined = (m, r1, r2) => (
+  isMatrix(m) &&
+    mmv.rowDefined(r1) &&
+      mmv.rowDefined(r2))
+
+const rowAddDefined = (m, r1, r2, n) => (
+  isMatrix(m) &&
+    mmv.rowDefined(r1) &&
+      mmv.rowDefined(r2)) &&
+        (n instanceof F)
+
+const rowScaleDefined = (m, r, n) => (
+  isMatrix(m) &&
+    mmv.rowDefined(r) &&
+      (m instanceof F))
+
+const rrefDefined = (m) => (
+  isMatrix(m))
+
+const minorDefined = (m, r, c) => (
+  isMatrix(m) &&
+    mvv.rowDefined(r) &&
+      mvv.columnDefined(c))
+
+const cofactorsDefined = (m) => (
+  isMatrix(m))
+
+const adjugateDefined = (m) => (
+  isMatrix(m))
+
+const inverseDefined = (m) => (
+  isMatrix(m) &&
+    mb.isSquare(m) &&
+      (mn.det(m) !== 0))
+
+module.exports = {
+  transposeDefined, addDefined, subDefined, mulDefined, rowSwapDefined, rowAddDefined,
+  rowScaleDefined, rrefDefined, minorDefined, cofactorsDefined, adjugateDefined,
+  inverseDefined}
