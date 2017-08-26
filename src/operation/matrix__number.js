@@ -1,23 +1,27 @@
 const vn = require('./vector__number.js')
 const mv = require('./matrix__vector.js')
 
-const rows = (m) => (
-  m.size)
+const rows = (matrix) => (
+  matrix.size)
 
-const columns = (m) => (
-  m.get(0).size)
+const columns = (matrix) => (
+  matrix.get(0).size)
 
-const trace = (m) => (
-  vn.sumAll(mv.diagonal(m)))
+const trace = (matrix) => (
+  mv.diagonal(matrix).reduce((a, b) => (
+    a.add(b))))
 
-const mulTrace = (m) => (
-  vn.mulAll(mv.diagonal(m)))
+const mulTrace = (matirx) => (
+  mv.diagonal(matrix).reduce((a, b) => (
+    a.mul(b))))
 
-const antiTrace = (m) => (
-  vn.sumAll(mv.antiDiagonal(m)))
+const antiTrace = (matrix) => (
+  mv.antiDiagonal(matrix).reduce((a, b) => (
+    a.add(b))))
 
 const mulAntiTrace = (m) => (
-  vn.mulAll(mv.antiDiagonal(m)))
+  mv.antiDiagonal(matrix).reduce((a, b) => (
+    a.mul(b))))
 
 const det = (m) => {
   if (m.size === 1) {
@@ -34,8 +38,10 @@ const sumRowCofactors = (m, r, i=0, res=F(0)) => {
       m.get(r), i+1, res.add(cofaccotr(m, r, i)))
   }
 }
-const cofactor = (m, c, r) => (F(-1).exp(c+r)
-                                    .mul(det(mm.minor(m, c, r))))
+
+const cofactor = (m, c, r) => (
+  F(-1).exp(c+r).mul(det(mm.minor(m, c, r))))
+
 module.exports = {
   rows, columns, trace, mulTrace, antiTrace, mulAntiTrace, det, cofactor
 }

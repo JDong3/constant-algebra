@@ -19,9 +19,11 @@ const sub = (v1, v2, i=0, res=List()) => {
   }
 }
 
-const scale = (v, n) => (v.map(k => k.mul(n)))
+const scale = (v, n) => (
+    v.map((k) => (
+      k.mul(n))))
 
-module.exports = {add,
-                  sub,
-                  scale
-                 }
+
+module.exports = {
+  add, sub, scale
+}

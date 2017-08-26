@@ -23,47 +23,29 @@ const transpose = (matrix, i=0, res=List()) => {
   }
 }
 
-
 /**
  * perfoms addition for one matrix on another matrix
  * @param {List} m1: is a matrix representation
  * @param {List} m2: is a matrix representation
- * @param {Number} i: is the index
- * @param {List} res: is the result matrix
  * @return the result of m1 + m2
  */
-const add = (m1, m2, i=0, res=List()) => {
-  if (i >= m1.size) {
-    return res
-  } else {
-    const update = (
-      res.push(
-        vv.add(
-          m1.get(i), m2.get(i))))
-    return add(m1, m2, i+1, update)
-  }
-}
+
+const add = (matrix, matrix2) => (
+  matrix.map((vector, row) => (
+    vector.map((element, column) => (
+      element.add(matrix2.get(row).get(column)))))))
 
 
 /**
  * perfomS subtraction for one matrix on another matrix
  * @param {List} m1: is a matrix representation
  * @param {List} m2: is a matrix representation
- * @param {Number} i: is the index
- * @param {List} res: is the result matrix
  * @return the result of m1 - m2
  */
-const sub = (m1, m2, i=0, res=List()) => {
-  if (i >= m1.size) {
-    return res
-  } else {
-    const update = (
-      res.push(
-        vv.sub(
-          m1.get(i), m2.get(i))))
-    return sub(m1, m2, i+1, update)
-  }
-}
+const sub = (matrix, matrix2) => (
+  matrix.map((vector, row) => (
+    vector.map((element, column) => (
+      element.sub(matrix2.get(row).get(column)))))))
 
 
 /**
@@ -91,7 +73,6 @@ const subMul = (v, m, i=0, res=List()) => {
   }
 }
 
-
 /**
  * performs elementary row swap on rows indexed r1 and r2
  * @param {List} m: is a matrix representation
@@ -105,10 +86,14 @@ const rowSwap = (m, r1, r2) => {
   return step2
 }
 
-const rowAdd = (m, r1, r2, n=1) => (m.set(r1, rowAfterAdding(m, r1, r2, n)))
-const rowAfterAdding = (m, r1, r2, n=1) => (vv.add(m.get(r1), vv.scale(m.get(r2), n)))
+const rowAdd = (m, r1, r2, n=1) => (
+  m.set(r1, rowAfterAdding(m, r1, r2, n)))
 
-const rowScale = (m, r, n=1) => (m.set(r, vv.scale(m.get(r), n)))
+const rowAfterAdding = (m, r1, r2, n=1) => (
+  vv.add(m.get(r1), vv.scale(m.get(r2), n)))
+
+const rowScale = (m, r, n=1) => (
+  m.set(r, vv.scale(m.get(r), n)))
 
 const rref = (m, r=0, c=0) => {
   const pivotRow = pivot(m, r, c)
@@ -167,12 +152,9 @@ const cofactors = (m) => (
       mn.cofactor(m, r, c))))))
 
 const adjugate = (m) => (
-  transpose(
-    cofactors(m)))
+  transpose(cofactors(m)))
 
 const inverse = (m) => (
-  mm.scale(
-    adjugate(
-      m, F(1, det(m)))))
+  mm.scale(adjugate(m, F(1, det(m)))))
 
 module.exports = {transpose, add, sub, mul, rowSwap, rowAdd, rowScale, rref}

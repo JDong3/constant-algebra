@@ -1,3 +1,4 @@
-const sameSize = (v1, v2) => (v1.length === v2.length)
+const sameSize = (v1, v2) => (
+  v1.size === v2.size)
 
 module.exports = {dotDefined, sameSize}

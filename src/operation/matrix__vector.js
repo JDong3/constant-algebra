@@ -7,7 +7,8 @@ const math = require("mathjs")
  * @param {number} n: is thie index of the column you want to get, 0<=n<m.length
  * @return {vector} a vector representation of the nth row of m
  */
-const row = (m, n) => (m.get(n))
+const row = (m, n) => (
+  m.get(n))
 
 /**
  * generates a colum vector.
@@ -26,14 +27,9 @@ const column = (m, n) => (
  * @param {vector} res:
  * @return {vector} the vector representation of the diagonal of m
  */
-const diagonal = (m, i = 0, res=List()) => {
-  if (i >= m.size) {
-    return res
-  } else {
-    const updated = res.push(m.get(i).get(i))
-    return diagonal(m, i+1, updated)
-  }
-}
+const diagonal = (matrix) => (
+  matrix.map((vector, row) => (
+    vector.get(row))))
 
 /**
  * generates a loose diagonal vector.
@@ -58,14 +54,11 @@ const looseDiagonal = (m, i=0, res=List()) => {
  * @param {vector} res: is the result vector
  * @return {vector} the andi-diagonal of m
  */
-const antiDiagonal = (m, i=0, res=List()) => {
-  if (i >= m.length) {
-    return res
-  } else {
-    const update = res.push(m[i][m.length-i-1])
-    return andiDiagonal(m, i+1, res)
-  }
-}
+const antiDiagonal = (matrix) => (
+  matrix.map((vector, row) => (
+    vector.get(-(row+1))
+  ))
+)
 
 /**
  * generates a loose anti=diagonal vector.
@@ -83,10 +76,6 @@ const looseAntiDiagonal = (m, i=0, res=List()) => {
   }
 }
 
-module.exports = {column,
-                  row,
-                  diagonal,
-                  looseDiagonal,
-                  antiDiagonal,
-                  looseAntiDiagonal
-                  }
+module.exports = {
+  column, row, diagonal, looseDiagonal, antiDiagonal,looseAntiDiagonal
+}
