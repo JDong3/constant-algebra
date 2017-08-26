@@ -36,4 +36,7 @@ const antiDiagonalDefined = (m) => (
 const looseAntiDiagonalDefined = (m) => (
   isMatrix(m))
 
-module.exports = {rowDefined, columnDefined}
+module.exports = {
+  rowDefined, columnDefined, diagonalDefined, looseAntiDiagonalDefined,
+  antiDiagonalDefined, looseAntiDiagonalDefined
+}
