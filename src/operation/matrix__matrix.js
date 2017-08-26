@@ -1,11 +1,11 @@
 const F = require('mathjs').fraction
 const List = require('immutable').List
 const mb = require('./matrix__bool.js')
+const mn = require('./matrix__number.js')
 const mv = require('./matrix__vector.js')
+const mvv = require('../verification/matrix__vector_verif.js')
 const vn = require('./vector__number.js')
 const vv = require('./vector__vector.js')
-
-const mvv = require('./verification/matrix__vector_verif.js')
 
 /**
  * finds the transpose of a matrix.
@@ -14,15 +14,12 @@ const mvv = require('./verification/matrix__vector_verif.js')
  * @param {List} res: is the result matrix
  * @return a matrix that is the transpose of m
  */
-const transpose = (m, i=0, res=List()) => {
-  if (i >= m.get(0).size) {
+const transpose = (matrix, i=0, res=List()) => {
+  if (i >= mn.columns(matrix)) {
     return res
   } else {
-    const update = (
-      res.push(
-        mv.column(
-          m, i)))
-    return transpose(m, i+1, update)
+    return transpose(
+      matrix, i+1, res.push(mv.column(matrix, i)))
   }
 }
 

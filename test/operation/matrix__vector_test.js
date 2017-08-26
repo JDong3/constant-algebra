@@ -3,8 +3,8 @@ const describe = require('mocha').describe
 const F = require('mathjs').fraction
 const it = require('mocha').it
 const List = require('immutable').List
-const matrices = require('./matrices.js')
-const mv = require('../src/matrix__vector.js')
+const matrices = require('../../resources/matrices.js')
+const mv = require('../../src/operation/matrix__vector.js')
 
 describe('mv.row', function() {
   describe('returns a vector representation of the 0th row of m', function() {

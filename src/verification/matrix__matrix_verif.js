@@ -1,7 +1,7 @@
 const F = require('mathjs').fraction
 const isMatrix = require('./isMatrix.js')
-const mb = require('../matrix__bool.js')
-const mn = require('../matrix__number.js')
+const mb = require('../operation/matrix__bool.js')
+const mn = require('../operation/matrix__number.js')
 
 
 const transposeDefined = (m) => (

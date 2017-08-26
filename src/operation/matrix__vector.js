@@ -15,7 +15,9 @@ const row = (m, n) => (m.get(n))
  * @param  {number} n: is index of the column you want to get, 0<=n< l[0].length
  * @return {vector} a vector representation of the nth column of n
  */
-const column = (m, n) => (m.map(v => v.get(n)))
+const column = (m, n) => (
+  m.map((v) => (
+    v.get(n))))
 
 /**
  * gemnerates a diageonal vector.

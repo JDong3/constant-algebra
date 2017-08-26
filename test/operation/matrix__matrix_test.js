@@ -1,8 +1,8 @@
 const assert = require('chai').assert
 const F = require('mathjs').fraction
 const List = require('immutable').List
-const matrices = require('./matrices.js')
-const mm = require('../src/matrix__matrix.js')
+const matrices = require('../../resources/matrices.js')
+const mm = require('../../src/operation/matrix__matrix.js')
 
 describe('mm.transpose', function() {
   describe('applies matrix transpose', function() {

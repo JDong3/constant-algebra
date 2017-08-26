@@ -3,8 +3,8 @@ const describe = require('mocha').describe
 const F = require('mathjs').fraction
 const it = require('mocha').it
 const List = require('immutable').List
-const vv = require('../src/vector__vector.js')
-const vectors = require('./vectors.js')
+const vv = require('../../src/operation/vector__vector.js')
+const vectors = require('../../resources/vectors.js')
 
 describe('vv.add', function() {
   describe('it performs mathematical vector addition on two vectors (v1, v2)', function() {

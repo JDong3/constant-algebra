@@ -5,7 +5,7 @@ const rows = (m) => (
   m.size)
 
 const columns = (m) => (
-  m[0].size)
+  m.get(0).size)
 
 const trace = (m) => (
   vn.sumAll(mv.diagonal(m)))
@@ -36,11 +36,6 @@ const sumRowCofactors = (m, r, i=0, res=F(0)) => {
 }
 const cofactor = (m, c, r) => (F(-1).exp(c+r)
                                     .mul(det(mm.minor(m, c, r))))
-module.exports = {rows,
-                  columns,
-                  trace,
-                  mulTrace,
-                  antiTrace,
-                  mulAntiTrace,
-                  det,
-                  cofactor}
+module.exports = {
+  rows, columns, trace, mulTrace, antiTrace, mulAntiTrace, det, cofactor
+}
