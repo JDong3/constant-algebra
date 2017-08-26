@@ -1,1 +1,1 @@
-node node_modules\mocha\bin\mocha
+node node_modules\mocha\bin\mocha --recursive
