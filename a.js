@@ -2,5 +2,8 @@ const F = require('mathjs').fraction
 const List = require('immutable').List
 const mm = require('./index.js').mm
 const matrices = require('./resources/matrices.js')
-
-console.log(mm.mul(matrices.s34, matrices.s43))
+const l = List([List([1, 0]),
+                List([0, 1])])
+console.log(l)
+console.log(mm.minor(matrices.i33, 1, 1))
+console.log(mm.minor(matrices.i33, 1, 1).equals(l))

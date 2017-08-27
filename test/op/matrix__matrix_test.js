@@ -178,3 +178,24 @@ describe('mm.rref', function() {
     })
   })
 })
+
+describe('mm.minor', function() {
+  describe('gives the minor of a matrix with the rth row and cth column removed', function() {
+    it('can remove the 1th row and 1th column from an identity matrix', function() {
+      const l = List([List([F(1), F(0)]),
+                      List([F(0), F(1)])])
+      assert(mm.minor(matrices.i33, 1, 1).equals(l))
+    })
+  })
+})
+
+describe('mm.cofactors', function() {
+  describe('gives the cofactor matrix of the input', function() {
+    it('can cofactorize s33', function() {
+      const l = List([List([F(0), F(6), F(-6)]),
+                      List([F(18), F(48), F(-30)]),
+                      List([F(-18), F(-42), F(-24)])])
+      assert(mm.cofactors(matrices.s33).equals(l))
+    })
+  })
+})

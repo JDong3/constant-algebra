@@ -1,3 +1,4 @@
+const F = require('mathjs').fraction
 const vn = require('./vector__number.js')
 const mv = require('./matrix__vector.js')
 
@@ -34,13 +35,18 @@ const sumRowCofactors = (m, r, i=0, res=F(0)) => {
   if (i >= m.get(r).size) {
     return res
   } else {
-    return sumROwCofactors(
-      m.get(r), i+1, res.add(cofaccotr(m, r, i)))
+    return sumRowCofactors(
+      m.get(r), i+1, res.add(cofactor(m, r, i)))
   }
 }
 
 const cofactor = (m, c, r) => (
-  F(-1).exp(c+r).mul(det(mm.minor(m, c, r))))
+  F(-1).pow(c+r).mul(det(minor(m, c, r))))
+
+const minor = (m, r, c) => (
+  m.delete(r)
+   .map((v) => (
+     v.delete(c))))
 
 module.exports = {
   rows, columns, trace, mulTrace, antiTrace, mulAntiTrace, det, cofactor

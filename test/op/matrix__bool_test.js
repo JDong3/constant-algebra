@@ -75,3 +75,28 @@ describe('mb.isIdentity', function() {
     })
   })
 })
+
+describe('mb.sameSize', function() {
+  describe('accepts matrices of same size', function() {
+    it('accepts 2 1x1 matrices', function() {
+      assert.isTrue(mb.sameSize(matrices.i11, matrices.z11))
+    }),
+    it('accepts 2 2x2 matrices', function() {
+      assert.isTrue(mb.sameSize(matrices.i22, matrices.z22))
+    }),
+    it('accepts 2 3x4 matrices', function() {
+      assert.isTrue(mb.sameSize(matrices.s34, matrices.s34))
+    })
+  }),
+  describe('rejects matrices of different sizes', function() {
+    it('rejects 1x1 and 2x2 matrices', function() {
+      assert.isFalse(mb.sameSize(matrices.i11, matrices.i22))
+    }),
+    it('rejects 1x1 and 1x2 matrices', function() {
+      assert.isFalse(mb.sameSize(matrices.i11, matrices.z12))
+    }),
+    it('rejects 3x3 and 4x3 matrices', function() {
+      assert.isFalse(mb.sameSize(matrices.i33, matrices.s43))
+    })
+  })
+})

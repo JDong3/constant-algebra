@@ -24,6 +24,4 @@ const isRectangular = (m) => (
 const widthOfFirstGeZero = (m) => (
   m.get(0).size > 0)
 
-const isVector = (v) => {}
-
 module.exports = isMatrix
