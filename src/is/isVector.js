@@ -1,4 +1,4 @@
-const isVecter = (v) => (
+const isVector = (v) => (
   v.isList() &&
     v.size > 0)
 

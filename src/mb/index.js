@@ -1,4 +1,4 @@
-const isIdentity = require('./isIdeneity.js')
+const isIdentity = require('./isIdentity.js')
 const isSquare = require('./isSquare.js')
 const sameSize = require('./sameSize.js')
 

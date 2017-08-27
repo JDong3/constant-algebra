@@ -1,6 +1,7 @@
 const F = require('mathjs').fraction
 const List = require('immutable').List
-const mn = require('./matrix__number.js')
+const columns = require('../mn').columns
+const rows = require('../mn').rows
 
 /**
  * checks if a matrix is a square matrix.
@@ -8,6 +9,6 @@ const mn = require('./matrix__number.js')
  * @return {Boolean} whether m is a square matrix
  */
 const isSquare = (matrix) => (
-  mn.rows(matrix) === mn.columns(matrix))
+  rows(matrix) === columns(matrix))
 
 module.exports = isSquare

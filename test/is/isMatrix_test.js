@@ -1,8 +1,8 @@
 const assert = require('chai').assert
 const F = require('mathjs').fraction
-const isMatrix = require('../../src/verification/isMatrix.js')
+const isMatrix = require('../../src').is.isMatrix
 const List = require('immutable').List
-const matrices = require('../../resources/matrices.js')
+const matrices = require('../../resources').matrices
 
 const spec = {
   verifyNonRectangularity: List([ List([F(0), F(0), F(0)]),
@@ -19,7 +19,7 @@ const spec = {
                           [F(0), F(1), F(0)]])
 }
 
-describe('mb.verify', function() {
+describe('is.isMatrix', function() {
   describe('accepts rectangularity', function() {
     it('accepts 1x1 small square', function() {
       assert.isTrue(isMatrix(matrices.z11), 'a 1x1 square is a rectangle')
