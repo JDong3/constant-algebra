@@ -9,4 +9,4 @@ const dot = (v1, v2, i=0, res=F(0)) => {
   }
 }
 
-module.exports = {dot}
+module.exports = dot
