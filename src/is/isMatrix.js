@@ -1,4 +1,6 @@
 const List = require('immutable').List
+const isVector = require('./isVector.js')
+const sameSize = require('../vb').sameSize
 
 /**
  * verifys that matrix is valid, that the matrix represents a rectangular array
@@ -8,20 +10,11 @@ const List = require('immutable').List
  *   objects
  */
 const isMatrix = (m) => (
-  isListOfLists(m) &&
-    isRectangular(m) &&
-      widthOfFirstGeZero(m))
-
-const isListOfLists = (m) => (
   List.isList(m) &&
-    m.every((v) => (
-      List.isList(v))))
-
-const isRectangular = (m) => (
-  m.every((v) => (
-    v.size === m.get(0).size)))
-
-const widthOfFirstGeZero = (m) => (
-  m.get(0).size > 0)
+  m.every((element) => (
+    isVector(element))) &&
+  m.every((element) => (
+    sameSize(element, m.get(0))
+  )))
 
 module.exports = isMatrix
