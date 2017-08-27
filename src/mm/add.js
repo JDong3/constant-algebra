@@ -9,3 +9,5 @@ const add = (matrix, matrix2) => (
   matrix.map((vector, row) => (
     vector.map((element, column) => (
       element.add(matrix2.get(row).get(column)))))))
+
+module.exports = add

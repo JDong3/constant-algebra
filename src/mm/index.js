@@ -9,7 +9,8 @@ const rowScale = require('./rowScale.js')
 const rowSwap = require('./rowSwap.js')
 const rref = require('./rref.js')
 const sub = require('./sub.js')
+const transpose = require('./transpose.js')
 
 module.exports = {
-  add, adjugate, cofactors, inverse, minor, mul, rowAdd, rowScale, rowSwap, rref, sub
+  add, adjugate, cofactors, inverse, minor, mul, rowAdd, rowScale, rowSwap, rref, sub, transpose
 }

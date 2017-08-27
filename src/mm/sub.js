@@ -8,3 +8,4 @@ const sub = (matrix, matrix2) => (
   matrix.map((vector, row) => (
     vector.map((element, column) => (
       element.sub(matrix2.get(row).get(column)))))))
+module.exports = sub

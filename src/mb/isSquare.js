@@ -1,4 +1,3 @@
-const F = require('mathjs').fraction
 const List = require('immutable').List
 const columns = require('../mn').columns
 const rows = require('../mn').rows

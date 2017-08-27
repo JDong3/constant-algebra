@@ -1,3 +1,6 @@
+const List = require('immutable').List
+const columns = require('../mn').columns
+const column = require('../mv').column
 /**
  * finds the transpose of a matrix.
  * @param {matirx} m: is a matrix representation
@@ -6,10 +9,12 @@
  * @return a matrix that is the transpose of m
  */
 const transpose = (matrix, i=0, res=List()) => {
-  if (i >= mn.columns(matrix)) {
+  if (i >= columns(matrix)) {
     return res
   } else {
     return transpose(
-      matrix, i+1, res.push(mv.column(matrix, i)))
+      matrix, i+1, res.push(column(matrix, i)))
   }
 }
+
+module.exports = transpose

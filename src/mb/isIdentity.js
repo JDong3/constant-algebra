@@ -1,5 +1,6 @@
 const F = require('mathjs').fraction
 const List = require('immutable').List
+const isSquare = require('./isSquare.js')
 
 /**
  * chekc if a matrix is an identity matrix
