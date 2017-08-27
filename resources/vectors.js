@@ -8,7 +8,11 @@ const vectors = {
 
   o1: List([F(1)]),
   o2: List([F(1), F(1)]),
-  o3: List([F(1), F(1), F(1)])
+  o3: List([F(1), F(1), F(1)]),
+
+  s1: List([F(0)]),
+  s2: List([F(0), F(1)]),
+  s3: List([F(0), F(1), F(2)])
 }
 
 module.exports = vectors
