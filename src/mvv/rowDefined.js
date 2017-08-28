@@ -1,3 +1,5 @@
+const isMatrix = require('../is').isMatrix
+
 /**
  * checks if a row is a valid row index of a matrix
  * @param {matirx} m: is a matrix representation

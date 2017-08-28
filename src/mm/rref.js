@@ -1,3 +1,9 @@
+const columnDefined = require('../mvv').columnDefined
+const rowDefined = require('../mvv').rowDefined
+const rowAdd = require('./rowAdd.js')
+const rowSwap = require('./rowSwap.js')
+const rowScale = require('./rowScale.js')
+
 const rref = (m, r=0, c=0) => {
   const pivotRow = pivot(m, r, c)
   if (c >= m.get(0).size) {
@@ -26,7 +32,7 @@ const rref = (m, r=0, c=0) => {
  *   c exists
  */
 const pivot = (m, r, c) => {
-  if (!mvv.columnDefined(m, c) || !mvv.rowDefined(m, r)) {
+  if (!columnDefined(m, c) || !rowDefined(m, r)) {
     return undefined
   } else if (!m.get(r).get(c).equals(0)) {
     return r
@@ -44,3 +50,5 @@ const applyPivot = (m, r, c, i=0) => {
     return applyPivot(m, r, c, i+1)
   }
 }
+
+module.exports = rref

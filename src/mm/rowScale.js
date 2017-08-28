@@ -1,2 +1,6 @@
+const scale = require('../vv').scale
+
 const rowScale = (m, r, n=1) => (
-  m.set(r, vv.scale(m.get(r), n)))
+  m.set(r, scale(m.get(r), n)))
+
+module.exports = rowScale

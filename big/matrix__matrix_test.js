@@ -4,62 +4,6 @@ const List = require('immutable').List
 const matrices = require('../../resources/matrices.js')
 const mm = require('../../src/operation/matrix__matrix.js')
 
-describe('mm.transpose', function() {
-  describe('applies matrix transpose', function() {
-    it('can transpose a 1x1 matrix into itself', function() {
-      assert(mm.transpose(matrices.z11).equals(matrices.z11))
-    }),
-    it('can transpose an identity matrix into itself', function() {
-      assert(mm.transpose(matrices.i33).equals(matrices.i33))
-    }),
-    it('can transpose an arbitrary nxm matrix', function() {
-      const l = List([ List([F(0), F(4), F(8)]),
-                       List([F(1), F(5), F(9)]),
-                       List([F(2), F(6), F(10)]),
-                       List([F(3), F(7), F(11)]) ])
-
-      assert(mm.transpose(matrices.s34).equals(l))
-    })
-  })
-})
-
-describe('mm.add', function() {
-  describe('computes matrix addition', function() {
-    it('can add two 1x1 matrices', function() {
-      const l = List([ List([F(2)]) ])
-      assert(mm.add(matrices.o11, matrices.o11).equals(l))
-    }),
-    it('can add two 1x1 matrices', function() {
-      const l = List([ List([F(1)]) ])
-      assert(mm.add(matrices.z11, matrices.o11).equals(l))
-    }),
-    it('can add two nxm matrices', function() {
-      const l = List([ List([F(0), F(2), F(4), F(6)]),
-                       List([F(8), F(10), F(12), F(14)]),
-                       List([F(16), F(18), F(20), F(22)]) ])
-      assert(mm.add(matrices.s34, matrices.s34).equals(l))
-    })
-  })
-})
-
-describe('mm.sub', function() {
-  describe('computes matrix subtraction', function() {
-    it('can add two 1x1 matrices', function() {
-      const l = List([ List([F(0)]) ])
-      assert(mm.sub(matrices.o11, matrices.o11).equals(l))
-    }),
-    it('can add two 1x1 matrices', function() {
-      const l = List([ List([F(-1)]) ])
-      assert(mm.sub(matrices.z11, matrices.o11).equals(l))
-    }),
-    it('can add two nxm matrices', function() {
-      const l = List([ List([F(0), F(0), F(0), F(0)]),
-                       List([F(0), F(0), F(0), F(0)]),
-                       List([F(0), F(0), F(0), F(0)]) ])
-      assert(mm.sub(matrices.s34, matrices.s34).equals(l))
-    })
-  })
-})
 
 describe('mm.mul', function() {
   describe('can multiply 1x1 and 1x1 matrices', function() {
@@ -98,47 +42,6 @@ describe('mm.mul', function() {
   })
 })
 
-describe('mm.rowSwap', function() {
-  describe('it performs elementary row swap on a matrix', function() {
-    it('swap row with itself does nothing', function() {
-      assert(mm.rowSwap(matrices.i33, 1, 1).equals(matrices.i33))
-    }),
-    it('swap row with another', function() {
-      const l = List([List([F(0), F(0), F(1)]),
-                      List([F(0), F(1), F(0)]),
-                      List([F(1), F(0), F(0)])])
-      assert(mm.rowSwap(matrices.i33, 0, 2).equals(l))
-    })
-  })
-})
-
-describe('mm.rowAdd', function() {
-  describe('performs elementary row addition', function() {
-    it('', function() {
-      const l = List([List([F(1), F(1), F(0)]),
-                      List([F(0), F(1), F(0)]),
-                      List([F(0), F(0), F(1)])])
-      assert(mm.rowAdd(matrices.i33, 0, 1, 1).equals(l))
-    }),
-    it('', function() {
-      const l = List([List([F(1), F(0), F(0)]),
-                      List([F(0), F(1), F(0)]),
-                      List([F(0), F(2), F(1)])])
-      assert(mm.rowAdd(matrices.i33, 2, 1, 2).equals(l))
-    })
-  })
-})
-
-describe('mm.rowScale', function() {
-  describe('performs elementary row scale', function() {
-    it('', function() {
-      const l = List([List([F(1), F(0), F(0)]),
-                      List([F(0), F(3), F(0)]),
-                      List([F(0), F(0), F(1)])])
-      assert(mm.rowScale(matrices.i33, 1, 3).equals(l))
-    })
-  })
-})
 
 describe('mm.rref', function() {
   describe('rrefifies a matrix', function() {

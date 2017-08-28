@@ -10,3 +10,4 @@ const rowSwap = (m, r1, r2) => {
   const step2 = step1.set(r2, m.get(r1))
   return step2
 }
+module.exports = rowSwap
