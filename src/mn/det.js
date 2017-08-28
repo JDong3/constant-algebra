@@ -1,3 +1,6 @@
+const F = require('mathjs').fraction
+const minor = require('../mm').minor
+
 const det = (m) => {
   if (m.size === 1) {
     return m.get(0).get(0)
@@ -14,5 +17,7 @@ const sumRowCofactors = (m, r, i=0, res=F(0)) => {
       m.get(r), i+1, res.add(cofactor(m, r, i)))
   }
 }
+
+
 
 module.exports = det

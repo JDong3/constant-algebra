@@ -36,6 +36,8 @@ const matrices = {
              List([F(0), F(1), F(0)]),
              List([F(0), F(0), F(1)])]),
   s13: List([List([F(0), F(1), F(2)])]),
+  s22: List([List([F(0), F(1)]),
+             List([F(2), F(3)])]),
   s33: List([List([F(0), F(1), F(2)]),
              List([F(3), F(4), F(5)]),
              List([F(6), F(7), F(8)])]),

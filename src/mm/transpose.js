@@ -1,5 +1,4 @@
 const List = require('immutable').List
-const columns = require('../mn').columns
 const column = require('../mv').column
 /**
  * finds the transpose of a matrix.
@@ -9,7 +8,7 @@ const column = require('../mv').column
  * @return a matrix that is the transpose of m
  */
 const transpose = (matrix, i=0, res=List()) => {
-  if (i >= columns(matrix)) {
+  if (i >= matrix.get(0).size) {
     return res
   } else {
     return transpose(

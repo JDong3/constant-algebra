@@ -1,3 +1,7 @@
+const List = require('immutable').List
+const dot = require('../vn').dot
+const column = require('../mv').column
+
 /**
  * perfoms multiplication for one matrix on another matrix
  * @param {List} m1: is a matrix representation
@@ -18,7 +22,9 @@ const subMul = (v, m, i=0, res=List()) => {
   if (i >= m.get(0).size) {
     return res
   } else {
-    const update = res.push(vn.dot(v, mv.column(m, i)))
+    const update = res.push(dot(v, column(m, i)))
     return subMul(v, m, i+1, update)
   }
 }
+
+module.exports = mul

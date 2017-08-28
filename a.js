@@ -1,5 +1,18 @@
-const F = require('mathjs').fraction
-const List = require('immutable').List
-const vectors = require('./resources').vectors
+const ns = {
+  f1: () => {
+    console.log('hi');
+    this.f2()
+  },
 
-console.log(F(1).s, F(1).n, F(1).d)
+  f2: () => {
+    console.log('mom');
+  }
+}
+
+const ns2 = {
+  f1: () => {
+    console.log('its ur boy');
+  }
+}
+
+ns.f1()
