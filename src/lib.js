@@ -8,16 +8,16 @@ const lib = {
   is: {
     isMatrix: (matrix) => (
       List.isList(matrix) &&
-      m.every((element) => (
+      matrix.every((element) => (
         lib.is.isVector(element))) &&
-      m.every((element) => (
-        sameSize(element, m.get(0))
+      matrix.every((element) => (
+        lib.vb.sameSize(element, matrix.get(0))
       ))
     ),
     isVector: (vector) => (
       List.isList(vector) &&
-      v.size > 0 &&
-      v.every(lib.is.isFraction)
+      vector.size > 0 &&
+      vector.every(lib.is.isFraction)
     ),
     isFraction: (element) => (
       element.n !== undefined &&
@@ -27,8 +27,8 @@ const lib = {
   },
   mb: {
     isIdentity: (matrix) => (
-      lib.is.isSquare(matrix) &&
-      lib.is.isIdentityGivenisSquare(matrix)
+      lib.mb.isSquare(matrix) &&
+      lib.mb.isIdentityGivenisSquare(matrix)
     ),
     isIdentityGivenisSquare: (matrix) => (
       matrix.every((vector, row) => (
@@ -133,7 +133,7 @@ const lib = {
      *   c exists
      */
     pivot: (m, r, c) => {
-      if (!lib.mvv.columnDefined(m, c) || !lib.mvv.rowDefined(m, r)) {
+      if (c >= lib.mn.columns(m) || r >= lib.mn.rows(m)) {
         return undefined
       } else if (!m.get(r).get(c).equals(0)) {
         return r
@@ -162,7 +162,7 @@ const lib = {
       if (i >= matrix.get(0).size) {
         return res
       } else {
-        return transpose(matrix, i+1, res.push(column(matrix, i)))
+        return lib.mm.transpose(matrix, i+1, res.push(lib.mv.column(matrix, i)))
       }
     }
   },
