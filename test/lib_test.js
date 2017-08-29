@@ -6,7 +6,13 @@ const m = top.matrices
 const v = top.vectors
 const mb = top.mb
 const mm = top.mm
+const mn = top.mn
+const mv = top.mv
+const vb = top.vb
+const vn = top.vn
+const vv = top.vv
 
+// REVIEW: mb
 describe('mb.isIdentity', function() {
   describe('checks for identity matrix', function() {
     it('accepts 1x1 identity matrix', function() {
@@ -78,6 +84,17 @@ describe('mm.add', function() {
                       List([F(12), F(14), F(16)]),
                       List([F(18), F(20), F(22)])])
       assert(mm.add(m.s43, m.s43).equals(l))
+    })
+  })
+})
+
+describe('mm.cofactors', function() {
+  describe('gives the cofactor matrix of a matrix', function() {
+    it('can cofactorize s33', function() {
+      const l = List([List([F(0), F(6), F(-6)]),
+                      List([F(18), F(-48), F(30)]),
+                      List([F(-18), F(42), F(-24)])])
+      assert(mm.cofactors(m.s33).equals(l))
     })
   })
 })
@@ -244,6 +261,143 @@ describe('mm.transpose', function() {
                       List([F(2), F(6), F(10)]),
                       List([F(3), F(7), F(11)])])
       assert(mm.transpose(m.s34).equals(l))
+    })
+  })
+})
+
+// REVIEW: mn
+describe('mn.det', function() {
+  describe('gives the determinant of a square matrix', function() {
+    it('gives the determinant of a 1x1 matrix (m.i11)', function() {
+      assert(mn.det(m.i11).equals(F(1)))
+    }),
+    it('gives the determinant of a 2x2 matrix (m.s22)', function() {
+      assert(mn.det(m.s22).equals(F(-2)))
+    })
+  })
+})
+
+
+// REVIEW: mv
+describe('mv.antiDiagonal', function() {
+  describe('gives the antiDiagonal of a square matrix', function() {
+    it('can get the antiDiagonal of a 3x3 matrix(m.s33)', function() {
+      const l = List([F(2), F(4), F(6)])
+      assert(mv.antiDiagonal(m.s33).equals(l))
+    })
+  })
+})
+
+describe('mv.column', function() {
+  describe('gives a column vector of a matrix', function() {
+    it('can get the 0th column of a 3x3 matrix(m.s33)', function() {
+      const l = List([F(0), F(3), F(6)])
+      assert(mv.column(m.s33, 0))
+    }),
+    it('can get the 1th column of a 3x3 matrix(m.s33)', function() {
+      const l = List([F(1), F(4), F(7)])
+      assert(mv.column(m.s33, 1))
+    }),
+    it('can get the 2th column of a 3x3 matrix(m.s33)', function() {
+      const l = List([F(2), F(5), F(8)])
+      assert(mv.column(m.s33, 2))
+    })
+  })
+})
+
+describe('mv.diagonal', function() {
+  describe('gives the diagonal of a square matrix', function() {
+    it('can get the diagonal of a 3x3 matrix(m.s33)', function() {
+      const l = List([F(0), F(4), F(8)])
+      assert(mv.diagonal(m.s33).equals(l))
+    })
+  })
+})
+
+describe('mv.row', function() {
+  describe('gives a row vector of a matrix', function() {
+    it('can give the 0th row of a 3x3 matrix (m.s33)', function() {
+      const l = List([F(0), F(1), F(2)])
+      assert(mv.row(m.s33, 0).equals(l))
+    }),
+    it('can give the 1th row of a 3x3 matrix (m.s33)', function() {
+      const l = List([F(3), F(4), F(5)])
+      assert(mv.row(m.s33, 1).equals(l))
+    }),
+    it('can give the 2th row of a 3x3 matrix (m.s33)', function() {
+      const l = List([F(6), F(7), F(8)])
+      assert(mv.row(m.s33, 2).equals(l))
+    })
+  })
+})
+
+// REVIEW: vb
+describe('vb.sameSize', function() {
+  describe('checks for same sized vectors', function() {
+    it('accepts two size 1 vectors', function() {
+      assert.isTrue(vb.sameSize(v.o1, v.o1))
+    }),
+    it('accepts two size 2 vectors', function() {
+      assert.isTrue(vb.sameSize(v.o2, v.z2))
+    }),
+    it('rejects size 1 and size 2 vectors', function() {
+      assert.isFalse(vb.sameSize(v.o2, v.o1))
+    })
+  })
+})
+
+// REVIEW: vn
+describe('vn.dot', function() {
+  describe('gives the dot product of two same sized vectors', function() {
+    it('can dot two length 1 vectors (v.o1 * v.z1)', function() {
+      const k = F(0)
+      assert(vn.dot(v.o1, v.z1).equals(k))
+    }),
+    it('can dot two length 1 vectors (v.o1 * v.o1)', function() {
+      const k = F(1)
+      assert(vn.dot(v.o1, v.o1).equals(k))
+    }),
+    it('can dot two length 3 vectors (v.s3 * v.s3)', function() {
+      const k = F(5)
+      assert(vn.dot(v.s3, v.s3).equals(k))
+    })
+  })
+})
+
+// REVIEW: vv
+describe('vv.add', function() {
+  describe('gives the sum of two same sized vectors', function() {
+    it('can add two size 1 vectors (v.o1 + v.o1)', function() {
+      const l = List([F(2)])
+      assert(vv.add(v.o1, v.o1).equals(l))
+    }),
+    it('can add two size 2 vectors (v.o2 + v.o2)', function() {
+      const l = List([F(2), F(2)])
+      assert(vv.add(v.o2, v.o2).equals(l))
+    })
+  })
+})
+
+describe('vv.scale', function() {
+  describe('gives the scalar product of a matrix and a fraction', function () {
+    it('can scale a length 1 vector (2*v.o1)', function() {
+      const l = List([F(2)])
+      assert(vv.scale(v.o1, 2).equals(l))
+    }),
+    it('can scale a length 2 vector (2*v.o2)', function() {
+      const l = List([F(2), F(2)])
+      assert(vv.scale(v.o2, 2).equals(l))
+    })
+  })
+})
+
+describe('vv.sub', function() {
+  describe('gives the difference of two same sized vectors', function () {
+    it('can diff two size 1 vectors (v.o1 - v.o1)', function () {
+      assert(vv.sub(v.o1, v.o1).equals(v.z1))
+    }),
+    it('can diff two size 2 vectors (v.o2 - v.o2)', function () {
+      assert(vv.sub(v.o2, v.o2).equals(v.z2))
     })
   })
 })

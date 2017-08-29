@@ -58,8 +58,8 @@ const lib = {
       lib.mm.transpose(lib.mm.cofactors(matrix))
     ),
     cofactors: (matrix) => (
-      m.map((vector, row) => (
-        v.map((element, column) => (
+      matrix.map((vector, row) => (
+        vector.map((element, column) => (
           lib.mn.cofactor(matrix, row, column)
         ))
       ))
@@ -172,12 +172,13 @@ const lib = {
         a.add(b)
       ))
     ),
-    cofactor: (matrix, column, row) => (
+    cofactor: (matrix, row, column) => (
       F(-1).pow(column+row)
+           .mul(matrix.get(row).get(column))
            .mul(
              lib.mn.det(
                lib.mm.minor(
-                 matrix, column, row)))
+                 matrix, row, column)))
     ),
     columns: (matrix) => (
       matrix.get(0).size
@@ -186,15 +187,16 @@ const lib = {
       if (matrix.size === 1) {
         return matrix.get(0).get(0)
       } else {
-        return lib.mm.sumRowCofactors(matrix, 0)
+        return lib.mn.sumRowCofactors(matrix, 0)
       }
     },
     sumRowCofactors: (matrix, row, i=0, res=ZERO) => {
-      if (i >= matrix.get(r).size) {
+      if (i >= lib.mn.columns(matrix)) {
         return res
       } else {
-        return lib.mm.sumRowCofactors(
-          matrix.get(row), i+1, res.add(cofactor(matrix, row, i)))
+        //console.log(lib.mn.cofactor(matrix, row, i))
+        return lib.mn.sumRowCofactors(
+          matrix, row, i+1, res.add(lib.mn.cofactor(matrix, row, i)))
       }
     },
     mulAntiTrace: (matrix) => (
@@ -264,9 +266,9 @@ const lib = {
         element.mul(amount)
       ))
     ),
-    scale: (vector, amount) => (
-      vector.map((element) => (
-        element.mul(amount)
+    sub: (vector, vector2) => (
+      vector.map((element, n) => (
+        element.sub(vector2.get(n))
       ))
     )
   }
