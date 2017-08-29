@@ -5,26 +5,7 @@ const EMPTY_LIST = List()
 const ZERO = F(0)
 
 const lib = {
-  is: {
-    isMatrix: (matrix) => (
-      List.isList(matrix) &&
-      matrix.every((element) => (
-        lib.is.isVector(element))) &&
-      matrix.every((element) => (
-        lib.vb.sameSize(element, matrix.get(0))
-      ))
-    ),
-    isVector: (vector) => (
-      List.isList(vector) &&
-      vector.size > 0 &&
-      vector.every(lib.is.isFraction)
-    ),
-    isFraction: (element) => (
-      element.n !== undefined &&
-      element.d !== undefined &&
-      element.s !== undefined
-    )
-  },
+  
   mb: {
     isIdentity: (matrix) => (
       lib.mb.isSquare(matrix) &&
