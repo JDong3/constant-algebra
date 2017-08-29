@@ -1,9 +1,11 @@
-const mb = require('./src/operation/matrix__bool.js')
-const mm = require('./src/operation/matrix__matrix.js')
-const mn = require('./src/operation/matrix__number.js')
-const mv = require('./src/operation/matrix__vector.js')
+const src = require('./src')
+const lib = src.lib
+const vectors = src.res.vectors
+const matrices = src.res.matrices
 
-const vn = require('./src/operation/vector__number.js')
-const vv = require('./src/operation/vector__vector.js')
+//const ver = src.ver
 
-module.exports = {mb, mm, mv, vn}
+module.exports = {
+  vectors,
+  matrices
+}
