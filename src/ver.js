@@ -5,7 +5,7 @@ const ver = {
     isMatrix: (matrix) => (
       List.isList(matrix) &&
       matrix.every((element) => (
-        lib.is.isVector(element))) &&
+        ver.is.isVector(element))) &&
       matrix.every((element) => (
         lib.vb.sameSize(element, matrix.get(0))
       ))
@@ -23,147 +23,147 @@ const ver = {
   },
   mbv: {
     isIdentityDefined: (m) => (
-      isMatrix(m)
+      ver.is.isMatrix(m)
     ),
     isSquareDefined: (m) => (
-      isMatrix(m)
+      ver.is.isMatrix(m)
     ),
     sameSizeDefined: (m1, m2) => (
-      isMatrix(m1) && isMatrix(m2)
+      ver.is.isMatrix(m1) && ver.is.isMatrix(m2)
     )
   }
   mmv: {
     addDefined = (m1, m2) => (
-      mb.sameSize(m1, m2)
+      lib.mb.sameSize(m1, m2)
     ),
     adjugateDefined = (m) => (
-      isMatrix(m) &&
-      isSquare(m)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m)
     ),
     cofactorsDefined = (m) => (
-      isMatrix(m) &&
-      isSquare(m)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m)
     ),
     inverseDefined = (m) => (
-      isMatrix(m) &&
-      mb.isSquare(m) &&
-      (mn.det(m) !== 0)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m) &&
+      (lib.mn.det(m) !== 0)
     ),
     minorDefined = (m, r, c) => (
-      isMatrix(m) &&
-      mvv.rowDefined(r) &&
-      mvv.columnDefined(c)
+      ver.is.isMatrix(m) &&
+      ver.mvv.rowDefined(r) &&
+      ver.mvv.columnDefined(c)
     ),
     mulDefined = (m1, m2) => (
-      isMatrix(m1) &&
-      isMatrix(m2) &&
-       mn.rows(m1) === mn.columns(m2)
+      ver.is.isMatrix(m1) &&
+      ver.is.isMatrix(m2) &&
+       lib.mn.rows(m1) === lib.mn.columns(m2)
     ),
     rowAddDefined = (m, r1, r2, n) => (
-      isMatrix(m) &&
-      mmv.rowDefined(r1) &&
-      mmv.rowDefined(r2) &&
-      isFraction(n)
+      ver.is.isMatrix(m) &&
+      ver.mmv.rowDefined(r1) &&
+      ver.mmv.rowDefined(r2) &&
+      ver.is.isFraction(n)
     ),
     rowScaleDefined = (m, r, n) => (
-      isMatrix(m) &&
-      mmv.rowDefined(r) &&
-      isFraction(n)
+      ver.is.isMatrix(m) &&
+      lib.mmv.rowDefined(r) &&
+      ver.is.isFraction(n)
     ),
     rowSwapDefined = (m, r1, r2) => (
-      isMatrix(m) &&
+      ver.is.isMatrix(m) &&
       mmv.rowDefined(r1) &&
       mmv.rowDefined(r2)
     ),
     rrefDefined = (m) => (
-      isMatrix(m)
+      ver.is.isMatrix(m)
     ),
     subDefined = (m1, m2) => (
-      mb.sameSize(m1, m2)
+      lib.mb.sameSize(m1, m2)
     ),
     transposeDefined = (m) => (
-      isMatrix(m)
+      ver.is.isMatrix(m)
     )
   },
   mnv: {
     antiTraceDefined = (m) => (
-      isMatrix(m) &&
-      isSquare(m)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m)
     ),
     cofactorDefined = (m, r, c) => (
-      isMatrix(m) &&
-      rowDefined(m, r) &&
-      columnDefined(m, c)
+      ver.is.isMatrix(m) &&
+      ver.is.rowDefined(m, r) &&
+      ver.is.columnDefined(m, c)
     ),
     columnsDefined = (m) => (
-      isMatrix(m)
+      ver.is.isMatrix(m)
     ),
     detDefined = (m) => (
-      isMatrix(m) && isSquare(m)
+      ver.is.isMatrix(m) && lib.mb.isSquare(m)
     ),
     mulAntiTraceDefined = (m) => (
-      isMatrix(m) &&
-      isSquare(m)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m)
     ),
     mulTraceDefined = (m) => (
-      isMatrix(m) &&
-      isSquare(m)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m)
     ),
     rowsDefined = (m) => (
-      isMatrix(m)
+      ver.is.isMatrix(m)
     ),
     traceDefined = (m) => (
-      isMatrix(m) &&
-      isSquare(m)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m)
     )
   }
   mvv: {
     antiDiagonalDefined = (m) => (
-      isMatrix(m) &&
-      isSquare(m)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m)
     ),
-    olumnDefined: (m, n) => (
-      isMatrix(m) &&
+    columnDefined: (m, n) => (
+      ver.is.isMatrix(m) &&
       n >= 0 &&
       n <= m.get(0).size-1
     ),
     diagonalDefined = (m) => (
-      isMatrix(m) &&
-      isSquare(m)
+      ver.is.isMatrix(m) &&
+      lib.mb.isSquare(m)
     ),
     rowDefined: (m, n) => (
-      isMatrix(m) &&
+      ver.is.isMatrix(m) &&
       n >= 0 &&
       n <= m.size-1
     )
   },
   vbv: {
     sameSizeDefined = (v1, v2) => (
-      isVector(v1) &&
-      isVector(v2)
+      ver.is.isVector(v1) &&
+      ver.is.isVector(v2)
     )
   },
   vnv: {
     dotDefined = (v1, v2) => (
-      isVector(v1) &&
-      isVector(v2) &&
-      sameSize(v1, v2)
+      ver.is.isVector(v1) &&
+      ver.is.isVector(v2) &&
+      lib.vb.sameSize(v1, v2)
     )
   },
   vvv: {
     addDefined = (v1, v2) => (
-      isVector(v1) &&
-      isVector(v2) &&
-      vb.sameSize(v1, v2)
+      ver.is.isVector(v1) &&
+      ver.is.isVector(v2) &&
+      lib.vb.sameSize(v1, v2)
     ),
     scaleDefined = (v, n) => (
-      isVector(v) &&
-      isFraction(n)
+      ver.is.isVector(v) &&
+      ver.is.isFraction(n)
     ),
     subDefined = (v1, v2) => (
-      isVector(v1) &&
-      isVector(v2) &&
-      vb.sameSize(v1, v2)
+      ver.is.isVector(v1) &&
+      ver.is.isVector(v2) &&
+      lib.vb.sameSize(v1, v2)
     )
   }
 }
