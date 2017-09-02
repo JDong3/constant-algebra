@@ -4,7 +4,7 @@ const List = require('immutable').List
 const top = require('..')
 const m = top.matrices
 const v = top.vectors
-const is = top.is
+const ver = top.ver
 
 describe('is.isMatirx', function() {
   describe('checks for List of vector', function() {
@@ -12,30 +12,30 @@ describe('is.isMatirx', function() {
       const l = List([v.o3,
                       v.o3,
                       v.o3])
-      assert.isTrue(is.isMatrix(l))
+      assert.isTrue(ver.is.isMatrix(l))
     }),
     it('rejects List of Array', function() {
       const l = List([[1, 2, 3],
                       [1, 2, 3]])
-      assert.isFalse(is.isMatrix(l))
+      assert.isFalse(ver.is.isMatrix(l))
     }),
     it('rejects Array of vector', function() {
       const l = [v.o3,
                  v.o3,
                  v.o3]
-      assert.isFalse(is.isMatrix(l))
+      assert.isFalse(ver.is.isMatrix(l))
     })
   }),
   describe('checks for List of same sized vector', function() {
     it('accepts List of two size 3 v', function() {
       const l = List([v.o3,
                       v.o3])
-      assert.isTrue(is.isMatrix(l))
+      assert.isTrue(ver.is.isMatrix(l))
     }),
     it('rejects List of size 2 and size 3 v', function() {
       const l = List([v.o2,
                       v.o3])
-      assert.isFalse(is.isMatrix(l))
+      assert.isFalse(ver.is.isMatrix(l))
     })
   })
 })
@@ -43,23 +43,23 @@ describe('is.isMatirx', function() {
 describe('is.isVector', function() {
   describe('checks for list of F', function() {
     it('accepts list of F', function() {
-      assert.isTrue(is.isVector(v.o3))
+      assert.isTrue(ver.is.isVector(v.o3))
     }),
     it('rejects array of F', function() {
       const l = [F(0)]
-      assert.isFalse(is.isVector(l))
+      assert.isFalse(ver.is.isVector(l))
     }),
     it('rejects list of Number', function() {
       const l = List([1, 2, 3])
-      assert.isFalse(is.isVector(l))
+      assert.isFalse(ver.is.isVector(l))
     })
   }),
   describe('checks size', function() {
     it('accepts size 1 list of F', function() {
-      assert.isTrue(is.isVector(v.o1))
+      assert.isTrue(ver.is.isVector(v.o1))
     }),
     it('rejects size 0 list', function() {
-      assert.isFalse(is.isVector(List([])))
+      assert.isFalse(ver.is.isVector(List([])))
     })
   })
 })

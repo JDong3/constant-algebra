@@ -10,9 +10,10 @@ const vn = src.lib.vn
 const vv = src.lib.vv
 const vectors = src.res.vectors
 const matrices = src.res.matrices
+const util = src.util
 
 const mvv = src.ver.mvv
-//const ver = src.ver
+const ver = src.ver
 
 module.exports = {
   is,
@@ -24,5 +25,7 @@ module.exports = {
   vn,
   vv,
   vectors,
-  matrices
+  matrices,
+  util,
+  ver
 }

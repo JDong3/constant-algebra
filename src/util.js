@@ -155,8 +155,14 @@ const util = {
       return -1
     }
     return step3
-  }
+  },
 
+  removeSpaces: (string) => (
+    List(string.split('')).filter((element) => (
+      element.equals(' ')
+    )).reduce((a, b) => (
+      a + b), '')
+  )
 }
 console.log(util.readNumber('123.', 0))
 module.exports = util

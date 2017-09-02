@@ -4,5 +4,5 @@ const ver = require('./ver.js')
 const util = require('./util.js')
 
 module.exports = {
-  lib, res, ver
+  lib, res, ver, util
 }
