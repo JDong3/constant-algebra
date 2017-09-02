@@ -43,6 +43,10 @@ const util = {
     index === newIndex || newIndex === -1
   ),
 
+  readMatrixContentsFailed: (index, newIndex) => (
+    index === newIndex || newIndex === -1
+  ),
+
   readNumber: (string, i) => {
     if(!numbers.includes(string.charAt(i))) {
       return i
@@ -75,7 +79,7 @@ const util = {
     }
   },
 
-  readVectorContents(string, i, divNext=false) => {
+  readVectorContents: (string, i, divNext=false) => {
     if(!divNext) {
       // REVIEW: questionalble choice
       if (!util.readCloseFailed(i, util.readClose(string, i))) {
@@ -96,7 +100,7 @@ const util = {
         return util.readVectorContents(string, newI, false)
       }
     }
-  }
+  },
 
   readVector: (string, i) => {
     const step1 = util.readOpen(string, i)
@@ -105,6 +109,45 @@ const util = {
     }
     const step2 = util.readVectorContents(string, step1)
     if (util.readVectorContentsFailed(step2)) {
+      return -1
+    }
+    const step3 = util.readClose(string, step2)
+    if(util.readCloseFailed(step3)) {
+      return -1
+    }
+    return step3
+  },
+
+  readMatrixContents: (string, i, divNext=false) => {
+    if(!divNext) {
+      // REVIEW: questionalble choice
+      if (!util.readCloseFailed(i, util.readClose(string, i))) {
+        return i
+      }
+
+      const newI = util.readVector(string, i)
+      if (util.readVectorFailed(i, newI, string.slice(i, newI))) {
+        return -1
+      } else {
+        return util.readMatrixContents(string, newI, true)
+      }
+    } else {
+      const newI = util.readDiv(string, i)
+      if (util.readDivFailed(i, newI)) {
+        return -1
+      } else {
+        return util.readMatrixContents(string, newI, false)
+      }
+    }
+  },
+
+  readMatrix: (string, i) => {
+    const step1 = util.readOpen(string, i)
+    if (util.readOpenFailed(i, step1)) {
+      return -1
+    }
+    const step2 = util.readMatrixContents(string, step1)
+    if (util.readMatrixContentsFailed(step2)) {
       return -1
     }
     const step3 = util.readClose(string, step2)
