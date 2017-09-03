@@ -1,6 +1,5 @@
 const lib = require('./lib.js')
 const List = require('immutable').List
-console.log(lib)
 
 const ver = {
   is: {

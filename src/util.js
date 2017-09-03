@@ -16,106 +16,79 @@ const EMPTY_LIST = List()
  */
 const util = {
 
-  readNumberFailed: (index, newIndex, number) => (
-    index === newIndex ||
-    newIndex === -1 ||
-    number.charAt(0).equals(slash) ||
-    number.charAt(0).equals(slash) ||
-    List(number.split('')).filter((element) => (
-      !element.equals(slash)
-    )).size > 1
-  ),
-
-  readOpenFailed: (index, newIndex) => (
-    index === newIndex ||
-    newIndex === -1
-  ),
-
-  readCloseFailed: (index, newIndex) => (
-    index === newIndex || newIndex === -1
-  ),
-
-  readDivFailed: (index, newIndex) => (
-    index === newIndex || newIndex === -1
-  ),
-
-  readVectorContentsFailed: (index, newIndex) => (
-    index === newIndex || newIndex === -1
-  ),
-
-  readMatrixContentsFailed: (index, newIndex) => (
-    index === newIndex || newIndex === -1
-  ),
-
-  readNumber: (string, i) => {
-    if(!numbers.includes(string.charAt(i))) {
-      return i
+  readNumber: (string, i, res='') => {
+    if(!(numbers.includes(string.charAt(i)) || string.charAt(i) === slash)) {
+      const parsedNumber = util.parseNumber(res)
+      if (!parsedNumber) {
+        return undefined
+      } else {
+        return List([i, parsedNumber])
+      }
     } else {
-      return util.readNumber(string, i+1)
+      return util.readNumber(string, i+1, res+string.charAt(i))
     }
   },
 
   readDiv: (string, i) => {
-    if(!dividers.includes(string.charAt(i))) {
-      return i
+    if(dividers.includes(string.charAt(i))) {
+      return true
     } else {
-      return util.readDiv(string, i+1)
+      return false
     }
   },
 
   readOpen: (string, i) => {
     if(openParens.includes(string.charAt(i))) {
-      return i+1
+      return true
     } else {
-      return -1
+      return false
     }
   },
 
   readClose: (string, i) => {
     if(closeParens.includes(string.charAt(i))) {
-      return i+1
+      return true
     } else {
-      return -1
+      return false
     }
   },
 
-  readVectorContents: (string, i, divNext=false) => {
+  readVectorContents: (string, i, divNext=false, res=EMPTY_LIST) => {
     if(!divNext) {
-      // REVIEW: questionalble choice
-      if (!util.readCloseFailed(i, util.readClose(string, i))) {
-        return i
+      if (util.readClose(string, i)) {
+        return List(i, res)
       }
 
-      const newI = util.readNumber(string, i)
-      if (util.readNumberFailed(i, newI, string.slice(i, newI))) {
-        return -1
+      const result = util.readNumber(string, i)
+      if (!result.get(1)) {
+        return undefined
       } else {
-        return util.readVectorContents(string, newI, true)
+        return util.readVectorContents(string, true, res.push(result.get(1)))
       }
     } else {
-      const newI = util.readDiv(string, i)
-      if (util.readDivFailed(i, newI)) {
-        return -1
+      const result = util.readDiv(string, i)
+      if (!result) {
+        return undefined
       } else {
-        return util.readVectorContents(string, newI, false)
+        return util.readVectorContents(string, i+1, false)
       }
     }
   },
 
   readVector: (string, i) => {
     const step1 = util.readOpen(string, i)
-    if (util.readOpenFailed(i, step1)) {
-      return -1
+    if (!step1) {
+      return undefined
     }
     const step2 = util.readVectorContents(string, step1)
     if (util.readVectorContentsFailed(step2)) {
-      return -1
+      return undefined
     }
     const step3 = util.readClose(string, step2)
     if(util.readCloseFailed(step3)) {
-      return -1
+      return undefined
     }
-    return step3
+    return List(step2.get(0)+1, step2.get(1))
   },
 
   readMatrixContents: (string, i, divNext=false) => {
@@ -162,9 +135,32 @@ const util = {
       element.equals(' ')
     )).reduce((a, b) => (
       a + b), '')
-  )
+  ),
+
+  parseNumber: (string) => {
+    const invalidString = (
+      string.length === 0 ||
+      string.charAt(0) === slash ||
+      string.charAt(string.length-1) === slash ||
+      List(string.split('')).filter((element) => (
+        element === slash
+      )).size > 1
+    )
+    if (!invalidString) {
+      const indexOfSlash = string.indexOf(slash)
+      if(indexOfSlash == -1) {
+        return F(parseInt(string, 10))
+      } else {
+        return F(
+          parseInt(string.slice(0, indexOfSlash), 10),
+          parseInt(string.slice(indexOfSlash+1, string.length), 10)
+        )
+      }
+    } else {
+      return undefined
+    }
+  }
 }
-console.log(util.readNumber('123.', 0))
 module.exports = util
 // IDEA:
 // 1. check for matching parens
