@@ -54,23 +54,23 @@ const util = {
   },
 
   readVectorContents: (string, i, divNext=false, res=EMPTY_LIST) => {
+    //console.log('string:', string, 'i:', i, 'divNext:', divNext, 'res:', res)
+    if(((divNext && res.size > 0) || res.size === 0) && util.readClose(string, i)) {
+      return List([i, res])
+    }
     if(!divNext) {
-      if (util.readClose(string, i)) {
-        return List(i, res)
-      }
-
       const result = util.readNumber(string, i)
-      if (!result.get(1)) {
+      if (!result) {
         return undefined
       } else {
-        return util.readVectorContents(string, true, res.push(result.get(1)))
+        return util.readVectorContents(string, result.get(0), true, res.push(result.get(1)))
       }
     } else {
       const result = util.readDiv(string, i)
       if (!result) {
         return undefined
       } else {
-        return util.readVectorContents(string, i+1, false)
+        return util.readVectorContents(string, i+1, false, res)
       }
     }
   },
@@ -80,15 +80,15 @@ const util = {
     if (!step1) {
       return undefined
     }
-    const step2 = util.readVectorContents(string, step1)
-    if (util.readVectorContentsFailed(step2)) {
+    const step2 = util.readVectorContents(string, i+1)
+    if (!step2) {
       return undefined
     }
-    const step3 = util.readClose(string, step2)
-    if(util.readCloseFailed(step3)) {
+    const step3 = util.readClose(string, step2.get(0))
+    if(!step3) {
       return undefined
     }
-    return List(step2.get(0)+1, step2.get(1))
+    return List([step2.get(0)+1, step2.get(1)])
   },
 
   readMatrixContents: (string, i, divNext=false) => {

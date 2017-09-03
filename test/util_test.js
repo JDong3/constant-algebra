@@ -82,7 +82,7 @@ describe('util.readDiv', function() {
 })
 
 describe('util.readOpen', function() {
-  describe('reads a open parens from a string at index and returns the index + 1 of where it ends, -1 on failure', function() {
+  describe('reads a open parens from a string at index and returns the index + 1 of where it ends, falsy on failure', function() {
     it('can read a open parens at index 1', function() {
       const string = '0['
       const i = 1
@@ -102,7 +102,7 @@ describe('util.readOpen', function() {
 })
 
 describe('util.readClose', function() {
-  describe('reads a close parens from a string at index and returns the index + 1 of where it ends, -1 on failure', function() {
+  describe('reads a close parens from a string at index and returns the index + 1 of where it ends, falsy on failure', function() {
     it('can read a close parens at index 1', function() {
       const string = '0)'
       const i = 1
@@ -117,6 +117,16 @@ describe('util.readClose', function() {
       const string = ''
       const i = 0
       assert.isNotOk(util.readClose(string, i))
+    })
+  })
+})
+
+describe('util.readVector', function() {
+  describe('reads a vector repr, return the index of the end + 1 and a list that represents the vector, falsy on failure', function() {
+    it('can read a well formed vector', function() {
+      const vector = '[1,2,3]'
+      const l = List([7, List([F(1), F(2), F(3)])])
+      assert(util.readVector(vector, 0).equals(l))
     })
   })
 })

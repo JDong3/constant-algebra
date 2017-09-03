@@ -8,4 +8,4 @@ const i = 0
 
 //console.log(util.readNumberFailed(0, 1, string))
 //console.log(util.readNumber('/123', 0))
-console.log(util.readNumber('abc', 0))
+console.log(util.readVector('[1,2,3]', 0))
