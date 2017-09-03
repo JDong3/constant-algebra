@@ -57,8 +57,7 @@ const util = {
     //console.log('string:', string, 'i:', i, 'divNext:', divNext, 'res:', res)
     if(((divNext && res.size > 0) || res.size === 0) && util.readClose(string, i)) {
       return List([i, res])
-    }
-    if(!divNext) {
+    } else if(!divNext) {
       const result = util.readNumber(string, i)
       if (!result) {
         return undefined
@@ -91,43 +90,41 @@ const util = {
     return List([step2.get(0)+1, step2.get(1)])
   },
 
-  readMatrixContents: (string, i, divNext=false) => {
-    if(!divNext) {
-      // REVIEW: questionalble choice
-      if (!util.readCloseFailed(i, util.readClose(string, i))) {
-        return i
-      }
-
-      const newI = util.readVector(string, i)
-      if (util.readVectorFailed(i, newI, string.slice(i, newI))) {
-        return -1
+  readMatrixContents: (string, i, divNext=false, res=EMPTY_LIST) => {
+    console.log('string:', string, 'i:', i, 'devNext:', divNext, 'res:', res)
+    if (((divNext && res.size > 0) || res.size === 0) && util.readClose(string, i)) {
+      return res
+    } else if(!divNext) {
+      const result = util.readVector(string, i)
+      if (!result) {
+        return undefined
       } else {
-        return util.readMatrixContents(string, newI, true)
+        return util.readMatrixContents(string, result.get(0), true, res.push(result.get(1)))
       }
     } else {
-      const newI = util.readDiv(string, i)
-      if (util.readDivFailed(i, newI)) {
-        return -1
+      const result = util.readDiv(string, i)
+      if (!result) {
+        return undefined
       } else {
-        return util.readMatrixContents(string, newI, false)
+        return util.readMatrixContents(string, i+1, false, res)
       }
     }
   },
 
   readMatrix: (string, i) => {
     const step1 = util.readOpen(string, i)
-    if (util.readOpenFailed(i, step1)) {
-      return -1
+    if (!step1) {
+      return undefined
     }
     const step2 = util.readMatrixContents(string, step1)
-    if (util.readMatrixContentsFailed(step2)) {
-      return -1
+    if (!step2) {
+      return undefined
     }
     const step3 = util.readClose(string, step2)
-    if(util.readCloseFailed(step3)) {
-      return -1
+    if(!step3) {
+      return undefines
     }
-    return step3
+    return step2
   },
 
   removeSpaces: (string) => (

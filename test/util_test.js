@@ -127,6 +127,11 @@ describe('util.readVector', function() {
       const vector = '[1,2,3]'
       const l = List([7, List([F(1), F(2), F(3)])])
       assert(util.readVector(vector, 0).equals(l))
+    }),
+    it('can read a well formed vector with fractions', function() {
+      const vector = '[1/2,2/3,123/456]'
+      const l = List([17, List([F(1, 2), F(2, 3), F(123, 456)])])
+      assert(util.readVector(vector, 0).equals(l))
     })
   })
 })
