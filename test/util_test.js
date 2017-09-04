@@ -135,3 +135,11 @@ describe('util.readVector', function() {
     })
   })
 })
+
+describe('util.readMatrix', function() {
+  describe('reads a matirx repr, return the list that represents the matrix, falsy on failure', function() {
+    it('can read a well formed matrix', function() {
+
+    })
+  })
+})

@@ -6,6 +6,7 @@ const emptyCharAt = ''
 const numbers = List(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
 const dividers = List([','])
 const slash = '/'
+const leftPad = require('left-pad')
 
 const EMPTY_LIST = List()
 
@@ -91,7 +92,7 @@ const util = {
   },
 
   readMatrixContents: (string, i, divNext=false, res=EMPTY_LIST) => {
-    console.log('string:', string, 'i:', i, 'devNext:', divNext, 'res:', res)
+    //console.log('string:', string, 'i:', i, 'devNext:', divNext, 'res:', res)
     if (((divNext && res.size > 0) || res.size === 0) && util.readClose(string, i)) {
       return res
     } else if(!divNext) {
@@ -120,16 +121,12 @@ const util = {
     if (!step2) {
       return undefined
     }
-    const step3 = util.readClose(string, step2)
-    if(!step3) {
-      return undefines
-    }
     return step2
   },
 
   removeSpaces: (string) => (
     List(string.split('')).filter((element) => (
-      element.equals(' ')
+      element !== ' '
     )).reduce((a, b) => (
       a + b), '')
   ),
@@ -155,6 +152,52 @@ const util = {
       }
     } else {
       return undefined
+    }
+  },
+  parseMatrix: (string) => (
+    util.readMatrix(util.removeSpaces(string))
+  ),
+
+  matrixToStringListVerbose: (matrix, max=0, padding='  ') => {
+    const vectorToString = (vector) => (
+      vector.map((element, index) => {
+        if (index == 0) {
+          return '[ ' + util.fractionToString(element)
+        } else if (index == vector.size - 1) {
+          return padding + util.fractionToString(element) + ' ]'
+        } else {
+          return padding + util.fractionToString(element)
+        }
+      })
+    )
+    return matrix.map((vector) => (
+      vectorToString(vector)
+    ))
+  },
+
+  matrixToStringList: (matrix) => {
+    const max = maxLengthOfFraction(matrix)
+    const padding = '  '
+    return matrixToStringListVerbose(matrix, max, padding)
+  },
+
+  maxLengthOfFraction: (matrix) => (
+    matrix.reduce((vector) => (
+      vector.reduce((a, b) => {
+        if (util.fractionToString(a).length > util.fractionToString(b).length) {
+          return a
+        } else {
+          return b
+        }
+      }, 0)
+    ), 0)
+  )
+
+  frctionToString(fraction) => {
+    if(fraction.d === 1) {
+      return (fraction.s * fraction.n).toString()
+    } else {
+      return (fraction.s * fraction.n).toString() + '/' + fraction.d.toString()
     }
   }
 }
