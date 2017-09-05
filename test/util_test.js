@@ -2,6 +2,7 @@ const util = require('..').util
 const assert = require('chai').assert
 const F = require('mathjs').fraction
 const List = require('immutable').List
+const m = require('..').matrices
 
 describe('util.parseNumber', function() {
   describe('parses a number and give the fraction that represents it', function() {
@@ -140,6 +141,73 @@ describe('util.readMatrix', function() {
   describe('reads a matirx repr, return the list that represents the matrix, falsy on failure', function() {
     it('can read a well formed matrix', function() {
 
+    })
+  })
+})
+
+describe('util.fractionToString', function() {
+  describe('returns a string repr of a fraction', function() {
+    it('can stringify a fraction with demoninator 1', function() {
+      const fraction = F(50)
+      assert(util.fractionToString(fraction) === '50')
+    }),
+    it('can stringify a negative fraction with demoninator 1', function() {
+      const fraction = F(-3)
+      assert(util.fractionToString(fraction) === '-3')
+    }),
+    it('can stringify a fraction with demoninator not 1', function() {
+      const fraction = F(1, 50)
+      assert(util.fractionToString(fraction) === '1/50')
+    }),
+    it('can stringify a negative fraction with demnominator not 1', function() {
+      const fraction = F(-5, 2)
+      assert(util.fractionToString(fraction) === '-5/2')
+    })
+  })
+})
+
+describe('util.stringRepr', function() {
+  describe('returns a matrix of stringReprs of the fractions', function() {
+    it('can give the string repr of a single element matrix', function() {
+      const m = List([List([F(1, 3)])])
+      const l = List([List(['1/3'])])
+      assert(util.stringRepr(m).equals(l))
+    }),
+    it('can give the strng repr of a 2x2 matrix', function() {
+      const l = List([List(['0', '1']),
+                      List(['2', '3'])])
+      assert(util.stringRepr(m.s22).equals(l))
+    })
+  })
+})
+
+describe('util.maxLengthOfStringRepr', function() {
+  describe('gives the max length of all the string reprs of the fractions within a matrix', function() {
+    it('can give the MLF of a matrix with a single entry', function() {
+      const m = List([List(['-1/2'])])
+      const l = List([4])
+      assert(util.maxLengthOfStringRepr(m).equals(l))
+    }),
+    it('can giv ethe MLF of a 2x2 matrix', function() {
+      const m = List([List(['1', '2']),
+                      List(['33', '-1/15'])])
+      const l = List([2, 5])
+      assert(util.maxLengthOfStringRepr(m).equals(l))
+    })
+  })
+})
+
+describe('util.matrixToStringList', function() {
+  describe('gives a list of vector reprs of a matrix', function() {
+    it('can give a list of vector reprs of a single element matrix', function() {
+      const l = List(['[ 1 ]'])
+      assert(util.matrixToStringList(m.i11).equals(l))
+    }),
+    it('can give a list of vector reprs of a 2x3 matrix', function() {
+      const l = List(['[ 1  2    3 ]', '[ 4  5  6/7 ]'])
+      const m = List([List([F(1), F(2), F(3)]),
+                      List([F(4), F(5), F(6/7)])])
+      assert(util.matrixToStringList(m).equals(l))
     })
   })
 })

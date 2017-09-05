@@ -5,7 +5,7 @@ const EMPTY_LIST = List()
 const ZERO = F(0)
 
 const lib = {
-  
+
   mb: {
     isIdentity: (matrix) => (
       lib.mb.isSquare(matrix) &&
@@ -139,13 +139,13 @@ const lib = {
         ))
       ))
     ),
-    transpose: (matrix, i=0, res=EMPTY_LIST) => {
-      if (i >= matrix.get(0).size) {
-        return res
-      } else {
-        return lib.mm.transpose(matrix, i+1, res.push(lib.mv.column(matrix, i)))
-      }
-    }
+    transpose: (matrix) => (
+      matrix.get(0).map((element, index) => (
+        matrix.map((vector) => (
+          vector.get(index)
+        ))
+      ))
+    )
   },
   mn: {
     antiTrace: (matrix) => (

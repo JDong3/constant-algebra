@@ -1,11 +1,9 @@
 const util = require('.').util
 const List = require('immutable').List
 const slash = '/'
-
-const string = 'abc'
-const i = 0
+const F = require('mathjs').fraction
 
 
-//console.log(util.readNumberFailed(0, 1, string))
-//console.log(util.readNumber('/123', 0))
-console.log(util.parseMatrix('[[1, 2, 3], [4, 5, 6], [7 ,8 ,9 ]]'))
+const m = List([List([F(1), F(2), F(3)]),
+                List([F(4), F(5), F(6/7)])])
+console.log(util.matrixToStringList(m))

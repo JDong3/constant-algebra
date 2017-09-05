@@ -158,42 +158,46 @@ const util = {
     util.readMatrix(util.removeSpaces(string))
   ),
 
-  matrixToStringListVerbose: (matrix, max=0, padding='  ') => {
-    const vectorToString = (vector) => (
-      vector.map((element, index) => {
-        if (index == 0) {
-          return '[ ' + util.fractionToString(element)
-        } else if (index == vector.size - 1) {
-          return padding + util.fractionToString(element) + ' ]'
-        } else {
-          return padding + util.fractionToString(element)
-        }
-      })
+  matrixToStringList: (matrix, padding = '  ') => {
+    const matrixOfStringRepr = util.stringRepr(matrix)
+    const maxLength = util.maxLengthOfStringRepr(matrixOfStringRepr)
+    return (
+      matrixOfStringRepr.map((vectorOfStringRepr, index) => (
+        '[ ' +
+        vectorOfStringRepr.reduce((a, b, i) => (
+          leftPad(a, maxLength.get(i)) + padding + leftPad(b, maxLength.get(i)))
+        ) +
+        ' ]')
+      )
     )
-    return matrix.map((vector) => (
-      vectorToString(vector)
-    ))
   },
 
-  matrixToStringList: (matrix) => {
-    const max = maxLengthOfFraction(matrix)
-    const padding = '  '
-    return matrixToStringListVerbose(matrix, max, padding)
-  },
-
-  maxLengthOfFraction: (matrix) => (
-    matrix.reduce((vector) => (
+  maxLengthOfStringRepr: (matrix) => (
+    matrix.get(0).map((element, index) => (
+      matrix.map((vector) => (
+        vector.get(index)
+      ))
+    )).map((vector) => (
       vector.reduce((a, b) => {
-        if (util.fractionToString(a).length > util.fractionToString(b).length) {
-          return a
+        if(a.length > b.length) {
+          return a.length
         } else {
-          return b
+          return b.length
         }
-      }, 0)
-    ), 0)
-  )
+      }, '')
+    ))
+  ),
 
-  frctionToString(fraction) => {
+  stringRepr: (matrix) => (
+    matrix.map((vector) => (
+      vector.map((element) => (
+        util.fractionToString(element)
+      ))
+    ))
+  ),
+
+
+  fractionToString: (fraction) => {
     if(fraction.d === 1) {
       return (fraction.s * fraction.n).toString()
     } else {
@@ -202,9 +206,3 @@ const util = {
   }
 }
 module.exports = util
-// IDEA:
-// 1. check for matching parens
-// 2. remove outer brackets
-// 3. get ies of top level dividers
-// 4. get a list of items separated by the top level dividers
-// 5. confirm that each of those items are 'vector reprs'
