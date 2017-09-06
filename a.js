@@ -3,7 +3,15 @@ const List = require('immutable').List
 const slash = '/'
 const F = require('mathjs').fraction
 
-
-const m = List([List([F(1), F(2), F(3)]),
-                List([F(4), F(5), F(6/7)])])
-console.log(util.matrixToStringList(m))
+function coolFunc(vector, vector2) {
+  console.log(vector, vector2)
+  console.log(vector.length === vector2.length)
+  console.log(
+    vector.every((element, i) => (
+      element.equals(vector2[i])
+    ))
+  )
+}
+const v = [f(1), f(2), f(3)]
+const v2 = [f(1), f(2), f(3)]
+coolFunc(v, v)

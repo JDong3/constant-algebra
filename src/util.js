@@ -200,13 +200,13 @@ const util = {
       return util.matrixToArray(matrix, i+1, update)
     }
   },
-  arrayVectorEquals: (vector, vector2) (
-    vector.length === vecto2.length &&
+  arrayVectorEquals: (vector, vector2) => (
+    vector.length === vector2.length &&
     vector.every((element, i) => (
       element.equals(vector2[i])
     ))
   ),
-  arrayMatrixEquals: (matrix, matrix2) (
+  arrayMatrixEquals: (matrix, matrix2) => (
     matrix.length === matrix2.length &&
     matrix[0].length === matrix2[0].length &&
     matrix.every((vector, i) => (

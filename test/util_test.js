@@ -212,8 +212,42 @@ describe('util.matrixToStringList', function() {
   })
 })
 
-describe('util.arrayEquals', function() {
+describe('util.arrayVectorEquals', function() {
+  describe('gives array vector equality of two vectors', function() {
+    it('', function() {
+      const v = [F(1), F(2), F(3)]
+      const v2 = [F(1), F(2), F(3)]
+      assert(util.arrayVectorEquals(v, v2))
+    }),
+    it('', function() {
+      const v = [F(1), F(2), F(3)]
+      const v2 = [F(1), F(2), F(4)]
+      assert.isNotOk(util.arrayVectorEquals(v, v2))
+    })
+  })
+})
 
+describe('util.arrayMatrixEquals', function() {
+  describe('gives matrix vector equality of two matrices', function() {
+    it('', function() {
+      const m = [[F(1), F(2), F(3)],
+                 [F(4), F(5), F(6)],
+                 [F(7), F(8), F(9)]]
+      const m2 = [[F(1), F(2), F(3)],
+                  [F(4), F(5), F(6)],
+                  [F(7), F(8), F(9)]]
+      assert(util.arrayMatrixEquals(m, m2))
+    }),
+    it('', function() {
+      const m = [[F(1), F(2), F(3)],
+                 [F(4), F(5), F(6)],
+                 [F(7), F(8), F(9)]]
+      const m2 = [[F(1), F(2), F(3)],
+                  [F(4), F(5), F(7)],
+                  [F(7), F(8), F(9)]]
+      assert.isNotOk(util.arrayMatrixEquals(m, m2))
+    })
+  })
 })
 
 describe('util.vectoToArray', function() {
