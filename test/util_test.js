@@ -250,10 +250,32 @@ describe('util.arrayMatrixEquals', function() {
   })
 })
 
-describe('util.vectoToArray', function() {
+describe('util.vectorToArrayVector', function() {
   describe('gives the js Array representation of an Immutable vector', function() {
     it('can give ... for a single element vector', function() {
+      const v = List([F(1)])
+      const l = [F(1)]
+      assert(util.arrayVectorEquals(util.vectorToArrayVector(v), l))
+    }),
+    it('can give ... for a length 3 vector', function() {
+      const v = List([F(1), F(2), F(3)])
+      const l = [F(1), F(2), F(3)]
+      assert(util.arrayVectorEquals(util.vectorToArrayVector(v), l))
+    })
+  })
+})
 
+describe('util.matrixToArrayMatrix', function() {
+  describe('gives the js Array representation of an Immutable matrix', function() {
+    it('can give ... for a single element vector', function() {
+      const mat = m.i11
+      const l = [[1]]
+      assert(util.arrayMatrixEquals(util.matrixToArrayMatrix(mat), l))
+    }),
+    it('can give ... for a 3x3 vector (m.s33)', function() {
+      const mat = m.s33
+      const l = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+      assert(util.arrayMatrixEquals(util.matrixToArrayMatrix(mat), l))
     })
   })
 })

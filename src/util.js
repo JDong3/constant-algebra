@@ -184,20 +184,20 @@ const util = {
       return (fraction.s * fraction.n).toString() + '/' + fraction.d.toString()
     }
   },
-  vectorToArray: (vector, i=0, res=[]) => {
-    if (i >= vector.length) {
+  vectorToArrayVector: (vector, i=0, res=[]) => {
+    if (i >= vector.size) {
       return res
     } else {
-      const update = res.push(vector[i])
-      return util.vectorToArray(vector, i+1, update)
+      res.push(vector.get(i))
+      return util.vectorToArrayVector(vector, i+1, res)
     }
   },
-  matrixToArray: (matrix, i, res=[]) => {
-    if (i >= matrix.length) {
+  matrixToArrayMatrix: (matrix, i=0, res=[]) => {
+    if (i >= matrix.size) {
       return res
     } else {
-      const update = res.push(util.vectorToArray(matrix.get(i)))
-      return util.matrixToArray(matrix, i+1, update)
+      res.push(util.vectorToArrayVector(matrix.get(i)))
+      return util.matrixToArrayMatrix(matrix, i+1, res)
     }
   },
   arrayVectorEquals: (vector, vector2) => (
