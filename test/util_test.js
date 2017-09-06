@@ -211,3 +211,15 @@ describe('util.matrixToStringList', function() {
     })
   })
 })
+
+describe('util.arrayEquals', function() {
+
+})
+
+describe('util.vectoToArray', function() {
+  describe('gives the js Array representation of an Immutable vector', function() {
+    it('can give ... for a single element vector', function() {
+
+    })
+  })
+})

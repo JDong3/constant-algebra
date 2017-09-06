@@ -1,6 +1,6 @@
 {
   "name": "constant-algebra",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "would not recommend using, structure not finalized",
   "main": "index.js",
   "directories": {

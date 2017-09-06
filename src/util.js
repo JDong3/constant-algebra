@@ -1,22 +1,16 @@
-const List = require('immutable').List
 const F = require('mathjs').fraction
-const openParens = List(['(', '[', '{'])
+const List = require('immutable').List
+
 const closeParens = List([')', ']', '}'])
-const emptyCharAt = ''
-const numbers = List(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
 const dividers = List([','])
-const slash = '/'
-const leftPad = require('left-pad')
-
+const emptyCharAt = ''
 const EMPTY_LIST = List()
+const leftPad = require('left-pad')
+const numbers = List(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
+const openParens = List(['(', '[', '{'])
+const slash = '/'
 
-/**
- * readThing starts reading the thing in 'string' at index 'i' and returns the index
- * at which the thing finishes + 1, or the same index as the input if the thing doesn't
- * exist at index 'i'
- */
 const util = {
-
   readNumber: (string, i, res='') => {
     if(!(numbers.includes(string.charAt(i)) || string.charAt(i) === slash)) {
       const parsedNumber = util.parseNumber(res)
@@ -29,7 +23,6 @@ const util = {
       return util.readNumber(string, i+1, res+string.charAt(i))
     }
   },
-
   readDiv: (string, i) => {
     if(dividers.includes(string.charAt(i))) {
       return true
@@ -37,7 +30,6 @@ const util = {
       return false
     }
   },
-
   readOpen: (string, i) => {
     if(openParens.includes(string.charAt(i))) {
       return true
@@ -45,7 +37,6 @@ const util = {
       return false
     }
   },
-
   readClose: (string, i) => {
     if(closeParens.includes(string.charAt(i))) {
       return true
@@ -53,7 +44,6 @@ const util = {
       return false
     }
   },
-
   readVectorContents: (string, i, divNext=false, res=EMPTY_LIST) => {
     //console.log('string:', string, 'i:', i, 'divNext:', divNext, 'res:', res)
     if(((divNext && res.size > 0) || res.size === 0) && util.readClose(string, i)) {
@@ -74,7 +64,6 @@ const util = {
       }
     }
   },
-
   readVector: (string, i) => {
     const step1 = util.readOpen(string, i)
     if (!step1) {
@@ -90,7 +79,6 @@ const util = {
     }
     return List([step2.get(0)+1, step2.get(1)])
   },
-
   readMatrixContents: (string, i, divNext=false, res=EMPTY_LIST) => {
     //console.log('string:', string, 'i:', i, 'devNext:', divNext, 'res:', res)
     if (((divNext && res.size > 0) || res.size === 0) && util.readClose(string, i)) {
@@ -111,7 +99,6 @@ const util = {
       }
     }
   },
-
   readMatrix: (string, i) => {
     const step1 = util.readOpen(string, i)
     if (!step1) {
@@ -123,14 +110,12 @@ const util = {
     }
     return step2
   },
-
   removeSpaces: (string) => (
     List(string.split('')).filter((element) => (
       element !== ' '
     )).reduce((a, b) => (
       a + b), '')
   ),
-
   parseNumber: (string) => {
     const invalidString = (
       string.length === 0 ||
@@ -157,7 +142,6 @@ const util = {
   parseMatrix: (string) => (
     util.readMatrix(util.removeSpaces(string))
   ),
-
   matrixToStringList: (matrix, padding = '  ') => {
     const matrixOfStringRepr = util.stringRepr(matrix)
     const maxLength = util.maxLengthOfStringRepr(matrixOfStringRepr)
@@ -171,7 +155,6 @@ const util = {
       )
     )
   },
-
   maxLengthOfStringRepr: (matrix) => (
     matrix.get(0).map((element, index) => (
       matrix.map((vector) => (
@@ -187,7 +170,6 @@ const util = {
       }, '')
     ))
   ),
-
   stringRepr: (matrix) => (
     matrix.map((vector) => (
       vector.map((element) => (
@@ -195,14 +177,41 @@ const util = {
       ))
     ))
   ),
-
-
   fractionToString: (fraction) => {
     if(fraction.d === 1) {
       return (fraction.s * fraction.n).toString()
     } else {
       return (fraction.s * fraction.n).toString() + '/' + fraction.d.toString()
     }
-  }
+  },
+  vectorToArray: (vector, i=0, res=[]) => {
+    if (i >= vector.length) {
+      return res
+    } else {
+      const update = res.push(vector[i])
+      return util.vectorToArray(vector, i+1, update)
+    }
+  },
+  matrixToArray: (matrix, i, res=[]) => {
+    if (i >= matrix.length) {
+      return res
+    } else {
+      const update = res.push(util.vectorToArray(matrix.get(i)))
+      return util.matrixToArray(matrix, i+1, update)
+    }
+  },
+  arrayVectorEquals: (vector, vector2) (
+    vector.length === vecto2.length &&
+    vector.every((element, i) => (
+      element.equals(vector2[i])
+    ))
+  ),
+  arrayMatrixEquals: (matrix, matrix2) (
+    matrix.length === matrix2.length &&
+    matrix[0].length === matrix2[0].length &&
+    matrix.every((vector, i) => (
+      util.arrayVectorEquals(vector, matrix2[i])
+    ))
+  )
 }
 module.exports = util
