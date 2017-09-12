@@ -193,6 +193,12 @@ describe('util.maxLengthOfStringRepr', function() {
                       List(['33', '-1/15'])])
       const l = List([2, 5])
       assert(util.maxLengthOfStringRepr(m).equals(l))
+    }),
+    it('edge case 1', function() {
+      const m = List([List(['1', '2', '3/4']),
+                      List(['4', '4', '4'])])
+      const l = List([1, 1, 3])
+      assert(util.maxLengthOfStringRepr(m).equals(l))
     })
   })
 })
@@ -204,7 +210,7 @@ describe('util.matrixToStringList', function() {
       assert(util.matrixToStringList(m.i11).equals(l))
     }),
     it('can give a list of vector reprs of a 2x3 matrix', function() {
-      const l = List(['[ 1  2    3 ]', '[ 4  5  6/7 ]'])
+      const l = List(['[ -1  2    3 ]', '[  4  5  6/7 ]'])
       const m = List([List([F(1), F(2), F(3)]),
                       List([F(4), F(5), F(6/7)])])
       assert(util.matrixToStringList(m).equals(l))

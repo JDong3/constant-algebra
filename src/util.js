@@ -163,11 +163,13 @@ const util = {
     )).map((vector) => (
       vector.reduce((a, b) => {
         if(a.length > b.length) {
-          return a.length
+          return a
         } else {
-          return b.length
+          return b
         }
       }, '')
+    )).map((element) => (
+      element.length
     ))
   ),
   stringRepr: (matrix) => (
