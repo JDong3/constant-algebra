@@ -18,8 +18,8 @@
     "mocha": "^3.5.3"
   },
   "scripts": {
-    "test": "test.bat",
-    "build": "babel src -d lib"
+    "test": "mocha",
+    "build": "babel src -d npm_build"
   },
   "repository": {
     "type": "git",
