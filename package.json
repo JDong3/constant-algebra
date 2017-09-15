@@ -19,7 +19,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "babel src -d npm_build/src"
+    "build": "babel src -d npm_build/src",
+    "build2": "babel"
   },
   "repository": {
     "type": "git",

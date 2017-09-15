@@ -1,4 +1,3 @@
-npm run build
-cp ./index.js ./npm_build/index.js
-cp ./package.json ./npm_build/package.json
-cp ./package-lock.json ./npm_build/package-lock.json
+
+./node_modules/.bin/babel src --out-dir npm_build/src
+./node_modules/.bin/babel index.js --out-file npm_build/index.js
