@@ -12,11 +12,14 @@
     "mathjs": "^3.16.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
     "chai": "^4.1.2",
     "mocha": "^3.5.3"
   },
   "scripts": {
-    "test": "test.bat"
+    "test": "test.bat",
+    "build": "babel src -d lib"
   },
   "repository": {
     "type": "git",
