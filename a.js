@@ -10,7 +10,7 @@ const ml = List([List([F(1), F(1), F(6,7)]),
 
 const lm = List([List([F(1), F(2), F(3)]),
                 List([F(4), F(5), F(6/7)])])
-util.matrixToStringList(lm).every((e) => {
+util.matrixToStringList(ml).every((e) => {
   console.log(e)
   return true
 })

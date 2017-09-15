@@ -99,6 +99,14 @@ describe('mm.cofactors', function() {
   })
 })
 
+describe('mm.inverse', function() {
+  describe('gives the inverse matrix of a matrix', function() {
+    it('can give the inverse of a 1x1 identity matrix', function() {
+      
+    })
+  })
+})
+
 describe('mm.minor', function() {
   describe('gives the minor of a matrix with the rth row and cth column removed', function() {
     it('can remove the 1th row and 1th column from an identity matrix', function() {
