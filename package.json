@@ -20,7 +20,7 @@
   "scripts": {
     "test": "mocha",
     "build": "babel src -d npm_build/src",
-    "build2": "babel",
+    "build2": "babel"
   },
   "keywords": [
     "math",
