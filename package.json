@@ -1,7 +1,7 @@
 {
   "name": "constant-algebra",
   "version": "1.0.5",
-  "description": "would not recommend using, structure not finalized",
+  "description": "would not recommend using, expect breaking changes",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -22,18 +22,8 @@
     "build": "babel src -d npm_build/src",
     "build2": "babel",
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xxcandiez/constant-algebra.git"
-  },
   "keywords": [
     "math",
     "algebra"
-  ],
-  "author": "Joseph Dong",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/xxcandiez/constant-algebra/issues"
-  },
-  "homepage": "https://github.com/xxcandiez/constant-algebra#readme"
+  ]
 }
