@@ -1,4 +1,3 @@
-const a = 'test'
 const src = require('./src')
 
 const mb = src.lib.mb
