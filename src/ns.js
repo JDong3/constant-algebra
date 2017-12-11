@@ -1,14 +1,18 @@
 //our namespace contains our main libraary, resources, utility, ver
 //naming key: m-matrix, v-vector, b-boolean, s-string
+
+const List = require('immutable').List
+const F = require('fraction.js')
 const EMPTY_LIST = List()
 const ZERO = F(0)
+
 
 const ns = {
   lib: {
     mb: {
       isIdentity: (matrix) => (
-        lib.mb.isSquare(matrix) &&
-        lib.mb.isIdentityGivenisSquare(matrix)
+        ns.lib.mb.isSquare(matrix) &&
+        ns.lib.mb.isIdentityGivenisSquare(matrix)
       ),
       isIdentityGivenisSquare: (matrix) => (
         matrix.every((vector, row) => (
@@ -19,11 +23,11 @@ const ns = {
         ))
       ),
       isSquare: (matrix) => (
-        lib.mn.rows(matrix) === lib.mn.columns(matrix)
+        ns.lib.mn.rows(matrix) === ns.lib.mn.columns(matrix)
       ),
       sameSize: (matrix, matrix2) => (
-        lib.mn.rows(matrix) === lib.mn.rows(matrix2) &&
-        lib.mn.columns(matrix) === lib.mn.columns(matrix2)
+        ns.lib.mn.rows(matrix) === ns.lib.mn.rows(matrix2) &&
+        ns.lib.mn.columns(matrix) === ns.lib.mn.columns(matrix2)
       )
     },
     mm: {
@@ -35,19 +39,19 @@ const ns = {
         ))
       ),
       adjugate: (matrix) => (
-        lib.mm.transpose(lib.mm.cofactors(matrix))
+        ns.lib.mm.transpose(ns.lib.mm.cofactors(matrix))
       ),
       cofactors: (matrix) => (
         matrix.map((vector, row) => (
           vector.map((element, column) => (
-            lib.mn.cofactor(matrix, row, column)
+            ns.lib.mn.cofactor(matrix, row, column)
           ))
         ))
       ),
       inverse: (matrix) => (
-        lib.mm.scale(
-          lib.mm.adjugate(
-            matrix, F(1, lib.mn.det(matrix))))
+        ns.lib.mm.scale(
+          ns.lib.mm.adjugate(
+            matrix, F(1, ns.lib.mn.det(matrix))))
       ),
       minor: (matrix, row, column) => (
         matrix.delete(row)
@@ -59,27 +63,27 @@ const ns = {
         if (i >= m1.size) {
           return res
         } else {
-          const update = res.push(lib.mm.subMul(m1.get(i), m2))
-          return lib.mm.mul(m1, m2, i+1, update)
+          const update = res.push(ns.lib.mm.subMul(m1.get(i), m2))
+          return ns.lib.mm.mul(m1, m2, i+1, update)
         }
       },
       subMul: (v, m, i=0, res=EMPTY_LIST) => {
         if (i >= m.get(0).size) {
           return res
         } else {
-          const update = res.push(lib.vn.dot(v, lib.mv.column(m, i)))
-          return lib.mm.subMul(v, m, i+1, update)
+          const update = res.push(ns.lib.vn.dot(v, ns.lib.mv.column(m, i)))
+          return ns.lib.mm.subMul(v, m, i+1, update)
         }
       },
       rowAdd: (m, r1, r2, n=1) => (
-        m.set(r1, lib.mm.rowAfterAdding(m, r1, r2, n))
+        m.set(r1, ns.lib.mm.rowAfterAdding(m, r1, r2, n))
       ),
       rowAfterAdding: (m, r1, r2, n=1) => (
-        lib.vv.add(
-          m.get(r1), lib.vv.scale(m.get(r2), n))
+        ns.lib.vv.add(
+          m.get(r1), ns.lib.vv.scale(m.get(r2), n))
       ),
       rowScale: (m, r, n=1) => (
-        m.set(r, lib.vv.scale(m.get(r), n))
+        m.set(r, ns.lib.vv.scale(m.get(r), n))
       ),
       rowSwap: (m, r1, r2) => {
         const step1 = m.set(r1, m.get(r2))
@@ -87,21 +91,21 @@ const ns = {
         return step2
       },
       rref: (m, r=0, c=0) => {
-        const pivotRow = lib.mm.pivot(m, r, c)
+        const pivotRow = ns.lib.mm.pivot(m, r, c)
         if (c >= m.get(0).size) {
           return m
         } else if (pivotRow !== undefined) {
           // step1: scale the the pivot to have a value of 1
-          const step1 = lib.mm.rowScale(m, pivotRow, m.get(pivotRow).get(c).inverse())
+          const step1 = ns.lib.mm.rowScale(m, pivotRow, m.get(pivotRow).get(c).inverse())
           // step2: swap the row with the pivot and the row you are trying to rrefify
-          const step2 = lib.mm.rowSwap(step1, pivotRow, r)
+          const step2 = ns.lib.mm.rowSwap(step1, pivotRow, r)
           // step3: use row addition to make the column that you are trying to rrefify
           //   be the only cell that has a non-zero value
-          const toApplyPivot = lib.mm.applyPivot(step2, r, c)
+          const toApplyPivot = ns.lib.mm.applyPivot(step2, r, c)
           // step4: attempty to rrefify the next column and row
-          return lib.mm.rref(toApplyPivot, r+1, c+1)
+          return ns.lib.mm.rref(toApplyPivot, r+1, c+1)
         } else {
-          return lib.mm.rref(m, r, c+1)
+          return ns.lib.mm.rref(m, r, c+1)
         }
       },
       /**
@@ -113,22 +117,22 @@ const ns = {
        *   c exists
        */
       pivot: (m, r, c) => {
-        if (c >= lib.mn.columns(m) || r >= lib.mn.rows(m)) {
+        if (c >= ns.lib.mn.columns(m) || r >= ns.lib.mn.rows(m)) {
           return undefined
         } else if (!m.get(r).get(c).equals(0)) {
           return r
         } else {
-          return lib.mm.pivot(m, r+1, c)
+          return ns.lib.mm.pivot(m, r+1, c)
         }
       },// find a pivot for the nth column, starting from row r
       applyPivot: (m, r, c, i=0) => {
         if (i >= m.size) {
           return m
         } else if (r !== i) {
-          const update = lib.mm.rowAdd(m, i, r, m.get(i).get(c).neg())
-          return lib.mm.applyPivot(update, r, c, i+1)
+          const update = ns.lib.mm.rowAdd(m, i, r, m.get(i).get(c).neg())
+          return ns.lib.mm.applyPivot(update, r, c, i+1)
         } else {
-          return lib.mm.applyPivot(m, r, c, i+1)
+          return ns.lib.mm.applyPivot(m, r, c, i+1)
         }
       },
       sub: (matrix, matrix2) => (
@@ -148,7 +152,7 @@ const ns = {
     },
     mn: {
       antiTrace: (matrix) => (
-        lib.mv.antiDiagonal(matrix).reduce((a, b) => (
+        ns.lib.mv.antiDiagonal(matrix).reduce((a, b) => (
           a.add(b)
         ))
       ),
@@ -156,8 +160,8 @@ const ns = {
         F(-1).pow(column+row)
              .mul(matrix.get(row).get(column))
              .mul(
-               lib.mn.det(
-                 lib.mm.minor(
+               ns.lib.mn.det(
+                 ns.lib.mm.minor(
                    matrix, row, column)))
       ),
       columns: (matrix) => (
@@ -167,25 +171,25 @@ const ns = {
         if (matrix.size === 1) {
           return matrix.get(0).get(0)
         } else {
-          return lib.mn.sumRowCofactors(matrix, 0)
+          return ns.lib.mn.sumRowCofactors(matrix, 0)
         }
       },
       sumRowCofactors: (matrix, row, i=0, res=ZERO) => {
-        if (i >= lib.mn.columns(matrix)) {
+        if (i >= ns.lib.mn.columns(matrix)) {
           return res
         } else {
-          //console.log(lib.mn.cofactor(matrix, row, i))
-          return lib.mn.sumRowCofactors(
-            matrix, row, i+1, res.add(lib.mn.cofactor(matrix, row, i)))
+          //console.log(ns.lib.mn.cofactor(matrix, row, i))
+          return ns.lib.mn.sumRowCofactors(
+            matrix, row, i+1, res.add(ns.lib.mn.cofactor(matrix, row, i)))
         }
       },
       mulAntiTrace: (matrix) => (
-        lib.mv.antiDiagonal(matrix).reduce((a, b) => (
+        ns.lib.mv.antiDiagonal(matrix).reduce((a, b) => (
           a.mul(b)
         ))
       ),
       mulTrace: (matirx) => (
-        lib.mv.diagonal(matrix).reduce((a, b) => (
+        ns.lib.mv.diagonal(matrix).reduce((a, b) => (
           a.mul(b)
         ))
       ),
@@ -193,7 +197,7 @@ const ns = {
         matrix.size
       ),
       trace: (matrix) => (
-        lib.mv.diagonal(matrix).reduce((a, b) => (
+        ns.lib.mv.diagonal(matrix).reduce((a, b) => (
           a.add(b)
         ))
       )
@@ -333,7 +337,7 @@ const ns = {
         matrix.every((element) => (
           ver.is.isVector(element))) &&
         matrix.every((element) => (
-          lib.vb.sameSize(element, matrix.get(0))
+          ns.lib.vb.sameSize(element, matrix.get(0))
         ))
       ),
       isVector: (vector) => (
@@ -360,20 +364,20 @@ const ns = {
     },
     mm: {
       addDefined: (m1, m2) => (
-        lib.mb.sameSize(m1, m2)
+        ns.lib.mb.sameSize(m1, m2)
       ),
       adjugateDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m)
+        ns.lib.mb.isSquare(m)
       ),
       cofactorsDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m)
+        ns.lib.mb.isSquare(m)
       ),
       inverseDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m) &&
-        (lib.mn.det(m) !== 0)
+        ns.lib.mb.isSquare(m) &&
+        (ns.lib.mn.det(m) !== 0)
       ),
       minorDefined: (m, r, c) => (
         ver.is.isMatrix(m) &&
@@ -383,7 +387,7 @@ const ns = {
       mulDefined: (m1, m2) => (
         ver.is.isMatrix(m1) &&
         ver.is.isMatrix(m2) &&
-         lib.mn.rows(m1) === lib.mn.columns(m2)
+         ns.lib.mn.rows(m1) === ns.lib.mn.columns(m2)
       ),
       rowAddDefined: (m, r1, r2, n) => (
         ver.is.isMatrix(m) &&
@@ -393,7 +397,7 @@ const ns = {
       ),
       rowScaleDefined: (m, r, n) => (
         ver.is.isMatrix(m) &&
-        lib.mmv.rowDefined(r) &&
+        ns.lib.mmv.rowDefined(r) &&
         ver.is.isFraction(n)
       ),
       rowSwapDefined: (m, r1, r2) => (
@@ -405,7 +409,7 @@ const ns = {
         ver.is.isMatrix(m)
       ),
       subDefined: (m1, m2) => (
-        lib.mb.sameSize(m1, m2)
+        ns.lib.mb.sameSize(m1, m2)
       ),
       transposeDefined: (m) => (
         ver.is.isMatrix(m)
@@ -414,7 +418,7 @@ const ns = {
     mn: {
       antiTraceDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m)
+        ns.lib.mb.isSquare(m)
       ),
       cofactorDefined: (m, r, c) => (
         ver.is.isMatrix(m) &&
@@ -425,28 +429,28 @@ const ns = {
         ver.is.isMatrix(m)
       ),
       detDefined: (m) => (
-        ver.is.isMatrix(m) && lib.mb.isSquare(m)
+        ver.is.isMatrix(m) && ns.lib.mb.isSquare(m)
       ),
       mulAntiTraceDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m)
+        ns.lib.mb.isSquare(m)
       ),
       mulTraceDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m)
+        ns.lib.mb.isSquare(m)
       ),
       rowsDefined: (m) => (
         ver.is.isMatrix(m)
       ),
       traceDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m)
+        ns.lib.mb.isSquare(m)
       )
     },
     mv: {
       antiDiagonalDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m)
+        ns.lib.mb.isSquare(m)
       ),
       columnDefined: (m, n) => (
         ver.is.isMatrix(m) &&
@@ -455,7 +459,7 @@ const ns = {
       ),
       diagonalDefined: (m) => (
         ver.is.isMatrix(m) &&
-        lib.mb.isSquare(m)
+        ns.lib.mb.isSquare(m)
       ),
       rowDefined: (m, n) => (
         ver.is.isMatrix(m) &&
@@ -473,14 +477,14 @@ const ns = {
       dotDefined: (v1, v2) => (
         ver.is.isVector(v1) &&
         ver.is.isVector(v2) &&
-        lib.vb.sameSize(v1, v2)
+        ns.lib.vb.sameSize(v1, v2)
       )
     },
     vv: {
       addDefined: (v1, v2) => (
         ver.is.isVector(v1) &&
         ver.is.isVector(v2) &&
-        lib.vb.sameSize(v1, v2)
+        ns.lib.vb.sameSize(v1, v2)
       ),
       scaleDefined: (v, n) => (
         ver.is.isVector(v) &&
@@ -489,8 +493,10 @@ const ns = {
       subDefined: (v1, v2) => (
         ver.is.isVector(v1) &&
         ver.is.isVector(v2) &&
-        lib.vb.sameSize(v1, v2)
+        ns.lib.vb.sameSize(v1, v2)
       )
     }
   }
 }
+
+module.exports = ns
