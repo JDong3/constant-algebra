@@ -1,6 +1,4 @@
-const F = require('mathjs').fraction
 const List = require('immutable').List
-
 const closeParens = List([')', ']', '}'])
 const dividers = List([','])
 const emptyCharAt = ''
@@ -9,6 +7,7 @@ const leftPad = require('left-pad')
 const numbers = List(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
 const openParens = List(['(', '[', '{'])
 const slash = '/'
+const F = require('fraction.js')
 
 const util = {
   readNumber: (string, i, res='') => {
