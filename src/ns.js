@@ -3,9 +3,11 @@
 
 const List = require('immutable').List
 const F = require('fraction.js')
+
+const CARET = '^'
+const DECIMAL = 10
 const EMPTY_LIST = List()
 const ZERO = F(0)
-
 
 const ns = {
   lib: {
@@ -328,7 +330,35 @@ const ns = {
     }
   },
   util: {
-
+    parse: {
+      digit: (str) => {
+        const results = ns.util.regex.toRegex(CARET + str)
+        return parseInt(results.input, DECIMAL)
+      }
+    },
+    regex: {
+      digit: '\d'
+      number: ns.util.regex.toKleene(digit),
+      openParens: '\(|\{|\[',
+      closeParens: '\)|\{|\]',
+      divider: '\,',
+      vector = (
+        ns.util.regex.openParens +
+        toKleene(ns.util.regex.number +
+        ns.util.regex.divider)
+      ),
+      matrix = (
+        ns.util.regex.openParens +
+        toKleene(ns.util.regex.vector) +
+        ns.util.regex.closeParens
+      )
+      toKleene: (str) => (
+        '(' + str + ')*'
+      ),
+      toRegex: (str) => (
+        RegExp(str)
+      )
+    }
   },
   ver: {
     is: {
