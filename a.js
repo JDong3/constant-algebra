@@ -1,5 +1,3 @@
-const dig = /^\d/
-const charA = /a/
-const re = RegExp(dig.source + charA.source)
-console.log(re.exec('1a'))
-console.log(re.exec('a1a'))
+const ca = require('./')
+
+ns.util.parse.vector('(1, 2, 3)')

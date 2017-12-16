@@ -389,3 +389,101 @@ describe('ns.lib.vv.sub', function() {
     })
   })
 })
+
+//ns.util
+describe('ns.util.addNeg', function() {
+  describe('gives 1 if the number is negative, 0 otherwise', function() {
+    it('can recognise a small negative number -1', function() {
+      assert.equal(ns.util.addNeg(-1), 1)
+    }),
+    it('can recognise a 2 digit negative number -41', function() {
+      assert.equal(ns.util.addNeg(-41), 1)
+    }),
+    it('can recognise a small non negative number 0', function() {
+      assert.equal(ns.util.addNeg(0), 0)
+    }),
+    it('can recognise a small positive number 1', function() {
+      assert.equal(ns.util.addNeg(1), 0)
+    }),
+    it('can recognise a 2 digit positive number 23', function() {
+      assert.equal(ns.util.addNeg(23), 0)
+    })
+  })
+})
+describe('ns.util.sizeOfNumber', function() {
+  describe('gives the length of the number in string form', function() {
+    it('can determie the size of 0', function() {
+      assert.equal(ns.util.sizeOfNumber(0), 1)
+    }),
+    it('can determine the size of 1', function() {
+      assert.equal(ns.util.sizeOfNumber(1), 1)
+    }),
+    it('can determine the size of a negative number -1', function() {
+      assert.equal(ns.util.sizeOfNumber(-1), 2)
+    }),
+    it('can determine the size of a 2 digit positive number 25', function() {
+      assert.equal(ns.util.sizeOfNumber(25), 2)
+    }),
+    it('can determine the size of a 2 digit negative number -65', function() {
+      assert.equal(ns.util.sizeOfNumber(-65), 3)
+    })
+  })
+})
+describe('ns.util.parse.digit', function() {
+  describe('gives the digit starting at the beginning of the string', function () {
+    it('can parse a 1', function() {
+      const res = ns.util.parse.digit('1')
+      assert.equal(res.res, 1)
+      assert.equal(res.size, 1)
+    }),
+    it('can parse a 2', function() {
+      const res = ns.util.parse.digit('2')
+      assert.equal(res.res, 2)
+      assert.equal(res.size, 1)
+    }),
+    it('cannot parse 2 digits 12', function() {
+      assert.isNotOk(ns.util.parse.digit('12'))
+    }),
+    it('cannot parse a character a', function() {
+      assert.isNotOk(ns.util.parse.digit('a'))
+    }),
+    it('cannot parse a digit followed by a character 5a', function() {
+      assert.isNotOk(ns.util.parse.digit('5a'))
+    })
+  })
+})
+describe('ns.util.parse.number', function() {
+  describe('gives the number at the beginning of the string', function() {
+    it('can parse a single digit number 1', function() {
+      const res = ns.util.parse.number('1')
+      assert.equal(res.res, 1)
+      assert.equal(res.size, 1)
+    }),
+    it('can parse a double digit number 52', function() {
+      const res = ns.util.parse.number('52')
+      assert.equal(res.res, 52)
+      assert.equal(res.size, 2)
+    }),
+    it('can parse a triple digit number 987', function() {
+      const res = ns.util.parse.number('987')
+      assert.equal(res.res, 987)
+      assert.equal(res.size, 3)
+    }),
+    it('can parse a negative single digit -5', function() {
+      const res = ns.util.parse.number('-1')
+      assert.equal(res.res, -1)
+      assert.equal(res.size, 2)
+    }),
+    it('can parse a 2 digit negative number -123', function() {
+      const res = ns.util.parse.number('-123')
+      assert.equal(res.res, -123)
+      assert.equal(res.size, 4)
+    })
+    it('cannot parse a double digit number followed by a character 52a', function() {
+      assert.isNotOk(ns.util.parse.number('52a'))
+    }),
+    it('cannot parse a negative double digit number followed by a character -56b', function() {
+      assert.isNotOk(ns.util.parse.number('-56b'))
+    })
+  })
+})

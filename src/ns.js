@@ -5,6 +5,7 @@ const List = require('immutable').List
 const F = require('fraction.js')
 
 const CARET = '^'
+const CIFRAO = '$'
 const DECIMAL = 10
 const EMPTY_LIST = List()
 const ZERO = F(0)
@@ -330,33 +331,92 @@ const ns = {
     }
   },
   util: {
+    sizeOfNumber: (number) => {
+      if(Math.abs(number) < 1) {
+        return 1
+      } else {
+        return Math.floor(Math.log10(Math.abs(number))) + 1 + ns.util.addNeg(number)
+      }
+    },
+    addNeg: (number) => {
+      if(number >= 0) {
+        return 0
+      } else if(number < 0) {
+        return 1
+      }
+    },
     parse: {
       digit: (str) => {
-        const results = ns.util.regex.toRegex(CARET + str)
-        return parseInt(results.input, DECIMAL)
+        const results = RegExp(CARET + ns.util.regex.digit() + CIFRAO).exec(str)
+        if (!results) {
+          return undefined
+        } else {
+          return {
+            res: parseInt(results.input, DECIMAL),
+            size: 1
+          }
+        }
+      },
+      number: (str) => {
+        const results = RegExp(CARET + ns.util.regex.number() + CIFRAO).exec(str)
+        if (!results) {
+          return undefined
+        } else {
+          const res = parseInt(results[0], DECIMAL)
+          return {
+            res: res,
+            size: ns.util.sizeOfNumber(res)
+          }
+        }
+      },
+      vector: (str, index=ZERO, res=EMPTY_LIST, size=ZERO) => {
+        const isOpenParens = RegExp(ns.util.regex.openParens()).test(str[index])
+        const isNumber = ns.util.parse.number(str.slice(index))
+        const isDivider = RegExp(ns.util.regex.divider()).test(str[index])
+        const isCloseParens = RegExp(ns.util.regex.closeParens()).test(str[index])
+        if(index === str.length) {
+          return {res: res, size: size}
+        } else if(isNumber) {
+         return (ns.util.parse.vector(str, index+isNumber.size, res.add(isNumber), size+isNumber.size))
+        } else if(isOpenParens || isDivider || isCloseParens) {
+          return ns.util.parse.vector(str, index+1, res, size+1)
+        }
+      },
+      matrix: (str, index=ZERO, res=EMPTY_LIST, size=ZERO) => {
+        const isOpenParens = RegExp(ns.util.regex.openParens()).test(str[index])
+        const isVector = ns.util.parse.vector(str.slick(index))
+        const isDivider = RegExp(ns.util.regex.divider()).test(str[index])
+        const isCloseParens = RegExp(ns.util.regex.closeParens()).test(str[index])
+        if(index === str.length) {
+          return {res: res, size: size}
+        } else if (isVector) {
+          return (ns.util.parse.matrix(str, index+isVector.size, res.add(isVecotr, size+isVector.size)))
+        } else if (isOpenParens || isDivider || isCloseParens) {
+          return ns.util.parse.matrix(str, index+1, res, size+1)
+        }
       }
     },
     regex: {
-      digit: '\d'
-      number: ns.util.regex.toKleene(digit),
-      openParens: '\(|\{|\[',
-      closeParens: '\)|\{|\]',
-      divider: '\,',
-      vector = (
+      digit: () => ('\\d'),
+      number: () => ('(-|)(\\d)+'),
+      openParens: () => ('\\(|\\{|\\['),
+      closeParens: () => ('\)|\{|\]'),
+      divider: () => ('\,'),
+      vector: () => (
         ns.util.regex.openParens +
         toKleene(ns.util.regex.number +
         ns.util.regex.divider)
       ),
-      matrix = (
+      matrix: () => (
         ns.util.regex.openParens +
         toKleene(ns.util.regex.vector) +
         ns.util.regex.closeParens
-      )
+      ),
       toKleene: (str) => (
         '(' + str + ')*'
       ),
-      toRegex: (str) => (
-        RegExp(str)
+      toKleenePlus: (str) => (
+        '('+ str + ')+'
       )
     }
   },
