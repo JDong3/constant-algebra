@@ -373,9 +373,15 @@ const ns = {
         } else {
           const operands = str.split('/')
           if(operands.length === 1) {
-            return ns.util.parse.number(operands[0])
+            return {
+              res: F(ns.util.parse.number(operands[0])),
+              size: ns.util.sizeOfNumber(operands[0])
+            }
           } else {
-            return F(ns.util.parse.number(operands[0]), ns.util.parse.number(operands[1]))
+            return {
+              res: F(ns.util.parse.number(operands[0]), ns.util.parse.number(operands[1])),
+              size: ns.util.sizeOfNumber(operands[0]) + ns.util.sizeOfNumber(operands[1]) + 1
+            }
           }
         }
       },
@@ -409,30 +415,27 @@ const ns = {
     regex: {
       digit: () => ('(\\d)'),
       number: () => ('((-|)(\\d)+)'),
-      fraction: () => (
-        `((${ns.util.regex.number()}\\/${ns.util.regex.number()})|${ns.util.regex.number()})`
-      ),
+      fraction: () => {
+        const number = ns.util.regex.number()
+        return `((${number}\\/${number})|${number})`
+      },
       openParens: () => ('(\\(|\\{|\\[)'),
       closeParens: () => ('(\\)|\\{|\\])'),
       divider: () => ('(\\,)'),
-      vector: () => (
-        '(' +
-        ns.util.regex.openParens +
-        toKleene(ns.util.regex.number) +
-        ns.util.regex.divider +
-        ')'
-      ),
-      matrix: () => (
-        ns.util.regex.openParens +
-        toKleene(ns.util.regex.vector) +
-        ns.util.regex.closeParens
-      ),
-      toKleene: (str) => (
-        '(' + str + ')*'
-      ),
-      toKleenePlus: (str) => (
-        '('+ str + ')+'
-      )
+      vector: () => {
+        const openParens = ns.util.regex.openParens()
+        const fraction = ns.util.regex.fraction()
+        const divider = ns.util.regex.divider()
+        const closeParens = ns.util.regex.closeParens()
+        return `(${openParens}(${fraction}${divider})+${closeParens})`
+      },
+      matrix: () => {
+        const openParens = ns.util.regex.openParens()
+        const vector = ns.util.regex.vector()
+        const divider = ns.util.regex.divider()
+        const closeParens = ns.util.regex.closeParens()
+        return `(${openParens}(${vector}${divider})+${closeParens})`
+      }
     }
   },
   ver: {
@@ -440,7 +443,8 @@ const ns = {
       isMatrix: (matrix) => (
         List.isList(matrix) &&
         matrix.every((element) => (
-          ver.is.isVector(element))) &&
+          ver.is.isVector(element)
+        )) &&
         matrix.every((element) => (
           ns.lib.vb.sameSize(element, matrix.get(0))
         ))

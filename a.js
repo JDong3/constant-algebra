@@ -1,4 +1,3 @@
 const ca = require('./')
-console.log(ns.util.regex.fraction())
-const number = '123abc'
-console.log(`${number}`)
+console.log('123/321'.split('/'))
+console.log('123'.split('/'))

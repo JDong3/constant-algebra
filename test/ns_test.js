@@ -487,3 +487,12 @@ describe('ns.util.parse.number', function() {
     })
   })
 })
+describe('ns.util.parse.fraction', function() {
+  describe('gives the Fraction that represents the string passed in', function() {
+    it('can parse a single digit number 1', function() {
+      const res = ns.util.parse.fraction('1')
+      assert.isTrue(res.res.equals(F(1)))
+      assert.equal(res.size, 1)
+    })
+  })
+})
