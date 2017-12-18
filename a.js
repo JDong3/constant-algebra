@@ -1,3 +1,4 @@
 const ca = require('./')
-
-ns.util.parse.vector('(1, 2, 3)')
+console.log(ns.util.regex.fraction())
+const number = '123abc'
+console.log(`${number}`)

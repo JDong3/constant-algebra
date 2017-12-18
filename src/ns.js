@@ -347,25 +347,35 @@ const ns = {
     },
     parse: {
       digit: (str) => {
-        const results = RegExp(CARET + ns.util.regex.digit() + CIFRAO).exec(str)
+        const results = RegExp(CARET + ns.util.regex.digit() + CIFRAO).test(str)
         if (!results) {
           return undefined
         } else {
           return {
-            res: parseInt(results.input, DECIMAL),
+            res: parseInt(str, DECIMAL),
             size: 1
           }
         }
       },
       number: (str) => {
-        const results = RegExp(CARET + ns.util.regex.number() + CIFRAO).exec(str)
+        const results = RegExp(CARET + ns.util.regex.number() + CIFRAO).test(str)
         if (!results) {
           return undefined
         } else {
-          const res = parseInt(results[0], DECIMAL)
-          return {
-            res: res,
-            size: ns.util.sizeOfNumber(res)
+          const res = parseInt(str, DECIMAL)
+          return {res: res, size: ns.util.sizeOfNumber(res)}
+        }
+      },
+      fraction: (str) => {
+        const results = RegExp(CARET + ns.util.regex.fraction() + CIFRAO).test(str)
+        if (!results) {
+          return undefined
+        } else {
+          const operands = str.split('/')
+          if(operands.length === 1) {
+            return ns.util.parse.number(operands[0])
+          } else {
+            return F(ns.util.parse.number(operands[0]), ns.util.parse.number(operands[1]))
           }
         }
       },
@@ -397,15 +407,20 @@ const ns = {
       }
     },
     regex: {
-      digit: () => ('\\d'),
-      number: () => ('(-|)(\\d)+'),
-      openParens: () => ('\\(|\\{|\\['),
-      closeParens: () => ('\)|\{|\]'),
-      divider: () => ('\,'),
+      digit: () => ('(\\d)'),
+      number: () => ('((-|)(\\d)+)'),
+      fraction: () => (
+        `((${ns.util.regex.number()}\\/${ns.util.regex.number()})|${ns.util.regex.number()})`
+      ),
+      openParens: () => ('(\\(|\\{|\\[)'),
+      closeParens: () => ('(\\)|\\{|\\])'),
+      divider: () => ('(\\,)'),
       vector: () => (
+        '(' +
         ns.util.regex.openParens +
-        toKleene(ns.util.regex.number +
-        ns.util.regex.divider)
+        toKleene(ns.util.regex.number) +
+        ns.util.regex.divider +
+        ')'
       ),
       matrix: () => (
         ns.util.regex.openParens +
