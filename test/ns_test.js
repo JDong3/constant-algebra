@@ -493,6 +493,16 @@ describe('ns.util.parse.fraction', function() {
       const res = ns.util.parse.fraction('1')
       assert.isTrue(res.res.equals(F(1)))
       assert.equal(res.size, 1)
+    }),
+    it('can parse a negative number -1', function() {
+      const res = ns.util.parse.fraction('-1')
+      assert.isTrue(res.res.equals(F(-1)))
+      assert.equal(res.size, 2)
+    }),
+    it('can parse a 2 digit number 34', function() {
+      const res = ns.util.parse.fraction('34')
+      assert.isTrue(res.res.equals(F(34)))
+      assert.equal(res.size, 2)
     })
   })
 })

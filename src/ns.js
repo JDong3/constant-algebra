@@ -374,12 +374,12 @@ const ns = {
           const operands = str.split('/')
           if(operands.length === 1) {
             return {
-              res: F(ns.util.parse.number(operands[0])),
+              res: F(ns.util.parse.number(operands[0]).res),
               size: ns.util.sizeOfNumber(operands[0])
             }
           } else {
             return {
-              res: F(ns.util.parse.number(operands[0]), ns.util.parse.number(operands[1])),
+              res: F(ns.util.parse.number(operands[0]).res, ns.util.parse.number(operands[1]).res),
               size: ns.util.sizeOfNumber(operands[0]) + ns.util.sizeOfNumber(operands[1]) + 1
             }
           }
