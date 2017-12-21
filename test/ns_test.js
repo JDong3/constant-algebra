@@ -391,41 +391,57 @@ describe('ns.lib.vv.sub', function() {
 })
 
 //ns.util
-describe('ns.util.addNeg', function() {
-  describe('gives 1 if the number is negative, 0 otherwise', function() {
-    it('can recognise a small negative number -1', function() {
-      assert.equal(ns.util.addNeg(-1), 1)
+describe('ns.util.convertBool', function() {
+  describe('converts a boolean value to a corresponding value either 1 or 0', function() {
+    it('can convert a true to 1', function() {
+      assert.equal(ns.util.convertBool(true), 1)
     }),
-    it('can recognise a 2 digit negative number -41', function() {
-      assert.equal(ns.util.addNeg(-41), 1)
-    }),
-    it('can recognise a small non negative number 0', function() {
-      assert.equal(ns.util.addNeg(0), 0)
-    }),
-    it('can recognise a small positive number 1', function() {
-      assert.equal(ns.util.addNeg(1), 0)
-    }),
-    it('can recognise a 2 digit positive number 23', function() {
-      assert.equal(ns.util.addNeg(23), 0)
+    it('can convert a false to 0', function() {
+      assert.equal(ns.util.convertBool(false), 0)
     })
   })
 })
-describe('ns.util.sizeOfNumber', function() {
+describe('ns.util.size.number', function() {
   describe('gives the length of the number in string form', function() {
     it('can determie the size of 0', function() {
-      assert.equal(ns.util.sizeOfNumber(0), 1)
+      assert.equal(ns.util.size.number(0), 1)
     }),
     it('can determine the size of 1', function() {
-      assert.equal(ns.util.sizeOfNumber(1), 1)
+      assert.equal(ns.util.size.number(1), 1)
     }),
     it('can determine the size of a negative number -1', function() {
-      assert.equal(ns.util.sizeOfNumber(-1), 2)
+      assert.equal(ns.util.size.number(-1), 2)
     }),
     it('can determine the size of a 2 digit positive number 25', function() {
-      assert.equal(ns.util.sizeOfNumber(25), 2)
+      assert.equal(ns.util.size.number(25), 2)
     }),
     it('can determine the size of a 2 digit negative number -65', function() {
-      assert.equal(ns.util.sizeOfNumber(-65), 3)
+      assert.equal(ns.util.size.number(-65), 3)
+    })
+  })
+})
+describe('ns.util.size.fraction', function() {
+  describe('gives the length of the fractionin string form', function() {
+    it('can give the size of a single digit number 1', function() {
+      assert.equal(ns.util.size.fraction(F(1)), 1)
+    }),
+    it('can give the size of a fraction that is a negative integer -5', function() {
+      assert.equal(ns.util.size.fraction(F(-5)), 2)
+    })
+    it('can give the size of a fraction with denominator 1, 1/1', function() {
+      assert.equal(ns.util.size.fraction(F(1, 1)), 1)
+    }),
+    it('can give the size of a fraction with denominator not 1, 1/2', function() {
+      assert.equal(ns.util.size.fraction(F(1, 2)), 3)
+    }),
+    it('can give the size of a fraction with a negative numerator -13/17', function() {
+      assert.equal(ns.util.size.fraction(F(-13, 17)), 6)
+    }),
+    it('can give the size of a fraction with a negative denominator 13/-17', function() {
+      assert.equal(ns.util.size.fraction(F(13, -17)), 6)
+    }),
+    it('can give the size of a fraction with a negative numerator and denominator -13/-17', function() {
+      assert.equal(ns.util.size.fraction(F(-13, -17)), 5)
     })
   })
 })
@@ -503,6 +519,16 @@ describe('ns.util.parse.fraction', function() {
       const res = ns.util.parse.fraction('34')
       assert.isTrue(res.res.equals(F(34)))
       assert.equal(res.size, 2)
+    }),
+    it('can parse a 2 digit negative number -56', function() {
+      const res = ns.util.parse.fraction('-56')
+      assert.isTrue(res.res.equals(F(-56)))
+      assert.equal(res.size, 3)
+    }),
+    it('can parse a single digit numerator and denominator fraction 1/1', function() {
+      const res = ns.util.parse.fraction('1/1')
+      assert.isTrue(res.res.equals(F(1, 1)))
+      assert.equal(res.size, 1)
     })
   })
 })

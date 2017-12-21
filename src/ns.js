@@ -331,18 +331,23 @@ const ns = {
     }
   },
   util: {
-    sizeOfNumber: (number) => {
-      if(Math.abs(number) < 1) {
-        return 1
-      } else {
-        return Math.floor(Math.log10(Math.abs(number))) + 1 + ns.util.addNeg(number)
-      }
-    },
-    addNeg: (number) => {
-      if(number >= 0) {
-        return 0
-      } else if(number < 0) {
-        return 1
+    convertBool: (bool) => (
+      {true: 1, false: 0}[bool.toString()]
+    ),
+    size: {
+      number: (number) => {
+        if(Math.abs(number) < 1) {
+          return 1
+        } else {
+          return Math.floor(Math.log10(Math.abs(number))) + 1 + ns.util.convertBool(number<0)
+        }
+      },
+      fraction: (fraction) => {
+        if(fraction.d === 1) {
+          return ns.util.size.number(fraction.n) + ns.util.convertBool(fraction.s === -1)
+        } else {
+          return ns.util.size.number(fraction.n) + 1 + ns.util.size.number(fraction.d) + ns.util.convertBool(fraction.s === -1)
+        }
       }
     },
     parse: {
@@ -363,7 +368,7 @@ const ns = {
           return undefined
         } else {
           const res = parseInt(str, DECIMAL)
-          return {res: res, size: ns.util.sizeOfNumber(res)}
+          return {res: res, size: ns.util.size.number(res)}
         }
       },
       fraction: (str) => {
@@ -373,14 +378,16 @@ const ns = {
         } else {
           const operands = str.split('/')
           if(operands.length === 1) {
+            const fraction = F(ns.util.parse.number(operands[0]).res)
             return {
-              res: F(ns.util.parse.number(operands[0]).res),
-              size: ns.util.sizeOfNumber(operands[0])
+              res: fraction,
+              size: ns.util.size.fraction(fraction)
             }
           } else {
+            const fraction = F(ns.util.parse.number(operands[0]).res, ns.util.parse.number(operands[1]).res)
             return {
-              res: F(ns.util.parse.number(operands[0]).res, ns.util.parse.number(operands[1]).res),
-              size: ns.util.sizeOfNumber(operands[0]) + ns.util.sizeOfNumber(operands[1]) + 1
+              res: fraction,
+              size: ns.util.size.fraction(fraction)
             }
           }
         }

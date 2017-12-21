@@ -1,3 +1,2 @@
 const ca = require('./')
-console.log('123/321'.split('/'))
-console.log('123'.split('/'))
+console.log(ns.util.convertBool(false))
