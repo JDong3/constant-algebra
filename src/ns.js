@@ -348,55 +348,64 @@ const ns = {
         } else {
           return ns.util.size.number(fraction.n) + 1 + ns.util.size.number(fraction.d) + ns.util.convertBool(fraction.s === -1)
         }
+      },
+      vector: (vector, index=ZERO, size=ZERO) => {
       }
     },
     parse: {
+      trivialParser: (regexp) => {
+        return (str) => {
+          const results = RegExp(regexp).exec(str)
+          if(!results) {
+            return undefined
+          } else {
+            return {res:results[0], size: 1}
+          }
+        }
+      },
+      openParens: (str) => (
+        ns.util.parse.trivialParser(CARET + ns.util.regex.openParens())(str)
+      ),
+      closeParens: (str) => (
+        ns.util.parse.trivialParser(CARET + ns.util.regex.closeParens())(str)
+      ),
+      divider: (str) => (
+        ns.util.parse.trivialParse(CARET + ns.util.regex.openParens())(str)
+      ),
       digit: (str) => {
-        const results = RegExp(CARET + ns.util.regex.digit() + CIFRAO).test(str)
+        const results = RegExp(CARET + ns.util.regex.digit()).exec(str)
         if (!results) {
           return undefined
         } else {
-          return {
-            res: parseInt(str, DECIMAL),
-            size: 1
-          }
+          return {res: parseInt(results[0], DECIMAL), size: 1}
         }
       },
       number: (str) => {
-        const results = RegExp(CARET + ns.util.regex.number() + CIFRAO).test(str)
+        const results = RegExp(CARET + ns.util.regex.number()).exec(str)
         if (!results) {
           return undefined
         } else {
-          const res = parseInt(str, DECIMAL)
-          return {res: res, size: ns.util.size.number(res)}
+          return {res: parseInt(results[0], DECIMAL), size: results[0].length}
         }
       },
       fraction: (str) => {
-        const results = RegExp(CARET + ns.util.regex.fraction() + CIFRAO).test(str)
+        const results = RegExp(CARET + ns.util.regex.fraction()).exec(str)
+        operands = results[0].split('/')
         if (!results) {
           return undefined
-        } else {
-          const operands = str.split('/')
-          if(operands.length === 1) {
-            const fraction = F(ns.util.parse.number(operands[0]).res)
-            return {
-              res: fraction,
-              size: ns.util.size.fraction(fraction)
-            }
-          } else {
-            const fraction = F(ns.util.parse.number(operands[0]).res, ns.util.parse.number(operands[1]).res)
-            return {
-              res: fraction,
-              size: ns.util.size.fraction(fraction)
-            }
-          }
+        } else if(operands.length === 1) {
+          const fraction = F(ns.util.parse.number(operands[0]).res)
+          return {res: fraction, size: results[0].length}
+        } else{
+          const fraction = F(ns.util.parse.number(operands[0]).res, ns.util.parse.number(operands[1]).res)
+          return {res: fraction, size: results[0].length}
         }
       },
       vector: (str, index=ZERO, res=EMPTY_LIST, size=ZERO) => {
-        const isOpenParens = RegExp(ns.util.regex.openParens()).test(str[index])
+        const isOpenParens = ns.util.parse.openParens(str.slice(index))
         const isNumber = ns.util.parse.number(str.slice(index))
-        const isDivider = RegExp(ns.util.regex.divider()).test(str[index])
-        const isCloseParens = RegExp(ns.util.regex.closeParens()).test(str[index])
+        const isDivider = ns.util.parse.divider(str.slice(index))
+        const isCloseParens = ns.util.parse.closeParens(str.slice(index))
         if(index === str.length) {
           return {res: res, size: size}
         } else if(isNumber) {
@@ -406,7 +415,7 @@ const ns = {
         }
       },
       matrix: (str, index=ZERO, res=EMPTY_LIST, size=ZERO) => {
-        const isOpenParens = RegExp(ns.util.regex.openParens()).test(str[index])
+        const isOpenParens = ns.util.regex.openParens()
         const isVector = ns.util.parse.vector(str.slick(index))
         const isDivider = RegExp(ns.util.regex.divider()).test(str[index])
         const isCloseParens = RegExp(ns.util.regex.closeParens()).test(str[index])
@@ -427,7 +436,7 @@ const ns = {
         return `((${number}\\/${number})|${number})`
       },
       openParens: () => ('(\\(|\\{|\\[)'),
-      closeParens: () => ('(\\)|\\{|\\])'),
+      closeParens: () => ('(\\)|\\}|\\])'),
       divider: () => ('(\\,)'),
       vector: () => {
         const openParens = ns.util.regex.openParens()

@@ -401,6 +401,7 @@ describe('ns.util.convertBool', function() {
     })
   })
 })
+//ns.util.size
 describe('ns.util.size.number', function() {
   describe('gives the length of the number in string form', function() {
     it('can determie the size of 0', function() {
@@ -445,6 +446,47 @@ describe('ns.util.size.fraction', function() {
     })
   })
 })
+//ns.util.parse
+describe('ns.util.parse.openParens', function() {
+  describe('it gives the open parentheses and length of it', function() {
+    it('can parse a open parentheses, (', function() {
+      const res = ns.util.parse.openParens('(')
+      assert.equal(res.res, '(')
+      assert.equal(res.size, 1)
+    }),
+    it('can parse a open square bracket, [', function() {
+      const res = ns.util.parse.openParens('[')
+      assert.equal(res.res, '[')
+      assert.equal(res.size, 1)
+    }),
+    it('can parse a open curly bracket, {', function() {
+      const res = ns.util.parse.openParens('{')
+      assert.equal(res.res, '{')
+      assert.equal(res.size, 1)
+    }),
+    it('cannot parse a close bracket, )', function() {
+      const res = ns.util.parse.openParens(')')
+      assert.isNotOk(res)
+    })
+  })
+})
+describe('ns.util.parse.closeParens', function() {
+  describe('it can parse a close parentheses, )', function() {
+    const res = ns.util.parse.closeParens(')')
+    assert.equal(res.res, ')')
+    assert.equal(res.size, 1)
+  }),
+  describe('it can parse a close square bracket, ]', function() {
+    const res = ns.util.parse.closeParens(']')
+    assert.equal(res.res, ']')
+    assert.equal(res.size, 1)
+  }),
+  describe('it can parse a close curly bracket, )', function() {
+    const res = ns.util.parse.closeParens('}')
+    assert.equal(res.res, '}')
+    assert.equal(res.size, 1)
+  })
+})
 describe('ns.util.parse.digit', function() {
   describe('gives the digit starting at the beginning of the string', function () {
     it('can parse a 1', function() {
@@ -457,14 +499,18 @@ describe('ns.util.parse.digit', function() {
       assert.equal(res.res, 2)
       assert.equal(res.size, 1)
     }),
-    it('cannot parse 2 digits 12', function() {
-      assert.isNotOk(ns.util.parse.digit('12'))
+    it('can parse 2 digits 12', function() {
+      const res = ns.util.parse.digit('12')
+      assert.equal(res.res, 1)
+      assert.equal(res.size, 1)
     }),
     it('cannot parse a character a', function() {
       assert.isNotOk(ns.util.parse.digit('a'))
     }),
-    it('cannot parse a digit followed by a character 5a', function() {
-      assert.isNotOk(ns.util.parse.digit('5a'))
+    it('can parse a digit followed by a character 5a', function() {
+      const res = ns.util.parse.digit('5a')
+      assert.equal(res.res, 5)
+      assert.equal(res.size, 1)
     })
   })
 })
@@ -495,11 +541,15 @@ describe('ns.util.parse.number', function() {
       assert.equal(res.res, -123)
       assert.equal(res.size, 4)
     })
-    it('cannot parse a double digit number followed by a character 52a', function() {
-      assert.isNotOk(ns.util.parse.number('52a'))
+    it('can parse a double digit number followed by a character 52a', function() {
+      const res = ns.util.parse.number('52a')
+      assert.equal(res.res, 52)
+      assert.equal(res.size, 2)
     }),
-    it('cannot parse a negative double digit number followed by a character -56b', function() {
-      assert.isNotOk(ns.util.parse.number('-56b'))
+    it('can parse a negative double digit number followed by a character -56b', function() {
+      const res = ns.util.parse.number('-56b')
+      assert.equal(res.res, -56)
+      assert.equal(res.size, 3)
     })
   })
 })
@@ -528,7 +578,32 @@ describe('ns.util.parse.fraction', function() {
     it('can parse a single digit numerator and denominator fraction 1/1', function() {
       const res = ns.util.parse.fraction('1/1')
       assert.isTrue(res.res.equals(F(1, 1)))
-      assert.equal(res.size, 1)
+      assert.equal(res.size, 3)
+    }),
+    it('can parse a fraction with larger num and denom, 13/17', function() {
+      const res = ns.util.parse.fraction('13/17')
+      assert.isTrue(res.res.equals(F(13, 17)))
+      assert.equal(res.size, 5)
+    }),
+    it('can parse a fraction with a negative num, -13/17', function() {
+      const res = ns.util.parse.fraction('-13/17')
+      assert.isTrue(res.res.equals(F(-13, 17)))
+      assert.equal(res.size, 6)
+    }),
+    it('can parse a fraction with a negative denom, 13/-17', function() {
+      const res = ns.util.parse.fraction('13/-17')
+      assert.isTrue(res.res.equals(F(-13, 17)))
+      assert.equal(res.size, 6)
+    }),
+    it('can parse a fraction with a nagative num and denom, -13/-17', function() {
+      const res = ns.util.parse.fraction('-13/-17')
+      assert.isTrue(res.res.equals(F(13, 17)))
+      assert.equal(res.size, 7)
     })
+  })
+})
+describe('ns.util.parse.vector', function() {
+  describe('can give a vector from the beginning of a string', function() {
+    it('')
   })
 })
