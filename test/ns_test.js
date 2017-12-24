@@ -461,13 +461,13 @@ describe('ns.util.test.openParens', function() {
     it('can recognise an open parens followed by a character, (a', function() {
       assert.isOk(ns.util.test.openParens('(a'))
     }),
-    it('cannot parse a non openParens character, a', function() {
+    it('cannot recognise a non openParens character, a', function() {
       assert.isNotOk(ns.util.test.openParens('a'))
     })
   })
 })
 describe('ns.util.test.closeParens', function() {
-  describe('it tell you if the start of a string matches a closeParens pattern', function() {
+  describe('it tells you if the start of a string matches a closeParens pattern', function() {
     it('can recognise an close parentheses, )', function(){
       assert.isOk(ns.util.test.closeParens(')'))
     }),
@@ -480,13 +480,60 @@ describe('ns.util.test.closeParens', function() {
     it('can recognise an close parens followed by a character, )a', function() {
       assert.isOk(ns.util.test.closeParens(')a'))
     }),
-    it('cannot parse a non closeParens character, a', function() {
+    it('cannot recognise a non closeParens character, a', function() {
       assert.isNotOk(ns.util.test.closeParens('a'))
     })
   })
 })
 describe('ns.util.test.divider', function() {
-  
+  describe('it tells you if the start of a string matches a divider pattern', function() {
+    it('can recognise a comma, ,', function() {
+      assert.isOk(ns.util.test.divider(','))
+    }),
+    it('can recognise a comma followed by a character, ,a', function() {
+      assert.isOk(ns.util.test.divider(',a'))
+    }),
+    it('cannot recognise a non divider character, a', function() {
+      assert.isNotOk(ns.util.test.divider('a'))
+    })
+  })
+})
+describe('ns.util.test.slash', function() {
+  describe('it tells you if the start of a string matches a slash pattern', function () {
+    it('can recognise a slash, /', function() {
+      assert.isOk(ns.util.test.slash('/'))
+    }),
+    it('can recognise a slash followed by a character, /a', function() {
+      assert.isOk(ns.util.test.slash('/a'))
+    }),
+    it('cannot recognise a non slash pattern, a', function() {
+      assert.isNotOk(ns.util.test.slash('a'))
+    })
+  })
+})
+describe('ns.util.test.digit', function() {
+  describe('it tells you if the start of a string matches a digit pattern', function() {
+    it('can recognise a digit, 1', function() {
+      assert.isOk(ns.util.test.digit('1'))
+    }),
+    it('can recognise two digits, 34', function() {
+      assert.isOk(ns.util.test.digit('34'))
+    }),
+    it('can recognise a digit followed by a non digit character, 2a', function() {
+      assert.isOk(ns.util.test.digit('2a'))
+    }),
+    it('cannot recognise a non digit character, a', function() {
+      assert.isNotOk(ns.util.test.digit('a'))
+    }),
+    it('cannot recognise a non digit character followed by a digit, a2', function() {
+      assert.isNotOk(ns.util.test.digit('a2'))
+    })
+  })
+})
+describe('ns.util.test.digit', function() {
+  describe('it tells you if the start of a string matches a number pattern', function() {
+    
+  })
 })
 //ns.util.parse
 describe('ns.util.parse.openParens', function() {
