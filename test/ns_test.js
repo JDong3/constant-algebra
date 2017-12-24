@@ -446,6 +446,48 @@ describe('ns.util.size.fraction', function() {
     })
   })
 })
+//ns.util.test
+describe('ns.util.test.openParens', function() {
+  describe('it tells you if the start of a string matches a openParens pattern', function() {
+    it('can recognise an open parentheses, (', function(){
+      assert.isOk(ns.util.test.openParens('('))
+    }),
+    it('can recognise an open square bracket, [', function() {
+      assert.isOk(ns.util.test.openParens('['))
+    }),
+    it('can recognise an open curly bracket, {', function() {
+      assert.isOk(ns.util.test.openParens('{'))
+    }),
+    it('can recognise an open parens followed by a character, (a', function() {
+      assert.isOk(ns.util.test.openParens('(a'))
+    }),
+    it('cannot parse a non openParens character, a', function() {
+      assert.isNotOk(ns.util.test.openParens('a'))
+    })
+  })
+})
+describe('ns.util.test.closeParens', function() {
+  describe('it tell you if the start of a string matches a closeParens pattern', function() {
+    it('can recognise an close parentheses, )', function(){
+      assert.isOk(ns.util.test.closeParens(')'))
+    }),
+    it('can recognise an close square bracket, ]', function() {
+      assert.isOk(ns.util.test.closeParens(']'))
+    }),
+    it('can recognise an close curly bracket, }', function() {
+      assert.isOk(ns.util.test.closeParens('}'))
+    }),
+    it('can recognise an close parens followed by a character, )a', function() {
+      assert.isOk(ns.util.test.closeParens(')a'))
+    }),
+    it('cannot parse a non closeParens character, a', function() {
+      assert.isNotOk(ns.util.test.closeParens('a'))
+    })
+  })
+})
+describe('ns.util.test.divider', function() {
+  
+})
 //ns.util.parse
 describe('ns.util.parse.openParens', function() {
   describe('it gives the open parentheses and length of it', function() {
@@ -604,6 +646,10 @@ describe('ns.util.parse.fraction', function() {
 })
 describe('ns.util.parse.vector', function() {
   describe('can give a vector from the beginning of a string', function() {
-    it('')
+    it('can parse a vector with a single fraction (-13/51)', function() {
+      const res = ns.util.parse.vector('(-13/51)')
+      const test = List([F(-13, 51)])
+      assert.equal(res.res.equals(test))
+    })
   })
 })

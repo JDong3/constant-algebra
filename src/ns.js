@@ -352,6 +352,51 @@ const ns = {
       vector: (vector, index=ZERO, size=ZERO) => {
       }
     },
+    test: {
+      trivialTester: (regex) => (
+        (str) => (RegExp(regex).test(str))
+      ),
+      openParens: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.openParens())(str)),
+      closeParens: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.closeParens())(str)),
+      divider: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.divider())(str)),
+      slash: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.slash())(str)),
+      digit: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.digit())(str)),
+      number: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.number())(str)),
+      fraction: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.fraction())(str)),
+      vector: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.vector())(str)),
+      matrix: (str) => (ns.util.test.trivialTester('^' + ns.util.regex.matrix())(str))
+    },
+    extract: {
+      trivialExtractor: (regex) => (
+        (str) => {
+          const res = RegExp(regex).exec(str)
+          return {res: res[0], size:res[0].length}
+        }
+      ),
+      openParens: (str) => (ns.util.extract.trivialExtractor('^'+ns.util.regex.openParens())(str)),
+      closeParens: (str) => (ns.util.extract.trivialExtractor('^'+ns.util.regex.closeParens())(str)),
+      divider: (str) => (ns.util.extract.trivialExtractor('^'+ns.util.regex.divider())(str)),
+      slash: (str) => (ns.util.extract.trivialExtractor('^'+ns.util.regex.slash())(str)),
+      digit: (str) => {
+        const res = RegExp('^'+ns.util.regex.digit()).exec(str)
+        return {res: parseInt(res[0], DECIMAL), size: res[0].length}
+      },
+      number: (str) => {
+        const res = RegExp('^'+ns.util.regex.number()).exec(str)
+        return {res: parseInt(res[0], DECIMAL), size: res[0].length}
+      },
+      fraction: (str, index=0, res=EMPTY_LIST) => {
+        const isNumber = ns.util.parse.number(str.slice(index))
+        const isSlash = ns.util.parse.number(str.slice(index))
+        if(isNumber) {
+          return ns.util.extract.fraction(str, index+isNumber.size, res.push(isNumber.res))
+        } else if(isSlash) {
+          return ns.util.extract.fraction(str, index+1, res)
+        } else {
+          return {res: ns.util.listToFraction(res), size: index}
+        }
+      }
+    },
     parse: {
       trivialParser: (regexp) => {
         return (str) => {
@@ -363,15 +408,10 @@ const ns = {
           }
         }
       },
-      openParens: (str) => (
-        ns.util.parse.trivialParser(CARET + ns.util.regex.openParens())(str)
-      ),
-      closeParens: (str) => (
-        ns.util.parse.trivialParser(CARET + ns.util.regex.closeParens())(str)
-      ),
-      divider: (str) => (
-        ns.util.parse.trivialParse(CARET + ns.util.regex.openParens())(str)
-      ),
+      openParens: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.openParens())(str)),
+      closeParens: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.closeParens())(str)),
+      divider: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.openParens())(str)),
+      slash: (str) => (ns.util.parse.trivialParse(Caret + ns.util.regex.slash())(str)),
       digit: (str) => {
         const results = RegExp(CARET + ns.util.regex.digit()).exec(str)
         if (!results) {
@@ -388,30 +428,41 @@ const ns = {
           return {res: parseInt(results[0], DECIMAL), size: results[0].length}
         }
       },
-      fraction: (str) => {
-        const results = RegExp(CARET + ns.util.regex.fraction()).exec(str)
-        operands = results[0].split('/')
-        if (!results) {
-          return undefined
-        } else if(operands.length === 1) {
-          const fraction = F(ns.util.parse.number(operands[0]).res)
-          return {res: fraction, size: results[0].length}
-        } else{
-          const fraction = F(ns.util.parse.number(operands[0]).res, ns.util.parse.number(operands[1]).res)
-          return {res: fraction, size: results[0].length}
+      fraction: (str, index=0, res=EMPTY_LIST, size=0) => {
+        const isNumber = ns.util.parse.number(str.slice(index))
+        const isSlash = ns.util.parse.slash(str.slice(index))
+        if(isNumber) {
+          return ns.util.parse.fraction(str, index+isNumber.size, res.push(isNumber.res), size+isNumber.size)
+        } else if(isSlash){
+          return ns.util.parse.fraction(str, index+1, res, size+1)
+        } else {
+          return {res: ns.util.parse.listToFraction(res), size:size}
         }
       },
-      vector: (str, index=ZERO, res=EMPTY_LIST, size=ZERO) => {
+      listToFraction: (list) => {
+        if(list.size === 1) {
+          return F(list.get(0))
+        } else if(list.size === 2) {
+          return F(list.get(0), list.get(1))
+        } else {
+          return undefined
+        }
+      },
+      vector: (str, index=0, res=EMPTY_LIST, size=0) => {
         const isOpenParens = ns.util.parse.openParens(str.slice(index))
-        const isNumber = ns.util.parse.number(str.slice(index))
+        const isFraction = ns.util.parse.fraction(str.slice(index))
         const isDivider = ns.util.parse.divider(str.slice(index))
         const isCloseParens = ns.util.parse.closeParens(str.slice(index))
+        console.log(str, index, res, size)
         if(index === str.length) {
+          console.log('returned', {res:res, size:size})
           return {res: res, size: size}
-        } else if(isNumber) {
-         return (ns.util.parse.vector(str, index+isNumber.size, res.add(isNumber), size+isNumber.size))
+        } else if(isFraction) {
+         return (ns.util.parse.vector(str, index+isFraction.size, res.push(isFraction), size+isFraction.size))
         } else if(isOpenParens || isDivider || isCloseParens) {
           return ns.util.parse.vector(str, index+1, res, size+1)
+        } else {
+          return undefined
         }
       },
       matrix: (str, index=ZERO, res=EMPTY_LIST, size=ZERO) => {
@@ -438,6 +489,7 @@ const ns = {
       openParens: () => ('(\\(|\\{|\\[)'),
       closeParens: () => ('(\\)|\\}|\\])'),
       divider: () => ('(\\,)'),
+      slash: () => ('(\\/)'),
       vector: () => {
         const openParens = ns.util.regex.openParens()
         const fraction = ns.util.regex.fraction()
