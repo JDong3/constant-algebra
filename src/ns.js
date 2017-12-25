@@ -331,6 +331,15 @@ const ns = {
     }
   },
   util: {
+    listToFraction: (list) => {
+      if(list.size === 1) {
+        return F(list.get(0))
+      } else if(list.size === 2) {
+        return F(list.get(0), list.get(1))
+      } else {
+        return undefined
+      }
+    },
     convertBool: (bool) => (
       {true: 1, false: 0}[bool.toString()]
     ),
@@ -387,7 +396,7 @@ const ns = {
       },
       fraction: (str, index=0, res=EMPTY_LIST) => {
         const isNumber = ns.util.parse.number(str.slice(index))
-        const isSlash = ns.util.parse.number(str.slice(index))
+        const isSlash = ns.util.parse.slash(str.slice(index))
         if(isNumber) {
           return ns.util.extract.fraction(str, index+isNumber.size, res.push(isNumber.res))
         } else if(isSlash) {
@@ -411,7 +420,7 @@ const ns = {
       openParens: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.openParens())(str)),
       closeParens: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.closeParens())(str)),
       divider: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.openParens())(str)),
-      slash: (str) => (ns.util.parse.trivialParse(Caret + ns.util.regex.slash())(str)),
+      slash: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.slash())(str)),
       digit: (str) => {
         const results = RegExp(CARET + ns.util.regex.digit()).exec(str)
         if (!results) {
@@ -439,23 +448,12 @@ const ns = {
           return {res: ns.util.parse.listToFraction(res), size:size}
         }
       },
-      listToFraction: (list) => {
-        if(list.size === 1) {
-          return F(list.get(0))
-        } else if(list.size === 2) {
-          return F(list.get(0), list.get(1))
-        } else {
-          return undefined
-        }
-      },
       vector: (str, index=0, res=EMPTY_LIST, size=0) => {
         const isOpenParens = ns.util.parse.openParens(str.slice(index))
         const isFraction = ns.util.parse.fraction(str.slice(index))
         const isDivider = ns.util.parse.divider(str.slice(index))
         const isCloseParens = ns.util.parse.closeParens(str.slice(index))
-        console.log(str, index, res, size)
         if(index === str.length) {
-          console.log('returned', {res:res, size:size})
           return {res: res, size: size}
         } else if(isFraction) {
          return (ns.util.parse.vector(str, index+isFraction.size, res.push(isFraction), size+isFraction.size))
