@@ -407,20 +407,27 @@ const ns = {
       }
     },
     parse: {
-      trivialParser: (regexp) => {
-        return (str) => {
-          const results = RegExp(regexp).exec(str)
-          if(!results) {
+      trivialParser: (tester, extractor) => (
+        (str) => {
+          if(!tester(str)) {
             return undefined
           } else {
-            return {res:results[0], size: 1}
+            return extractor(str)
           }
         }
-      },
-      openParens: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.openParens())(str)),
-      closeParens: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.closeParens())(str)),
-      divider: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.openParens())(str)),
-      slash: (str) => (ns.util.parse.trivialParser(CARET + ns.util.regex.slash())(str)),
+      ),
+      openParens: (str) => (
+        ns.util.parse.trivialParser(ns.util.test.openParens, ns.util.extract.openParens)(str)
+      ),
+      closeParens: (str) => (
+        ns.util.parse.trivialParser(ns.util.test.closeParens, ns.util.extract.openParens)(str)
+      ),
+      divider: (str) => (
+        ns.util.parse.trivialParser(ns.util.test.divider, ns.util.extract.divider)(str)
+      ),
+      slash: (str) => (
+        ns.util.parse.trivialParser(ns.util.test.slash, ns.util.extract.slash)(str)
+      ),
       digit: (str) => {
         const results = RegExp(CARET + ns.util.regex.digit()).exec(str)
         if (!results) {
