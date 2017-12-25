@@ -428,33 +428,15 @@ const ns = {
       slash: (str) => (
         ns.util.parse.trivialParser(ns.util.test.slash, ns.util.extract.slash)(str)
       ),
-      digit: (str) => {
-        const results = RegExp(CARET + ns.util.regex.digit()).exec(str)
-        if (!results) {
-          return undefined
-        } else {
-          return {res: parseInt(results[0], DECIMAL), size: 1}
-        }
-      },
-      number: (str) => {
-        const results = RegExp(CARET + ns.util.regex.number()).exec(str)
-        if (!results) {
-          return undefined
-        } else {
-          return {res: parseInt(results[0], DECIMAL), size: results[0].length}
-        }
-      },
-      fraction: (str, index=0, res=EMPTY_LIST, size=0) => {
-        const isNumber = ns.util.parse.number(str.slice(index))
-        const isSlash = ns.util.parse.slash(str.slice(index))
-        if(isNumber) {
-          return ns.util.parse.fraction(str, index+isNumber.size, res.push(isNumber.res), size+isNumber.size)
-        } else if(isSlash){
-          return ns.util.parse.fraction(str, index+1, res, size+1)
-        } else {
-          return {res: ns.util.parse.listToFraction(res), size:size}
-        }
-      },
+      digit: (str) => (
+        ns.util.parse.trivialParser(ns.util.test.digit, ns.util.extract.digit)(str)
+      ),
+      number: (str) => (
+        ns.util.parse.trivialParser(ns.util.test.number, ns.util.extract.number)(str)
+      ),
+      fraction: (str) => (
+        ns.util.parse.trivialParser(ns.util.test.fraction, ns.util.extract.fraction)(str)
+      ),
       vector: (str, index=0, res=EMPTY_LIST, size=0) => {
         const isOpenParens = ns.util.parse.openParens(str.slice(index))
         const isFraction = ns.util.parse.fraction(str.slice(index))
