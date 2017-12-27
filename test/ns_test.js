@@ -574,6 +574,41 @@ describe('ns.util.test.fraction', function() {
     })
   })
 })
+describe('ns.util.test.vector', function() {
+  describe('it tells you if the start of a string matches a vector pattern', function() {
+    it('can recognise a vector with a single fraction. (13/17)', function() {
+      assert.isOk(ns.util.test.vector('(13/17)'))
+    }),
+    it('can recognise a vector with two fractions, (13/17,-1/3)', function() {
+      assert.isOk(ns.util.test.vector('(13/17,-1/3)'))
+    }),
+    it('can recognise a vector with 3 fractions, (13/17, -1/3, 20)', function() {
+      assert.isOk(ns.util.test.vector('(13/17,-1/3,20)'))
+    }),
+    it('can recognise a vector followed by a character, (1)a', function() {
+      assert.isOk(ns.util.test.vector('(1)a'))
+    }),
+    it('cannot recognise a non vector pattern followed by a vector, a(1)', function() {
+      assert.isNotOk(ns.util.test.vector('a(1)'))
+    })
+  })
+})
+describe('ns.util.test.matrix', function() {
+  describe('it tells you if the start of a string matches a matrix pattern', function() {
+    it('can recognise a 1x1 matrix, ((13/17))', function() {
+      assert.isOk(ns.util.test.matrix('((13/17))'))
+    }),
+    it('can recognise a matrix wil two vectors, ((13/17,-13,2),(5,1,1/2))', function() {
+      assert.isOk(ns.util.test.matrix('((13/17,-13,2),(5,1,1/2))'))
+    }),
+    it('can recognose a matrix followed by a character, ((1))a', function() {
+      assert.isOk(ns.util.test.matrix('((1))a'))
+    }),
+    it('cannot recognise a character followed by a matrix, a((1))', function() {
+      assert.isNotOk(ns.util.test.matrix('a((1))'))
+    })
+  })
+})
 //ns.util.extract
 describe('ns.util.extract.openParens', function() {
   describe('it can extract an openParens pattern from the start of a string', function() {
@@ -710,6 +745,46 @@ describe('ns.util.extract.fraction', function() {
       const res = ns.util.extract.fraction('2/10')
       assert.isTrue(res.res.equals(F(1, 5)))
       assert.equal(res.size, 4)
+    })
+  })
+})
+describe('ns.util.extract.vector', function() {
+  describe('it extracts a vector from the start of a string', function() {
+    it('can extract a vector with a single fraction, (13/17)', function() {
+      const res = ns.util.extract.vector('(13/17)')
+      const expected = List([F(13, 17)])
+      assert.isTrue(res.res.equals(expected))
+      assert.equal(res.size, 7)
+    }),
+    it('can extract a vector with 3 fractions, (1,2,1/3)', function() {
+      const res = ns.util.extract.vector('(1,2,1/3)')
+      const expected = List([F(1), F(2), F(1, 3)])
+      assert.isTrue(res.res.equals(expected))
+      assert.equal(res.size, 9)
+    }),
+    it('can extract a vector followed by a character, (1)a', function() {
+      const res = ns.util.extract.vector('(1)a')
+      const expected = List([1])
+      assert.isTrue(res.res.equals(expected))
+      assert.equal(res.size, 3)
+    })
+  })
+})
+describe('ns.util.extract.matrix', function() {
+  describe('it extracts a matrix from the start of a string', function() {
+    it('can extract a matrix with a single vector, ((1))', function() {
+      const res = ns.util.extract.matrix('((1))')
+      console.log(res.res)
+      const expected = List(List([F(1)]))
+      assert.isTrue(res.res.equals(expected))
+      assert.equal(res.size, 5)
+    }),
+    it('can extract a matrix with 3 vectors, ((1),(1),(1))', function() {
+      const res = ns.util.extract.matrix('((1),(1),(1))')
+      console.log(res.res)
+      const expected = List(List([F(1)]), List([F(1)]), List([F(2)]))
+      assert.isTrue(res.res.equals(expected))
+      assert.equal(res.size, 13)
     })
   })
 })

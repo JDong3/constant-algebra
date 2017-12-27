@@ -404,6 +404,32 @@ const ns = {
         } else {
           return {res: ns.util.listToFraction(res), size: index}
         }
+      },
+      vector: (str, index=0, res=EMPTY_LIST) => {
+        const isFraction = ns.util.parse.fraction(str.slice(index))
+        const isOpenParens = ns.util.parse.openParens(str.slice(index))
+        const isDivider = ns.util.parse.divider(str.slice(index))
+        const isCloseParens = ns.util.parse.closeParens(str.slice(index))
+        if(isFraction) {
+          return ns.util.extract.vector(str, index+isFraction.size, res.push(isFraction.res))
+        } else if(isOpenParens || isDivider || isCloseParens) {
+          return ns.util.extract.vector(str, index+1, res)
+        } else {
+          return {res: res, size: index}
+        }
+      },
+      matrix: (str, index=0, res=EMPTY_LIST) => {
+        const isVector = ns.util.parse.vector(str.slice(index))
+        const isOpenParens = ns.util.parse.openParens(str.slice(index))
+        const isDivider = ns.util.parse.divider(str.slice(index))
+        const isCloseParens = ns.util.parse.closeParens(str.slice(index))
+        if(isVector) {
+          return ns.util.extract.matrix(str, index+isVector.size, res.push(isVector.res))
+        } else if(isOpenParens || isDivider || isCloseParens) {
+          return ns.util.extract.matrix(str, index+1, res)
+        } else {
+          return {res: res, size: index}
+        }
       }
     },
     parse: {
@@ -420,7 +446,7 @@ const ns = {
         ns.util.parse.trivialParser(ns.util.test.openParens, ns.util.extract.openParens)(str)
       ),
       closeParens: (str) => (
-        ns.util.parse.trivialParser(ns.util.test.closeParens, ns.util.extract.openParens)(str)
+        ns.util.parse.trivialParser(ns.util.test.closeParens, ns.util.extract.closeParens)(str)
       ),
       divider: (str) => (
         ns.util.parse.trivialParser(ns.util.test.divider, ns.util.extract.divider)(str)
@@ -437,34 +463,12 @@ const ns = {
       fraction: (str) => (
         ns.util.parse.trivialParser(ns.util.test.fraction, ns.util.extract.fraction)(str)
       ),
-      vector: (str, index=0, res=EMPTY_LIST, size=0) => {
-        const isOpenParens = ns.util.parse.openParens(str.slice(index))
-        const isFraction = ns.util.parse.fraction(str.slice(index))
-        const isDivider = ns.util.parse.divider(str.slice(index))
-        const isCloseParens = ns.util.parse.closeParens(str.slice(index))
-        if(index === str.length) {
-          return {res: res, size: size}
-        } else if(isFraction) {
-         return (ns.util.parse.vector(str, index+isFraction.size, res.push(isFraction), size+isFraction.size))
-        } else if(isOpenParens || isDivider || isCloseParens) {
-          return ns.util.parse.vector(str, index+1, res, size+1)
-        } else {
-          return undefined
-        }
-      },
-      matrix: (str, index=ZERO, res=EMPTY_LIST, size=ZERO) => {
-        const isOpenParens = ns.util.regex.openParens()
-        const isVector = ns.util.parse.vector(str.slick(index))
-        const isDivider = RegExp(ns.util.regex.divider()).test(str[index])
-        const isCloseParens = RegExp(ns.util.regex.closeParens()).test(str[index])
-        if(index === str.length) {
-          return {res: res, size: size}
-        } else if (isVector) {
-          return (ns.util.parse.matrix(str, index+isVector.size, res.add(isVecotr, size+isVector.size)))
-        } else if (isOpenParens || isDivider || isCloseParens) {
-          return ns.util.parse.matrix(str, index+1, res, size+1)
-        }
-      }
+      vector: (str) => (
+        ns.util.parse.trivialParser(ns.util.test.vector, ns.util.extract.vector)(str)
+      ),
+      matrix: () => (
+        ns.util.parse.trivialParser(ns.util.test.matrix, ns.util.extract.matrix)(str)
+      )
     },
     regex: {
       digit: () => ('(\\d)'),
@@ -482,14 +486,14 @@ const ns = {
         const fraction = ns.util.regex.fraction()
         const divider = ns.util.regex.divider()
         const closeParens = ns.util.regex.closeParens()
-        return `(${openParens}(${fraction}${divider})+${closeParens})`
+        return `(${openParens}${fraction}(${divider}${fraction})*${closeParens})`
       },
       matrix: () => {
         const openParens = ns.util.regex.openParens()
         const vector = ns.util.regex.vector()
         const divider = ns.util.regex.divider()
         const closeParens = ns.util.regex.closeParens()
-        return `(${openParens}(${vector}${divider})+${closeParens})`
+        return `(${openParens}${vector}(${divider}${vector})*${closeParens})`
       }
     }
   },
