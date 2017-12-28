@@ -764,7 +764,7 @@ describe('ns.util.extract.vector', function() {
     }),
     it('can extract a vector followed by a character, (1)a', function() {
       const res = ns.util.extract.vector('(1)a')
-      const expected = List([1])
+      const expected = List([F(1)])
       assert.isTrue(res.res.equals(expected))
       assert.equal(res.size, 3)
     })
@@ -774,15 +774,18 @@ describe('ns.util.extract.matrix', function() {
   describe('it extracts a matrix from the start of a string', function() {
     it('can extract a matrix with a single vector, ((1))', function() {
       const res = ns.util.extract.matrix('((1))')
-      console.log(res.res)
-      const expected = List(List([F(1)]))
-      assert.isTrue(res.res.equals(expected))
+      const expected = List()
+      const expected2 = expected.push(List([F(1)]))
+      assert.isOk(res.res.equals(expected2))
       assert.equal(res.size, 5)
     }),
     it('can extract a matrix with 3 vectors, ((1),(1),(1))', function() {
       const res = ns.util.extract.matrix('((1),(1),(1))')
-      console.log(res.res)
-      const expected = List(List([F(1)]), List([F(1)]), List([F(2)]))
+      const expected = (
+        List([
+          List([F(1)]), List([F(1)]), List([F(1)])
+        ])
+      )
       assert.isTrue(res.res.equals(expected))
       assert.equal(res.size, 13)
     })

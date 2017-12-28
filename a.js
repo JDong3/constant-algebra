@@ -1,6 +1,12 @@
 const ca = require('./')
 const List = require('immutable').List
-const test = List([1]).equals(List([1]))
-const test2 = List(List([1])).equals(List(List([1])))
-console.log(test)
-console.log(test2)
+const F = require('fraction.js')
+
+
+const res = ns.util.extract.matrix('((1),(1),(1))')
+const expected = List([
+  List([F(1)])
+])
+
+console.log(res.res)
+console.log(expected)

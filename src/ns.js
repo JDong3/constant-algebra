@@ -181,7 +181,6 @@ const ns = {
         if (i >= ns.lib.mn.columns(matrix)) {
           return res
         } else {
-          //console.log(ns.lib.mn.cofactor(matrix, row, i))
           return ns.lib.mn.sumRowCofactors(
             matrix, row, i+1, res.add(ns.lib.mn.cofactor(matrix, row, i)))
         }
@@ -409,26 +408,24 @@ const ns = {
         const isFraction = ns.util.parse.fraction(str.slice(index))
         const isOpenParens = ns.util.parse.openParens(str.slice(index))
         const isDivider = ns.util.parse.divider(str.slice(index))
-        const isCloseParens = ns.util.parse.closeParens(str.slice(index))
         if(isFraction) {
           return ns.util.extract.vector(str, index+isFraction.size, res.push(isFraction.res))
-        } else if(isOpenParens || isDivider || isCloseParens) {
+        } else if(isOpenParens || isDivider) {
           return ns.util.extract.vector(str, index+1, res)
         } else {
-          return {res: res, size: index}
+          return {res: res, size: index+1}
         }
       },
       matrix: (str, index=0, res=EMPTY_LIST) => {
         const isVector = ns.util.parse.vector(str.slice(index))
         const isOpenParens = ns.util.parse.openParens(str.slice(index))
         const isDivider = ns.util.parse.divider(str.slice(index))
-        const isCloseParens = ns.util.parse.closeParens(str.slice(index))
         if(isVector) {
           return ns.util.extract.matrix(str, index+isVector.size, res.push(isVector.res))
-        } else if(isOpenParens || isDivider || isCloseParens) {
+        } else if(isOpenParens || isDivider) {
           return ns.util.extract.matrix(str, index+1, res)
         } else {
-          return {res: res, size: index}
+          return {res: res, size: index+1}
         }
       }
     },
