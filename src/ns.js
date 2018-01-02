@@ -62,24 +62,27 @@ const ns = {
                 vector.delete(column)
               ))
       ),
-      mul: (m1, m2, i=0, res=EMPTY_LIST) => {
-        if (i >= m1.size) {
+      mul: (matrix, matrix2, i=0, res=EMPTY_LIST) => {
+        if (i >= matrix.size) {
           return res
         } else {
-          const update = res.push(ns.lib.mm.subMul(m1.get(i), m2))
-          return ns.lib.mm.mul(m1, m2, i+1, update)
+          const update = res.push(ns.lib.mm.subMul(matrix.get(i), matrix2))
+          return ns.lib.mm.mul(matrix, matrix2, i+1, update)
         }
       },
-      subMul: (v, m, i=0, res=EMPTY_LIST) => {
-        if (i >= m.get(0).size) {
+      subMul: (vector, matrix, i=0, res=EMPTY_LIST) => {
+        if (i >= matrix.get(0).size) {
           return res
         } else {
-          const update = res.push(ns.lib.vn.dot(v, ns.lib.mv.column(m, i)))
-          return ns.lib.mm.subMul(v, m, i+1, update)
+          const update = res.push(ns.lib.vn.dot(vector, ns.lib.mv.column(matrix, i)))
+          return ns.lib.mm.subMul(vector, matrix, i+1, update)
         }
       },
-      rowAdd: (m, r1, r2, n=1) => (
-        m.set(r1, ns.lib.mm.rowAfterAdding(m, r1, r2, n))
+      testMul: (matrix, matrix2) => (
+
+      ),
+      rowAdd: (matrix, row1, row2, n=1) => (
+        matrix.set(row1, ns.lib.mm.rowAfterAdding(matrix, row1, row2, n))
       ),
       rowAfterAdding: (m, r1, r2, n=1) => (
         ns.lib.vv.add(
