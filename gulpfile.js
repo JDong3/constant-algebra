@@ -6,7 +6,7 @@ const config = {
 }
 
 gulp.task('clean', () => (
-  del(['dist'])
+  del(['dist/**/*'])
 ))
 
 gulp.task('transpileSrc', ['clean'], () => (
@@ -27,5 +27,5 @@ gulp.task('config', ['clean'], () => (
 ))
 
 gulp.task('build', ['transpileSrc', 'transpileEntry', 'config'], () => (
-  undefined
+  true
 ))
