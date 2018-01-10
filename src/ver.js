@@ -1,4 +1,4 @@
-ver: {
+ver = {
   is: {
     isMatrix: (matrix) => (
       List.isList(matrix) &&

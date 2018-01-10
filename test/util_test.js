@@ -1,12 +1,12 @@
 //objects of testing
-const util = require('../src').util
+const util = require('..').util
 
 //testing
 const assert = require('chai').assert
 
 //resources
-const m = require('../src/res').m
-const v = require('../src/res').v
+const m = require('../src').res.m
+const v = require('../src').res.v
 
 //objects
 List = require('immutable').List

@@ -1,9 +1,9 @@
 const List = require('immutable').List
 const F = require('fraction.js')
 const assert = require('chai').assert
-const lib = require('../src').lib
-const m = require('../src/res').m
-const v = require('../src/res').v
+const lib = require('..').lib
+const m = require('..').res.m
+const v = require('..').res.v
 
 describe('lib.mb.isIdentity', function() {
   describe('checks for identity matrix', function() {
