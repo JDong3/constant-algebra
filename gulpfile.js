@@ -6,9 +6,8 @@ const config = {
 }
 const nothing = (done) => {done()}
 
-gulp.task('clean', (done) => (
+gulp.task('clean', () => (
   del(['dist/**/*'])
-    .then((res) => (done()))
 ))
 
 gulp.task('transpileSrc', () => (
