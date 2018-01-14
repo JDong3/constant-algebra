@@ -4,28 +4,31 @@ const del = require('del')
 const config = {
   presets: ['env']
 }
+const nothing = (done) => {done()}
 
-gulp.task('clean', () => (
+gulp.task('clean', (done) => (
   del(['dist/**/*'])
+    .then((res) => (done()))
 ))
 
-gulp.task('transpileSrc', ['clean'], () => (
+gulp.task('transpileSrc', () => (
   gulp.src('src/*.js')
-  .pipe(babel(config))
-  .pipe(gulp.dest('dist/src'))
+    .pipe(babel(config))
+    .pipe(gulp.dest('dist/src'))
 ))
 
-gulp.task('transpileEntry', ['clean'], () => (
+gulp.task('transpileEntry', () => (
   gulp.src('index.js')
-  .pipe(babel(config))
-  .pipe(gulp.dest('dist'))
+    .pipe(babel(config))
+    .pipe(gulp.dest('dist'))
 ))
 
-gulp.task('config', ['clean'], () => (
+gulp.task('mvConfig', () => (
   gulp.src('package.json')
-  .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist'))
 ))
 
-gulp.task('build', ['transpileSrc', 'transpileEntry', 'config'], () => (
-  true
-))
+const buildSeries = (
+  gulp.series('clean', 'transpileSrc', 'transpileEntry', 'mvConfig', nothing)
+)
+gulp.task('build', buildSeries)
